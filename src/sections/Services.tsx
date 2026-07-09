@@ -1,61 +1,111 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { FileText, Merge, PenTool, Signature } from 'lucide-react';
+import { FileText, Merge, PenTool, Signature, ArrowUpRight } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const services = [
-  { icon: FileText, title: 'Convert to PDF', desc: 'Instantly transform images, charts, and raw text into universally compatible, perfectly formatted PDF documents.', color: '#4AA882', bg: '#E8F5EF' },
-  { icon: Merge, title: 'Merge Documents', desc: 'Combine multiple disjointed files into a single, cohesive master document with organized indexing and bookmarks.', color: '#3B8FD9', bg: '#E8F2FA' },
-  { icon: PenTool, title: 'Editor Tools', desc: 'Clean up messy records. We annotate, format, redact, and adjust layouts so your final document is pristine and professional.', color: '#D4943A', bg: '#FDF3E4' },
-  { icon: Signature, title: 'Digital Signature Setup', desc: 'We prepare your documents for secure, legally binding digital execution with proper signature fields and routing.', color: '#9B6DD1', bg: '#F2ECFA' },
+  {
+    icon: FileText,
+    title: 'Convert to PDF',
+    desc: 'Transform any document format into clean, universally compatible PDFs. We handle scans, images, Word files, and more — delivering perfectly formatted outputs every time.',
+    features: ['Multi-format input', 'OCR text extraction', 'Compressed output'],
+    color: '#3DDC84',
+    bg: 'rgba(61, 220, 132, 0.06)',
+  },
+  {
+    icon: Merge,
+    title: 'Merge Documents',
+    desc: 'Combine multiple files into a single, organized master document. We add bookmarks, table of contents, and proper page numbering for seamless navigation.',
+    features: ['Smart ordering', 'Auto bookmarks', 'Page numbering'],
+    color: '#6C8F5A',
+    bg: 'rgba(108, 143, 90, 0.06)',
+  },
+  {
+    icon: PenTool,
+    title: 'Editor Tools',
+    desc: 'Clean up, format, and polish your documents. We redact sensitive info, adjust layouts, add annotations, and ensure every page meets professional standards.',
+    features: ['Redaction', 'Layout formatting', 'Annotation cleanup'],
+    color: '#1A1A2E',
+    bg: 'rgba(26, 26, 46, 0.04)',
+  },
+  {
+    icon: Signature,
+    title: 'Digital Signature Setup',
+    desc: 'Prepare documents for legally binding digital execution. We configure signature fields, routing workflows, and compliance-ready document packages.',
+    features: ['Signature fields', 'Routing setup', 'Legal compliance'],
+    color: '#3DDC84',
+    bg: 'rgba(61, 220, 132, 0.06)',
+  },
 ];
 
 export default function Services() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const headerRef = useRef<HTMLDivElement>(null);
-  const cardsRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) return;
     const ctx = gsap.context(() => {
-      gsap.from(headerRef.current, { opacity: 0, y: 30, duration: 0.7, ease: 'power2.out',
-        scrollTrigger: { trigger: sectionRef.current, start: 'top 75%' },
-      });
-      if (cardsRef.current) {
-        gsap.from(cardsRef.current.children, { opacity: 0, y: 40, stagger: 0.12, duration: 0.7, delay: 0.2, ease: 'power2.out',
-          scrollTrigger: { trigger: sectionRef.current, start: 'top 75%' },
-        });
-      }
+      gsap.from('.services-header', { opacity: 0, y: 30, duration: 0.7, ease: 'power3.out',
+        scrollTrigger: { trigger: sectionRef.current, start: 'top 75%' } });
+      gsap.from('.service-card', { opacity: 0, y: 40, stagger: 0.12, duration: 0.7, ease: 'power3.out',
+        scrollTrigger: { trigger: '.services-grid', start: 'top 80%' } });
     }, sectionRef);
     return () => ctx.revert();
   }, []);
 
   return (
-    <section id="services" ref={sectionRef} className="w-full bg-[#F8FAF9] py-24">
-      <div className="max-w-[1280px] mx-auto px-6">
-        <div ref={headerRef} className="text-center mb-16">
-          <span className="inline-block text-[11px] font-semibold uppercase tracking-[3px] text-[#4AA882] mb-4">Core Capabilities</span>
-          <h2 className="text-[clamp(28px,4vw,42px)] font-bold text-[#1A2E28] leading-[1.15] tracking-tight">Interactive Document Processing</h2>
-          <p className="mt-4 text-[16px] font-light text-[#5A7A6E] max-w-[580px] mx-auto leading-relaxed">
-            High-fidelity document operations that go beyond static files. We ensure your records are cleanly converted, merged, edited, and signed with absolute precision.
+    <section id="services" ref={sectionRef} className="section-padding" style={{ backgroundColor: '#FFF8ED' }}>
+      <div className="container-brand">
+        {/* Section Header */}
+        <div className="services-header text-center mb-16">
+          <span className="brand-label mb-4 inline-block">What We Do</span>
+          <h2 className="brand-heading-lg mb-4">Document Services, <span style={{ color: '#3DDC84' }}>Refined</span></h2>
+          <p className="brand-body max-w-lg mx-auto">
+            Four core capabilities designed to handle every aspect of your document workflow —
+            from conversion to compliance-ready delivery.
           </p>
         </div>
-        <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {services.map((service) => {
-            const Icon = service.icon;
-            return (
-              <div key={service.title} className="group bg-white rounded-2xl p-8 border border-[rgba(26,46,40,0.06)] hover:shadow-xl hover:shadow-[rgba(74,168,130,0.1)] transition-all duration-500 hover:-translate-y-1">
-                <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-5 transition-transform duration-500 group-hover:scale-110" style={{ backgroundColor: service.bg }}>
-                  <Icon size={26} color={service.color} strokeWidth={1.5} />
+
+        {/* Services Grid */}
+        <div className="services-grid grid grid-cols-1 md:grid-cols-2 gap-6">
+          {services.map((service) => (
+            <div key={service.title} className="service-card paper-card paper-tab-left group cursor-default">
+              <div className="flex items-start justify-between mb-5">
+                <div className="w-14 h-14 rounded-xl flex items-center justify-center transition-transform duration-500 group-hover:scale-110"
+                  style={{ background: service.bg, border: `1px solid ${service.color}20` }}>
+                  <service.icon size={24} color={service.color} strokeWidth={1.5} />
                 </div>
-                <h3 className="text-[20px] font-semibold text-[#1A2E28] mb-2">{service.title}</h3>
-                <p className="text-[14px] font-light text-[#5A7A6E] leading-relaxed">{service.desc}</p>
+                <ArrowUpRight size={18} className="opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" style={{ color: service.color }} />
               </div>
-            );
-          })}
+
+              <h3 className="brand-heading-md text-xl mb-3" style={{ fontSize: '1.375rem' }}>{service.title}</h3>
+              <p className="text-[14px] leading-relaxed mb-5" style={{ color: '#6E7480' }}>{service.desc}</p>
+
+              {/* Feature pills */}
+              <div className="flex flex-wrap gap-2">
+                {service.features.map((f) => (
+                  <span key={f} className="px-3 py-1.5 rounded-lg text-[11px] font-semibold tracking-wide"
+                    style={{ background: service.bg, color: service.color === '#1A1A2E' ? '#6E7480' : service.color }}>
+                    {f}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Bottom image strip */}
+        <div className="mt-16 rounded-2xl overflow-hidden shadow-lg relative">
+          <img src="/images/paper-texture.jpg" alt="Premium paper layers" className="w-full h-48 object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#FFF8ED]/80 via-transparent to-[#FFF8ED]/80" />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="text-center">
+              <span className="brand-label mb-2 inline-block">Every Document Matters</span>
+              <p className="text-[13px]" style={{ color: '#6E7480' }}>Precision handling for files of any complexity</p>
+            </div>
+          </div>
         </div>
       </div>
     </section>

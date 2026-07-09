@@ -1,13 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, LogOut, LayoutDashboard } from 'lucide-react';
+import { Menu, X, LogOut, LayoutDashboard, Shield } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 
 const navLinks = [
   { label: 'Services', href: '#services' },
-  { label: 'Security', href: '#security' },
-  { label: 'Process', href: '#process' },
+  { label: 'How It Works', href: '#process' },
   { label: 'Reviews', href: '#reviews' },
-  { label: 'About', href: '#about' },
+  { label: 'FAQ', href: '#faq' },
   { label: 'Contact', href: '#contact' },
 ];
 
@@ -30,73 +29,65 @@ export default function Navigation() {
   };
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-[1000] transition-all duration-300 ${
+    <nav className={`fixed top-0 left-0 right-0 z-[1000] transition-all duration-500 ${
       isScrolled
-        ? 'bg-[rgba(13,28,22,0.95)] backdrop-blur-xl border-b border-[rgba(74,168,130,0.15)]'
+        ? 'bg-[#FFF8ED]/95 backdrop-blur-xl shadow-[0_1px_0_rgba(26,26,46,0.06)]'
         : 'bg-transparent'
     }`}>
-      <div className="max-w-[1280px] mx-auto h-16 flex items-center justify-between px-6">
+      <div className="container-brand h-18 flex items-center justify-between" style={{ height: '72px' }}>
         <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-          className="flex items-center gap-2.5">
-          <img src="/images/logo.png" alt="Porshure Green" className="w-8 h-8 object-contain" />
+          className="flex items-center gap-3 group">
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center transition-transform duration-300 group-hover:scale-105"
+            style={{ background: 'linear-gradient(135deg, #3DDC84 0%, #6C8F5A 100%)' }}>
+            <span className="text-white font-bold text-sm tracking-tight">PG</span>
+          </div>
           <div className="flex flex-col">
-            <span className="font-bold text-[15px] tracking-tight text-white leading-tight">Porshure Green</span>
-            <span className="text-[9px] uppercase tracking-[3px] text-[#4AA882] leading-tight">Documents</span>
+            <span className="font-semibold text-[15px] tracking-tight leading-tight" style={{ color: '#1A1A2E', fontFamily: 'Inter' }}>Porshure Green</span>
+            <span className="text-[8px] uppercase tracking-[3px] leading-tight" style={{ color: '#6C8F5A', fontFamily: 'Inter', fontWeight: 500 }}>Documents</span>
           </div>
         </a>
 
-        <div className="hidden lg:flex items-center gap-7">
+        <div className="hidden lg:flex items-center gap-8">
           {navLinks.map((link) => (
             <a key={link.href} href={link.href} onClick={(e) => handleNavClick(e, link.href)}
-              className="text-[13px] font-medium text-[#9BABA4] hover:text-[#4AA882] transition-colors duration-300 tracking-wide">
+              className="text-[13px] font-medium transition-colors duration-300 tracking-wide"
+              style={{ color: '#6E7480', fontFamily: 'Inter' }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = '#3DDC84')}
+              onMouseLeave={(e) => (e.currentTarget.style.color = '#6E7480')}>
               {link.label}
             </a>
           ))}
           {isAdmin && (
-            <a href="/admin" className="flex items-center gap-1.5 text-[13px] font-medium text-[#FFD700] hover:text-[#FFE44D] transition-colors duration-300 tracking-wide">
-              <LayoutDashboard size={14} />
+            <a href="/admin" className="flex items-center gap-1.5 text-[13px] font-semibold transition-colors duration-300"
+              style={{ color: '#1A1A2E' }}>
+              <Shield size={14} style={{ color: '#3DDC84' }} />
               Dashboard
             </a>
           )}
           {isAuthenticated ? (
-            <button onClick={logout} className="flex items-center gap-1.5 text-[12px] font-medium text-[#9BABA4] hover:text-white transition-colors">
-              <LogOut size={14} />
-              Logout
+            <button onClick={logout} className="flex items-center gap-1.5 text-[12px] font-medium transition-colors" style={{ color: '#6E7480' }}>
+              <LogOut size={14} /> Logout
             </button>
           ) : (
-            <a href="/login" className="px-5 py-2 rounded-full text-[12px] font-semibold uppercase tracking-[1px] bg-[#4AA882] text-white hover:bg-[#3D8F6D] transition-all duration-300">
-              Admin
-            </a>
+            <a href="/login" className="brand-green-btn text-[11px] !py-2.5 !px-5">Admin</a>
           )}
         </div>
 
-        <button className="lg:hidden p-2" onClick={() => setIsMobileOpen(!isMobileOpen)} aria-label="Toggle menu">
-          {isMobileOpen ? <X size={24} color="#fff" /> : <Menu size={24} color="#fff" />}
+        <button className="lg:hidden p-2" onClick={() => setIsMobileOpen(!isMobileOpen)}>
+          {isMobileOpen ? <X size={22} color="#1A1A2E" /> : <Menu size={22} color="#1A1A2E" />}
         </button>
       </div>
 
       {isMobileOpen && (
-        <div className="lg:hidden absolute top-16 left-0 right-0 py-6 px-6 flex flex-col gap-4 bg-[rgba(13,28,22,0.98)] backdrop-blur-xl border-b border-[rgba(74,168,130,0.15)]">
+        <div className="lg:hidden absolute top-[72px] left-0 right-0 py-6 px-6 flex flex-col gap-1"
+          style={{ background: 'rgba(255,248,237,0.98)', backdropFilter: 'blur(12px)', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
           {navLinks.map((link) => (
             <a key={link.href} href={link.href} onClick={(e) => handleNavClick(e, link.href)}
-              className="text-base font-medium text-[#9BABA4] hover:text-[#4AA882] py-2 transition-colors">
+              className="text-[15px] font-medium py-3 px-2 rounded-lg transition-colors" style={{ color: '#6E7480' }}>
               {link.label}
             </a>
           ))}
-          {isAdmin && (
-            <a href="/admin" className="flex items-center gap-2 text-base font-medium text-[#FFD700] py-2">
-              <LayoutDashboard size={16} />
-              Dashboard
-            </a>
-          )}
-          {isAuthenticated ? (
-            <button onClick={logout} className="flex items-center gap-2 text-base font-medium text-[#9BABA4] py-2">
-              <LogOut size={16} />
-              Logout
-            </button>
-          ) : (
-            <a href="/login" className="text-base font-medium text-[#4AA882] py-2">Admin Login</a>
-          )}
+          {isAdmin && <a href="/admin" className="flex items-center gap-2 text-[15px] font-semibold py-3 px-2" style={{ color: '#1A1A2E' }}><LayoutDashboard size={16} /> Dashboard</a>}
         </div>
       )}
     </nav>

@@ -4,13 +4,11 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Navigation from '@/sections/Navigation';
 import Hero from '@/sections/Hero';
-import TrustedBy from '@/sections/TrustedBy';
 import Services from '@/sections/Services';
-import Security from '@/sections/Security';
-import Process from '@/sections/Process';
+import HowItWorks from '@/sections/HowItWorks';
+import Trust from '@/sections/Trust';
 import Reviews from '@/sections/Reviews';
-import Insights from '@/sections/Insights';
-import About from '@/sections/About';
+import FAQ from '@/sections/FAQ';
 import CTABanner from '@/sections/CTABanner';
 import Footer from '@/sections/Footer';
 import ContactFloat from '@/sections/ContactFloat';
@@ -27,16 +25,14 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="relative">
+    <div style={{ backgroundColor: '#FFF8ED' }}>
       <Navigation />
       <Hero />
-      <TrustedBy />
       <Services />
-      <Security />
-      <Process />
+      <HowItWorks />
+      <Trust />
       <Reviews />
-      <Insights />
-      <About />
+      <FAQ />
       <CTABanner />
       <Footer />
       <ContactFloat />
