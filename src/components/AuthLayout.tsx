@@ -15,7 +15,7 @@ export function AuthLayout({ children }: { children: React.ReactNode }) {
           {user && (
             <div className="flex items-center gap-2">
               <User size={16} color="#7A9A8E" />
-              <span className="text-sm text-[#7A9A8E]">{user.name}</span>
+              <span className="text-sm text-[#7A9A8E]">{user.email}</span>
             </div>
           )}
           <button onClick={logout} className="flex items-center gap-1 text-sm text-[#7A9A8E] hover:text-white">

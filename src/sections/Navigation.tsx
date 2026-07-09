@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, LogOut, LayoutDashboard } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
 
 const navLinks = [
   { label: 'Services', href: '#services' },
@@ -13,6 +14,7 @@ const navLinks = [
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const { isAuthenticated, isAdmin, logout } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -50,9 +52,22 @@ export default function Navigation() {
               {link.label}
             </a>
           ))}
-          <a href="/admin" className="text-[13px] font-medium text-[#FFD700] hover:text-[#FFE44D] transition-colors duration-300 tracking-wide">
-            Dashboard
-          </a>
+          {isAdmin && (
+            <a href="/admin" className="flex items-center gap-1.5 text-[13px] font-medium text-[#FFD700] hover:text-[#FFE44D] transition-colors duration-300 tracking-wide">
+              <LayoutDashboard size={14} />
+              Dashboard
+            </a>
+          )}
+          {isAuthenticated ? (
+            <button onClick={logout} className="flex items-center gap-1.5 text-[12px] font-medium text-[#9BABA4] hover:text-white transition-colors">
+              <LogOut size={14} />
+              Logout
+            </button>
+          ) : (
+            <a href="/login" className="px-5 py-2 rounded-full text-[12px] font-semibold uppercase tracking-[1px] bg-[#4AA882] text-white hover:bg-[#3D8F6D] transition-all duration-300">
+              Admin
+            </a>
+          )}
         </div>
 
         <button className="lg:hidden p-2" onClick={() => setIsMobileOpen(!isMobileOpen)} aria-label="Toggle menu">
@@ -68,7 +83,20 @@ export default function Navigation() {
               {link.label}
             </a>
           ))}
-          <a href="/admin" className="text-base font-medium text-[#FFD700] py-2">Dashboard</a>
+          {isAdmin && (
+            <a href="/admin" className="flex items-center gap-2 text-base font-medium text-[#FFD700] py-2">
+              <LayoutDashboard size={16} />
+              Dashboard
+            </a>
+          )}
+          {isAuthenticated ? (
+            <button onClick={logout} className="flex items-center gap-2 text-base font-medium text-[#9BABA4] py-2">
+              <LogOut size={16} />
+              Logout
+            </button>
+          ) : (
+            <a href="/login" className="text-base font-medium text-[#4AA882] py-2">Admin Login</a>
+          )}
         </div>
       )}
     </nav>

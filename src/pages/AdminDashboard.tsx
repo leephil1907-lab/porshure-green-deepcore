@@ -1,13 +1,32 @@
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router';
+import { useAuth } from '@/hooks/useAuth';
 import { trpc } from '@/providers/trpc';
 import {
   LayoutDashboard, Mail, MailOpen, Reply, Archive,
-  Trash2, RefreshCw, Inbox, CheckCircle,
-  AlertCircle, ChevronLeft,
+  Trash2, RefreshCw, LogOut, Inbox, CheckCircle,
+  AlertCircle, ChevronLeft, User,
 } from 'lucide-react';
 
 export default function AdminDashboard() {
-  const { data: inquiries, isLoading: inquiriesLoading, refetch } = trpc.inquiry.list.useQuery();
-  const { data: stats } = trpc.inquiry.stats.useQuery();
+  const navigate = useNavigate();
+  const { isAuthenticated, isAdmin, isLoading, logout } = useAuth();
+
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      navigate('/login');
+    }
+  }, [isLoading, isAuthenticated, navigate]);
+
+  const { data: inquiries, isLoading: inquiriesLoading, refetch } = trpc.inquiry.list.useQuery(undefined, {
+    enabled: isAdmin,
+    retry: false,
+  });
+
+  const { data: stats } = trpc.inquiry.stats.useQuery(undefined, {
+    enabled: isAdmin,
+    retry: false,
+  });
 
   const updateStatus = trpc.inquiry.updateStatus.useMutation({
     onSuccess: () => refetch(),
@@ -16,6 +35,16 @@ export default function AdminDashboard() {
   const deleteInquiry = trpc.inquiry.delete.useMutation({
     onSuccess: () => refetch(),
   });
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-[#0D1C16] flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-[#4AA882] border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  if (!isAdmin) return null;
 
   const statusConfig: Record<string, { icon: typeof Mail; color: string; label: string }> = {
     new: { icon: AlertCircle, color: '#3B8FD9', label: 'New' },
@@ -37,6 +66,17 @@ export default function AdminDashboard() {
             <LayoutDashboard size={18} color="#4AA882" />
             <span className="font-semibold text-[15px]">Admin Dashboard</span>
           </div>
+        </div>
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            <User size={14} color="#7A9A8E" />
+            <span className="text-[13px] text-[#7A9A8E]">porshuregreen@gmail.com</span>
+          </div>
+          <span className="px-2 py-0.5 rounded-full bg-[rgba(74,168,130,0.15)] text-[10px] font-semibold uppercase tracking-wider text-[#4AA882]">Admin</span>
+          <button onClick={logout} className="flex items-center gap-1.5 text-[12px] text-[#7A9A8E] hover:text-white transition-colors">
+            <LogOut size={14} />
+            Logout
+          </button>
         </div>
       </header>
 
