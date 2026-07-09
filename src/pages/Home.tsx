@@ -4,10 +4,13 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Navigation from '@/sections/Navigation';
 import Hero from '@/sections/Hero';
+import TrustedBy from '@/sections/TrustedBy';
 import Services from '@/sections/Services';
 import HowItWorks from '@/sections/HowItWorks';
+import DocumentSamples from '@/sections/DocumentSamples';
 import Trust from '@/sections/Trust';
 import Reviews from '@/sections/Reviews';
+import Pricing from '@/sections/Pricing';
 import FAQ from '@/sections/FAQ';
 import CTABanner from '@/sections/CTABanner';
 import Footer from '@/sections/Footer';
@@ -28,10 +31,13 @@ export default function Home() {
     <div style={{ backgroundColor: '#FFF8ED' }}>
       <Navigation />
       <Hero />
+      <TrustedBy />
       <Services />
       <HowItWorks />
+      <DocumentSamples />
       <Trust />
       <Reviews />
+      <Pricing />
       <FAQ />
       <CTABanner />
       <Footer />

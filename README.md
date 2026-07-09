@@ -1,73 +1,92 @@
-# React + TypeScript + Vite
+# Porshure Green
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Premium Document Processing Services**
 
-Currently, two official plugins are available:
+Secure document support, organized with clarity. Professional document preparation, formatting, conversion, and submission services for individuals and businesses.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+![Porshure Green](public/images/hero-main.jpg)
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Document Processing** - Convert, merge, edit, and sign documents with precision
+- **50+ Document Types** - Business, education, immigration, medical, family, and more
+- **Secure & Confidential** - AES-256 encryption, auto file destruction, zero-trust access
+- **Fast Turnaround** - Under 2 hours for most documents
+- **Admin Dashboard** - Manage inquiries and client communications
+- **Multi-Channel Contact** - WhatsApp, Email, iMessage, Phone integration
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+| Layer | Technology |
+|-------|-----------|
+| Frontend | React 19, TypeScript, Vite, Tailwind CSS, shadcn/ui |
+| Backend | Hono, tRPC 11, Drizzle ORM, MySQL |
+| Auth | JWT-based email/password authentication |
+| Animations | GSAP, Three.js (3D carousel), Lenis smooth scroll |
+| Fonts | Playfair Display (headlines), Inter (body) |
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Brand Identity
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+| Color | Hex | Usage |
+|-------|-----|-------|
+| Ink Black | `#1A1A2E` | Text, dark sections |
+| Paper Cream | `#FFF8ED` | Backgrounds |
+| Porshure Green | `#3DDC84` | Signature accent |
+| Olive Support | `#6C8F5A` | Secondary accent |
+| Slate Gray | `#6E7480` | Body text |
+| Warm Silver | `#C9C9C9` | Borders, dividers |
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Admin Dashboard
+
+**URL:** `/admin`
+
+**Login Credentials:**
+- Email: `porshuregreen@gmail.com`
+- Password: `PorshureGreen2025!`
+
+### Dashboard Features
+- Inquiry management (view, update status, delete)
+- Statistics cards (Total, New, Read, Replied, Archived)
+- Real-time data refresh
+- Protected admin routes
+
+## Deployment
+
+### Vercel
+
+1. Connect your GitHub repo to Vercel
+2. Set environment variables (see `.env.example`)
+3. Deploy automatically on every push
+
+### Environment Variables
+
+```env
+DATABASE_URL=mysql://user:pass@host:port/db
+ADMIN_JWT_SECRET=your-secret-key
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Build
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+npm run build
 ```
+
+### Development
+
+```bash
+npm install
+npm run db:push
+npm run dev
+```
+
+## Contact
+
+- **WhatsApp:** +1 (415) 534-5986
+- **Email:** porshuregreen@gmail.com
+- **iMessage:** porshuregreen@gmail.com
+- **Phone:** +1 (415) 534-5986
+
+## License
+
+Private - All rights reserved.
