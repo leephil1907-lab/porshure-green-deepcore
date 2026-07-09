@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
-import { useAuth } from '@/hooks/useAuth';
 
 const navLinks = [
   { label: 'Services', href: '#services' },
@@ -14,8 +13,6 @@ const navLinks = [
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const { user, isAuthenticated, logout } = useAuth();
-  const isAdmin = user?.role === 'admin';
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -53,23 +50,9 @@ export default function Navigation() {
               {link.label}
             </a>
           ))}
-          {isAdmin && (
-            <a href="/admin" className="text-[13px] font-medium text-[#FFD700] hover:text-[#FFE44D] transition-colors duration-300 tracking-wide">
-              Dashboard
-            </a>
-          )}
-          {isAuthenticated ? (
-            <div className="flex items-center gap-3">
-              <span className="text-[12px] text-[#9BABA4]">{user?.name}</span>
-              <button onClick={logout} className="text-[12px] font-medium text-[#9BABA4] hover:text-white transition-colors">
-                Logout
-              </button>
-            </div>
-          ) : (
-            <a href="/login" className="px-5 py-2 rounded-full text-[12px] font-semibold uppercase tracking-[1px] bg-[#4AA882] text-white hover:bg-[#3D8F6D] transition-all duration-300">
-              Upload
-            </a>
-          )}
+          <a href="/admin" className="text-[13px] font-medium text-[#FFD700] hover:text-[#FFE44D] transition-colors duration-300 tracking-wide">
+            Dashboard
+          </a>
         </div>
 
         <button className="lg:hidden p-2" onClick={() => setIsMobileOpen(!isMobileOpen)} aria-label="Toggle menu">
@@ -85,9 +68,7 @@ export default function Navigation() {
               {link.label}
             </a>
           ))}
-          {isAdmin && (
-            <a href="/admin" className="text-base font-medium text-[#FFD700] py-2">Dashboard</a>
-          )}
+          <a href="/admin" className="text-base font-medium text-[#FFD700] py-2">Dashboard</a>
         </div>
       )}
     </nav>

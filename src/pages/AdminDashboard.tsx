@@ -1,33 +1,13 @@
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router';
-import { useAuth } from '@/hooks/useAuth';
 import { trpc } from '@/providers/trpc';
 import {
   LayoutDashboard, Mail, MailOpen, Reply, Archive,
-  Trash2, RefreshCw, LogOut, Inbox, CheckCircle,
+  Trash2, RefreshCw, Inbox, CheckCircle,
   AlertCircle, ChevronLeft,
 } from 'lucide-react';
 
 export default function AdminDashboard() {
-  const navigate = useNavigate();
-  const { user, isAuthenticated, isLoading, logout } = useAuth({ redirectOnUnauthenticated: true });
-  const isAdmin = user?.role === 'admin';
-
-  useEffect(() => {
-    if (!isLoading && isAuthenticated && !isAdmin) {
-      navigate('/');
-    }
-  }, [isLoading, isAuthenticated, isAdmin, navigate]);
-
-  const { data: inquiries, isLoading: inquiriesLoading, refetch } = trpc.inquiry.list.useQuery(undefined, {
-    enabled: isAdmin,
-    retry: false,
-  });
-
-  const { data: stats } = trpc.inquiry.stats.useQuery(undefined, {
-    enabled: isAdmin,
-    retry: false,
-  });
+  const { data: inquiries, isLoading: inquiriesLoading, refetch } = trpc.inquiry.list.useQuery();
+  const { data: stats } = trpc.inquiry.stats.useQuery();
 
   const updateStatus = trpc.inquiry.updateStatus.useMutation({
     onSuccess: () => refetch(),
@@ -36,16 +16,6 @@ export default function AdminDashboard() {
   const deleteInquiry = trpc.inquiry.delete.useMutation({
     onSuccess: () => refetch(),
   });
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-[#0D1C16] flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-[#4AA882] border-t-transparent rounded-full animate-spin" />
-      </div>
-    );
-  }
-
-  if (!isAdmin) return null;
 
   const statusConfig: Record<string, { icon: typeof Mail; color: string; label: string }> = {
     new: { icon: AlertCircle, color: '#3B8FD9', label: 'New' },
@@ -56,7 +26,6 @@ export default function AdminDashboard() {
 
   return (
     <div className="min-h-screen bg-[#0D1C16] text-white">
-      {/* Header */}
       <header className="h-16 border-b border-[rgba(74,168,130,0.12)] bg-[rgba(13,28,22,0.95)] backdrop-blur-xl flex items-center justify-between px-6 sticky top-0 z-50">
         <div className="flex items-center gap-4">
           <a href="/" className="flex items-center gap-2 text-[#7A9A8E] hover:text-white transition-colors">
@@ -69,18 +38,9 @@ export default function AdminDashboard() {
             <span className="font-semibold text-[15px]">Admin Dashboard</span>
           </div>
         </div>
-        <div className="flex items-center gap-4">
-          <span className="text-[13px] text-[#7A9A8E]">{user?.name}</span>
-          <span className="px-2 py-0.5 rounded-full bg-[rgba(74,168,130,0.15)] text-[10px] font-semibold uppercase tracking-wider text-[#4AA882]">Admin</span>
-          <button onClick={logout} className="flex items-center gap-1.5 text-[12px] text-[#7A9A8E] hover:text-white transition-colors">
-            <LogOut size={14} />
-            Logout
-          </button>
-        </div>
       </header>
 
       <div className="max-w-[1400px] mx-auto px-6 py-8">
-        {/* Stats Cards */}
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
           {[
             { label: 'Total', value: stats?.total ?? 0, icon: Inbox, color: '#4AA882' },
@@ -102,7 +62,6 @@ export default function AdminDashboard() {
           })}
         </div>
 
-        {/* Actions */}
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-[18px] font-semibold text-white flex items-center gap-2">
             <Mail size={18} color="#4AA882" />
@@ -114,7 +73,6 @@ export default function AdminDashboard() {
           </button>
         </div>
 
-        {/* Inquiries Table */}
         <div className="rounded-xl border border-[rgba(74,168,130,0.1)] overflow-hidden">
           {inquiriesLoading ? (
             <div className="p-12 text-center text-[#7A9A8E]">Loading inquiries...</div>
