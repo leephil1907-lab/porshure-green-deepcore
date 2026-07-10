@@ -7,6 +7,7 @@ import Hero from '@/sections/Hero';
 import TrustedBy from '@/sections/TrustedBy';
 import Services from '@/sections/Services';
 import HowItWorks from '@/sections/HowItWorks';
+import DocumentShowcase from '@/sections/DocumentShowcase';
 import DocumentSamples from '@/sections/DocumentSamples';
 import Trust from '@/sections/Trust';
 import Reviews from '@/sections/Reviews';
@@ -34,6 +35,7 @@ export default function Home() {
       <TrustedBy />
       <Services />
       <HowItWorks />
+      <DocumentShowcase />
       <DocumentSamples />
       <Trust />
       <Reviews />

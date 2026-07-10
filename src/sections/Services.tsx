@@ -1,7 +1,8 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { FileText, Merge, PenTool, Signature, ArrowUpRight } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { FileText, Merge, PenTool, Signature, ArrowUpRight, Zap, Shield, Clock } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -40,6 +41,16 @@ const services = [
   },
 ];
 
+const container = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.1, delayChildren: 0.2 } },
+};
+
+const cardMotion = {
+  hidden: { opacity: 0, y: 40 },
+  visible: { opacity: 1, y: 0, transition: { type: 'spring' as const, stiffness: 80, damping: 14 } },
+};
+
 export default function Services() {
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -49,8 +60,6 @@ export default function Services() {
     const ctx = gsap.context(() => {
       gsap.from('.services-header', { opacity: 0, y: 30, duration: 0.7, ease: 'power3.out',
         scrollTrigger: { trigger: sectionRef.current, start: 'top 75%' } });
-      gsap.from('.service-card', { opacity: 0, y: 40, stagger: 0.12, duration: 0.7, ease: 'power3.out',
-        scrollTrigger: { trigger: '.services-grid', start: 'top 80%' } });
     }, sectionRef);
     return () => ctx.revert();
   }, []);
@@ -58,7 +67,6 @@ export default function Services() {
   return (
     <section id="services" ref={sectionRef} className="section-padding" style={{ backgroundColor: '#FFF8ED' }}>
       <div className="container-brand">
-        {/* Section Header */}
         <div className="services-header text-center mb-16">
           <span className="brand-label mb-4 inline-block">What We Do</span>
           <h2 className="brand-heading-lg mb-4">Document Services, <span style={{ color: '#3DDC84' }}>Refined</span></h2>
@@ -68,22 +76,41 @@ export default function Services() {
           </p>
         </div>
 
-        {/* Services Grid */}
-        <div className="services-grid grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Services Grid with Framer Motion */}
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 gap-6"
+          variants={container}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-80px' }}
+        >
           {services.map((service) => (
-            <div key={service.title} className="service-card paper-card paper-tab-left group cursor-default">
+            <motion.div
+              key={service.title}
+              variants={cardMotion}
+              whileHover={{ y: -6, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
+              className="paper-card paper-tab-left group cursor-default"
+            >
               <div className="flex items-start justify-between mb-5">
-                <div className="w-14 h-14 rounded-xl flex items-center justify-center transition-transform duration-500 group-hover:scale-110"
-                  style={{ background: service.bg, border: `1px solid ${service.color}20` }}>
+                <motion.div
+                  className="w-14 h-14 rounded-xl flex items-center justify-center"
+                  style={{ background: service.bg, border: `1px solid ${service.color}20` }}
+                  whileHover={{ scale: 1.1, rotate: 5 }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 15 }}
+                >
                   <service.icon size={24} color={service.color} strokeWidth={1.5} />
-                </div>
-                <ArrowUpRight size={18} className="opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" style={{ color: service.color }} />
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, x: -5 }}
+                  whileHover={{ opacity: 1, x: 0 }}
+                >
+                  <ArrowUpRight size={18} className="opacity-0 group-hover:opacity-100 transition-all duration-300" style={{ color: service.color }} />
+                </motion.div>
               </div>
 
               <h3 className="brand-heading-md text-xl mb-3" style={{ fontSize: '1.375rem' }}>{service.title}</h3>
               <p className="text-[14px] leading-relaxed mb-5" style={{ color: '#6E7480' }}>{service.desc}</p>
 
-              {/* Feature pills */}
               <div className="flex flex-wrap gap-2">
                 {service.features.map((f) => (
                   <span key={f} className="px-3 py-1.5 rounded-lg text-[11px] font-semibold tracking-wide"
@@ -92,12 +119,18 @@ export default function Services() {
                   </span>
                 ))}
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {/* Bottom image strip */}
-        <div className="mt-16 rounded-2xl overflow-hidden shadow-lg relative">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+          className="mt-16 rounded-2xl overflow-hidden shadow-lg relative"
+        >
           <img src="/images/paper-texture.jpg" alt="Premium paper layers" className="w-full h-48 object-cover" />
           <div className="absolute inset-0 bg-gradient-to-r from-[#FFF8ED]/80 via-transparent to-[#FFF8ED]/80" />
           <div className="absolute inset-0 flex items-center justify-center">
@@ -106,7 +139,38 @@ export default function Services() {
               <p className="text-[13px]" style={{ color: '#6E7480' }}>Precision handling for files of any complexity</p>
             </div>
           </div>
-        </div>
+        </motion.div>
+
+        {/* Service highlights row */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3, duration: 0.6 }}
+          className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-4"
+        >
+          {[
+            { icon: Zap, title: 'Lightning Fast', desc: 'Under 2-hour turnaround on most documents', color: '#3DDC84' },
+            { icon: Shield, title: 'Bank-Level Security', desc: 'AES-256 encryption for all file transfers', color: '#6C8F5A' },
+            { icon: Clock, title: 'Always Available', desc: '24/7 support via WhatsApp, Email & iMessage', color: '#3B8FD9' },
+          ].map((item) => (
+            <motion.div
+              key={item.title}
+              whileHover={{ y: -3, boxShadow: '0 8px 24px rgba(26,26,46,0.08)' }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              className="flex items-center gap-4 p-5 rounded-xl"
+              style={{ background: 'white', border: '1px solid rgba(26,26,46,0.06)' }}
+            >
+              <div className="w-11 h-11 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: `${item.color}10` }}>
+                <item.icon size={20} color={item.color} strokeWidth={1.5} />
+              </div>
+              <div>
+                <div className="text-[14px] font-semibold" style={{ color: '#1A1A2E' }}>{item.title}</div>
+                <div className="text-[11px]" style={{ color: '#6E7480' }}>{item.desc}</div>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
       </div>
     </section>
   );
