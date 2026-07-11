@@ -3,6 +3,18 @@ import { createRouter, publicQuery, adminQuery } from "./middleware";
 import { getDb } from "./queries/connection";
 import { inquiries } from "@db/schema";
 import { eq, desc } from "drizzle-orm";
+import { TRPCError } from "@trpc/server";
+
+function toTrpcError(err: unknown): TRPCError {
+  if (err instanceof Error && err.message.includes("DATABASE_URL")) {
+    return new TRPCError({
+      code: "SERVICE_UNAVAILABLE",
+      message:
+        "This form isn't connected to a database yet. Please reach out via WhatsApp or email in the meantime.",
+    });
+  }
+  return new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+}
 
 export const inquiryRouter = createRouter({
   create: publicQuery
@@ -15,20 +27,31 @@ export const inquiryRouter = createRouter({
       })
     )
     .mutation(async ({ input }) => {
-      const db = getDb();
-      const result = await db.insert(inquiries).values({
-        fullName: input.fullName,
-        email: input.email,
-        serviceNeeded: input.serviceNeeded || null,
-        message: input.message,
-        status: "new",
-      });
-      return { success: true, id: Number(result[0].insertId) };
+      try {
+        const db = getDb();
+        const [row] = await db
+          .insert(inquiries)
+          .values({
+            fullName: input.fullName,
+            email: input.email,
+            serviceNeeded: input.serviceNeeded || null,
+            message: input.message,
+            status: "new",
+          })
+          .returning({ id: inquiries.id });
+        return { success: true, id: row.id };
+      } catch (err) {
+        throw toTrpcError(err);
+      }
     }),
 
   list: adminQuery.query(async () => {
-    const db = getDb();
-    return db.select().from(inquiries).orderBy(desc(inquiries.createdAt));
+    try {
+      const db = getDb();
+      return await db.select().from(inquiries).orderBy(desc(inquiries.createdAt));
+    } catch (err) {
+      throw toTrpcError(err);
+    }
   }),
 
   updateStatus: adminQuery
@@ -39,28 +62,40 @@ export const inquiryRouter = createRouter({
       })
     )
     .mutation(async ({ input }) => {
-      const db = getDb();
-      await db.update(inquiries).set({ status: input.status }).where(eq(inquiries.id, input.id));
-      return { success: true };
+      try {
+        const db = getDb();
+        await db.update(inquiries).set({ status: input.status }).where(eq(inquiries.id, input.id));
+        return { success: true };
+      } catch (err) {
+        throw toTrpcError(err);
+      }
     }),
 
   delete: adminQuery
     .input(z.object({ id: z.number() }))
     .mutation(async ({ input }) => {
-      const db = getDb();
-      await db.delete(inquiries).where(eq(inquiries.id, input.id));
-      return { success: true };
+      try {
+        const db = getDb();
+        await db.delete(inquiries).where(eq(inquiries.id, input.id));
+        return { success: true };
+      } catch (err) {
+        throw toTrpcError(err);
+      }
     }),
 
   stats: adminQuery.query(async () => {
-    const db = getDb();
-    const all = await db.select().from(inquiries);
-    return {
-      total: all.length,
-      new: all.filter((i) => i.status === "new").length,
-      read: all.filter((i) => i.status === "read").length,
-      replied: all.filter((i) => i.status === "replied").length,
-      archived: all.filter((i) => i.status === "archived").length,
-    };
+    try {
+      const db = getDb();
+      const all = await db.select().from(inquiries);
+      return {
+        total: all.length,
+        new: all.filter((i) => i.status === "new").length,
+        read: all.filter((i) => i.status === "read").length,
+        replied: all.filter((i) => i.status === "replied").length,
+        archived: all.filter((i) => i.status === "archived").length,
+      };
+    } catch (err) {
+      throw toTrpcError(err);
+    }
   }),
 });
