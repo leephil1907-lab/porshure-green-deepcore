@@ -6,12 +6,12 @@ import { eq } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 
 export const defaultSiteContent: SiteContent = {
-  heroHeadline: "Organized with clarity",
-  heroSubtitle: "Premium document preparation, formatting, and submission services. From paperwork to peace of mind — fast, confidential, and professional.",
+  heroHeadline: "Professional Document Preparation, Formatting & Submission—Without the Stress.",
+  heroSubtitle: "Porshure Green helps individuals, professionals, students, and businesses worldwide prepare polished, accurate, submission-ready documents with careful handling and dependable support.",
   contactPhone: "+1 (814) 791-5478",
   whatsappPhone: "+1 (814) 791-5478",
   contactEmail: "porshuregreen@gmail.com",
-  footerDescription: "Secure document support, organized with clarity. Professional preparation, formatting, and submission services you can trust.",
+  footerDescription: "Professional document preparation, formatting and submission support for individuals, professionals and businesses worldwide.",
   announcement: "",
 };
 
