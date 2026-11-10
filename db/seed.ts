@@ -1,17 +1,25 @@
+import "dotenv/config";
 import { getDb } from "../api/queries/connection";
-// TODO: import tables from "./schema"
+import { siteContent } from "./schema";
+import { defaultSiteContent } from "../api/content-router";
 
 async function seed() {
   const db = getDb();
   console.log("Seeding database...");
 
-  // TODO: insert seed data, e.g.
-  // await db.insert(schema.posts).values([
-  //   { title: "First post", content: "Hello world" },
-  // ]);
+  await db
+    .insert(siteContent)
+    .values({ key: "site", value: defaultSiteContent })
+    .onConflictDoNothing({ target: siteContent.key });
+
+  const [row] = await db.select().from(siteContent);
+  console.log(`site_content seeded: ${row ? row.key : "none"}`);
 
   console.log("Done.");
-  process.exit(0); // close MySQL connection pool
+  process.exit(0);
 }
 
-seed();
+seed().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
