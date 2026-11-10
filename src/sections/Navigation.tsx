@@ -84,7 +84,7 @@ export default function Navigation() {
       </div>
 
       {isMobileOpen && (
-        <div className="lg:hidden absolute top-[72px] left-0 right-0 py-6 px-6 flex flex-col gap-1"
+        <div className="lg:hidden absolute top-[104px] left-0 right-0 py-6 px-6 flex flex-col gap-1"
           style={{ background: 'rgba(255,248,237,0.98)', backdropFilter: 'blur(12px)', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
           {navLinks.map((link) => (
             <a key={link.href} href={link.href} onClick={(e) => handleNavClick(e, link.href)}
