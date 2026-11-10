@@ -11,7 +11,7 @@ const t = initTRPC.context<TrpcContext>().create({
 export const createRouter = t.router;
 export const publicQuery = t.procedure;
 
-// Admin auth middleware — checks for admin JWT token in cookie or Authorization header
+// Admin auth middleware — validates the signed HTTP-only admin session cookie
 const requireAdmin = t.middleware(async (opts) => {
   const { ctx } = opts;
 
@@ -20,26 +20,20 @@ const requireAdmin = t.middleware(async (opts) => {
   const cookieMatch = cookie.match(new RegExp(`${ADMIN_TOKEN_COOKIE}=([^;]+)`));
   let token = cookieMatch ? cookieMatch[1] : null;
 
-  // Fallback to Authorization header
-  if (!token) {
-    const authHeader = ctx.req.headers.get("authorization") || "";
-    const bearerMatch = authHeader.match(/^Bearer\s+(.+)$/);
-    token = bearerMatch ? bearerMatch[1] : null;
-  }
-
-  if (!token) {
+  if (!token || ADMIN_JWT_SECRET.length < 32) {
     throw new TRPCError({ code: "UNAUTHORIZED", message: "Admin login required" });
   }
 
+  let payload;
   try {
-    const { payload } = await jwtVerify(token, ADMIN_JWT_SECRET, { clockTolerance: 60 });
-    if (payload.role !== "admin") {
-      throw new TRPCError({ code: "FORBIDDEN", message: "Admin access required" });
-    }
-    return opts.next({ ctx: { ...ctx, admin: payload } });
+    ({ payload } = await jwtVerify(token, ADMIN_JWT_SECRET, { clockTolerance: 60 }));
   } catch {
     throw new TRPCError({ code: "UNAUTHORIZED", message: "Invalid or expired session" });
   }
+  if (payload.role !== "admin") {
+    throw new TRPCError({ code: "FORBIDDEN", message: "Admin access required" });
+  }
+  return opts.next({ ctx: { ...ctx, admin: payload } });
 });
 
 export const adminQuery = t.procedure.use(requireAdmin);

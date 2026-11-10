@@ -9,11 +9,14 @@ export const loginRouter = createRouter({
   login: publicQuery
     .input(
       z.object({
-        email: z.string().email("Valid email required"),
+        email: z.string().email("Valid email required").transform((value) => value.toLowerCase()),
         password: z.string().min(1, "Password required"),
       })
     )
     .mutation(async ({ input, ctx }) => {
+      if (!ADMIN_EMAIL || !ADMIN_PASSWORD_HASH || ADMIN_JWT_SECRET.length < 32) {
+        throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Administrator authentication is not configured." });
+      }
       if (input.email !== ADMIN_EMAIL) {
         throw new TRPCError({ code: "UNAUTHORIZED", message: "Invalid email or password" });
       }
@@ -37,7 +40,7 @@ export const loginRouter = createRouter({
         }`
       );
 
-      return { success: true, token };
+      return { success: true };
     }),
 
   me: publicQuery.query(async ({ ctx }) => {
@@ -46,17 +49,11 @@ export const loginRouter = createRouter({
     const cookieMatch = cookie.match(new RegExp(`${ADMIN_TOKEN_COOKIE}=([^;]+)`));
     let token = cookieMatch ? cookieMatch[1] : null;
 
-    // Fallback to Authorization header
-    if (!token) {
-      const authHeader = ctx.req.headers.get("authorization") || "";
-      const bearerMatch = authHeader.match(/^Bearer\s+(.+)$/);
-      token = bearerMatch ? bearerMatch[1] : null;
-    }
-
-    if (!token) return null;
+    if (!token || ADMIN_JWT_SECRET.length < 32) return null;
 
     try {
       const { payload } = await jwtVerify(token, ADMIN_JWT_SECRET, { clockTolerance: 60 });
+      if (payload.role !== "admin" || payload.email !== ADMIN_EMAIL) return null;
       return { email: payload.email as string, role: payload.role as string };
     } catch {
       return null;
@@ -66,7 +63,7 @@ export const loginRouter = createRouter({
   logout: publicQuery.mutation(async ({ ctx }) => {
     ctx.resHeaders.append(
       "set-cookie",
-      `${ADMIN_TOKEN_COOKIE}=; HttpOnly; Path=/; Max-Age=0; SameSite=Lax`
+      `${ADMIN_TOKEN_COOKIE}=; HttpOnly; Path=/; Max-Age=0; SameSite=Lax${process.env.NODE_ENV === "production" ? "; Secure" : ""}`
     );
     return { success: true };
   }),

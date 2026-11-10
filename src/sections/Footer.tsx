@@ -1,123 +1,39 @@
-import { Mail, Phone, MessageCircle, ArrowUpRight } from 'lucide-react';
+import { Mail, Phone, ArrowUpRight } from 'lucide-react';
+
+function WhatsAppIcon({ size = 16 }: { size?: number }) {
+  return <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.52 3.48A11.86 11.86 0 0 0 12.08 0C5.53 0 .2 5.33.2 11.88c0 2.1.55 4.15 1.6 5.96L.1 24l6.32-1.66a11.9 11.9 0 0 0 5.66 1.44h.01c6.55 0 11.88-5.33 11.88-11.88 0-3.17-1.23-6.15-3.45-8.42ZM12.09 21.76a9.86 9.86 0 0 1-5.02-1.37l-.36-.21-3.75.98 1-3.65-.24-.38a9.83 9.83 0 0 1-1.51-5.25c0-5.44 4.43-9.87 9.88-9.87 2.63 0 5.11 1.03 6.97 2.89a9.8 9.8 0 0 1 2.89 6.98c0 5.44-4.43 9.88-9.86 9.88Zm5.42-7.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.47-.89-.79-1.49-1.76-1.66-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.48-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.49s1.07 2.89 1.22 3.09c.15.2 2.1 3.2 5.08 4.49.71.31 1.27.5 1.7.64.72.23 1.37.2 1.89.12.58-.09 1.76-.72 2.01-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35Z"/></svg>;
+}
+import { trpc } from '@/providers/trpc';
 
 const footerLinks = {
-  Services: ['Document Processing', 'PDF Conversion', 'Document Merging', 'Digital Signatures', 'Editing & Formatting'],
-  Company: ['About Us', 'How It Works', 'Reviews', 'FAQ', 'Contact'],
-  Legal: ['Privacy Policy', 'Terms of Service', 'Cookie Policy', 'Security'],
+  Services: [{ label: 'Document Processing', href: '#services' }, { label: 'PDF Conversion', href: '#services' }, { label: 'Document Merging', href: '#services' }, { label: 'Digital Signatures', href: '#services' }],
+  Explore: [{ label: 'About Us', href: '#about' }, { label: 'How It Works', href: '#process' }, { label: 'Reviews', href: '#reviews' }, { label: 'FAQs', href: '#faq' }],
+  Information: [{ label: 'Security', href: '#security' }, { label: 'FAQs', href: '#faq' }, { label: 'Contact', href: '#contact' }],
 };
 
-const contactMethods = [
-  { icon: MessageCircle, label: 'WhatsApp', value: '+1 (415) 534-5986', href: 'https://wa.me/14155345986', color: '#25D366' },
-  { icon: Mail, label: 'Email', value: 'porshuregreen@gmail.com', href: 'mailto:porshuregreen@gmail.com', color: '#EA4335' },
-  { icon: Phone, label: 'Call', value: '+1 (415) 534-5986', href: 'tel:+14155345986', color: '#3DDC84' },
-];
-
 export default function Footer() {
+  const { data } = trpc.content.get.useQuery();
+  const phone = data?.contactPhone?.trim() || '';
+  const whatsapp = data?.whatsappPhone?.trim() || '';
+  const email = data?.contactEmail || 'porshuregreen@gmail.com';
+  const contacts = [
+    ...(whatsapp ? [{ icon: WhatsAppIcon, label: 'WhatsApp', href: `https://wa.me/${whatsapp.replace(/\D/g, '')}`, color: '#25D366' }] : []),
+    { icon: Mail, label: 'Email', href: `mailto:${email}`, color: '#3DDC84' },
+    ...(phone ? [{ icon: Phone, label: 'Call', href: `tel:${phone.replace(/[^+\d]/g, '')}`, color: '#3DDC84' }] : []),
+  ];
   return (
-    <footer id="contact" style={{ backgroundColor: '#1A1A2E' }}>
-      {/* Contact Banner */}
-      <div className="py-16" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-        <div className="container-brand">
-          <div className="text-center mb-12">
-            <span className="brand-label mb-4 inline-block" style={{ color: '#3DDC84' }}>Get In Touch</span>
-            <h2 className="text-white mb-4" style={{ fontFamily: 'Playfair Display', fontSize: 'clamp(1.75rem, 3vw, 2.5rem)', fontWeight: 600, lineHeight: 1.2 }}>
-              Ready to start? <span style={{ color: '#3DDC84' }}>Reach out.</span>
-            </h2>
-            <p className="text-[15px] font-light max-w-md mx-auto" style={{ color: 'rgba(255,255,255,0.5)' }}>
-              Choose your preferred method. We respond to all inquiries within 2 hours during business hours.
-            </p>
+    <footer id="contact" className="relative overflow-hidden bg-[#14231D] text-white">
+      <div className="pointer-events-none absolute inset-0 opacity-30" style={{ background: 'radial-gradient(circle at 15% 0%, rgba(61,220,132,.22), transparent 35%), radial-gradient(circle at 90% 80%, rgba(108,143,90,.2), transparent 32%)' }} />
+      <div className="relative container-brand py-16 md:py-20">
+        <div className="grid gap-12 border-b border-white/10 pb-14 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
+          <div className="max-w-sm">
+            <a href="/" className="mb-5 inline-flex items-center gap-3"><img src="/images/logo.png" alt="" className="h-11 w-11 rounded-xl object-contain" /><span className="font-semibold tracking-tight">Porshure Green</span></a>
+            <p className="mb-7 max-w-xs text-sm leading-7 text-white/60">{data?.footerDescription || 'Secure document support, organized with clarity. Professional preparation, formatting, and submission services you can trust.'}</p>
+            <div className="flex flex-wrap gap-3">{contacts.map((contact) => <a key={contact.label} href={contact.href} target={contact.label === 'WhatsApp' ? '_blank' : undefined} rel="noreferrer" aria-label={contact.label} title={contact.label} className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 transition hover:-translate-y-1 hover:border-[#3DDC84]/60 hover:bg-[#3DDC84]/10"><contact.icon size={16} color={contact.color} /></a>)}</div>
           </div>
-
-          {/* Contact Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-2xl mx-auto mb-12">
-            {contactMethods.map((method) => (
-              <a key={method.label} href={method.href} target={method.label === 'WhatsApp' ? '_blank' : undefined} rel="noopener noreferrer"
-                className="flex flex-col items-center gap-3 p-6 rounded-xl transition-all duration-300 hover:translate-y-[-2px] group"
-                style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                <div className="w-12 h-12 rounded-full flex items-center justify-center transition-transform duration-300 group-hover:scale-110"
-                  style={{ background: `${method.color}15` }}>
-                  <method.icon size={20} color={method.color} />
-                </div>
-                <span className="text-[13px] font-semibold text-white">{method.label}</span>
-                <span className="text-[12px] text-center" style={{ color: 'rgba(255,255,255,0.5)' }}>{method.value}</span>
-              </a>
-            ))}
-          </div>
-
-          {/* iMessage note */}
-          <div className="text-center">
-            <a href="sms:porshuregreen@gmail.com"
-              className="inline-flex items-center gap-2 text-[13px] transition-colors hover:text-[#34B7F1]"
-              style={{ color: 'rgba(255,255,255,0.4)' }}>
-              <MessageCircle size={14} />
-              Also available on iMessage: porshuregreen@gmail.com
-            </a>
-          </div>
+          {Object.entries(footerLinks).map(([heading, links]) => <div key={heading}><h3 className="mb-5 text-xs font-semibold uppercase tracking-[.18em] text-[#8FE4B4]">{heading}</h3><ul className="space-y-3">{links.map((link) => <li key={link.label}><a href={link.href} className="group inline-flex items-center gap-1 text-sm text-white/60 transition hover:text-white">{link.label}<ArrowUpRight size={12} className="opacity-0 transition group-hover:opacity-100" /></a></li>)}</ul></div>)}
         </div>
-      </div>
-
-      {/* Main Footer */}
-      <div className="py-14">
-        <div className="container-brand">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
-            {/* Brand Column */}
-            <div className="lg:col-span-2">
-              <div className="flex items-center gap-3 mb-5">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center"
-                  style={{ background: 'linear-gradient(135deg, #3DDC84, #6C8F5A)' }}>
-                  <span className="text-white font-bold text-sm">PG</span>
-                </div>
-                <div className="flex flex-col">
-                  <span className="font-semibold text-[15px] text-white leading-tight">Porshure Green</span>
-                  <span className="text-[8px] uppercase tracking-[3px] leading-tight" style={{ color: '#6C8F5A' }}>Documents</span>
-                </div>
-              </div>
-              <p className="text-[13px] leading-relaxed mb-6 max-w-xs" style={{ color: 'rgba(255,255,255,0.45)' }}>
-                Secure document support, organized with clarity. Professional preparation,
-                formatting, and submission services you can trust.
-              </p>
-              <div className="flex flex-col gap-2.5">
-                {contactMethods.slice(0, 2).map((c) => (
-                  <a key={c.label} href={c.href} className="flex items-center gap-2.5 text-[12px] transition-colors hover:text-[#3DDC84]"
-                    style={{ color: 'rgba(255,255,255,0.4)' }}>
-                    <c.icon size={13} color="#3DDC84" /> {c.value}
-                  </a>
-                ))}
-              </div>
-            </div>
-
-            {/* Link Columns */}
-            {Object.entries(footerLinks).map(([title, links]) => (
-              <div key={title}>
-                <h4 className="text-[11px] font-semibold uppercase tracking-[0.15em] text-white mb-5">{title}</h4>
-                <ul className="flex flex-col gap-3">
-                  {links.map((link) => (
-                    <li key={link}>
-                      <a href="#" className="text-[12px] transition-colors duration-300 hover:text-[#3DDC84] flex items-center gap-1 group"
-                        style={{ color: 'rgba(255,255,255,0.4)' }}>
-                        {link}
-                        <ArrowUpRight size={10} className="opacity-0 group-hover:opacity-100 transition-opacity" />
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-
-          {/* Bottom bar */}
-          <div className="mt-14 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4"
-            style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-            <span className="text-[11px]" style={{ color: 'rgba(255,255,255,0.25)' }}>
-              2025 Porshure Green. All rights reserved.
-            </span>
-            <div className="flex items-center gap-1">
-              <span className="text-[11px]" style={{ color: 'rgba(255,255,255,0.25)' }}>Crafted with</span>
-              <span style={{ color: '#E74C3C' }}>♥</span>
-              <span className="text-[11px]" style={{ color: 'rgba(255,255,255,0.25)' }}>for a paperless world</span>
-            </div>
-          </div>
-        </div>
+        <div className="flex flex-col gap-3 pt-6 text-xs text-white/40 sm:flex-row sm:items-center sm:justify-between"><span>© {new Date().getFullYear()} Porshure Green. All rights reserved.</span><span>Thoughtful document support. Delivered with care.</span></div>
       </div>
     </footer>
   );

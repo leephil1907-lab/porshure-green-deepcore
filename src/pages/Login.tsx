@@ -3,17 +3,14 @@ import { trpc } from "@/providers/trpc";
 import { Lock, Mail, ArrowRight, Leaf, Eye, EyeOff } from "lucide-react";
 
 export default function Login() {
-  const [email, setEmail] = useState("porshuregreen@gmail.com");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
 
   const loginMutation = trpc.login.login.useMutation({
     onSuccess: (data) => {
-      if (data.token) {
-        localStorage.setItem("admin_token", data.token);
-        window.location.href = "/admin";
-      }
+      if (data.success) window.location.href = "/admin";
     },
     onError: (err) => {
       setError(err.message || "Invalid email or password");

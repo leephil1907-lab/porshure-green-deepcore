@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { trpc } from '@/providers/trpc';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ChevronDown, HelpCircle } from 'lucide-react';
@@ -41,6 +42,7 @@ const faqs = [
 ];
 
 export default function FAQ() {
+  const { data: siteContent } = trpc.content.get.useQuery();
   const sectionRef = useRef<HTMLElement>(null);
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
@@ -98,7 +100,7 @@ export default function FAQ() {
           <div className="inline-flex items-center gap-3 px-6 py-4 rounded-xl"
             style={{ background: 'white', border: '1px solid rgba(26,26,46,0.06)' }}>
             <span className="text-[13px]" style={{ color: '#6E7480' }}>Still have questions?</span>
-            <a href="https://wa.me/14155345986" target="_blank" rel="noopener noreferrer"
+            <a href={siteContent?.whatsappPhone ? `https://wa.me/${siteContent.whatsappPhone.replace(/\D/g, "")}` : "#contact"} target="_blank" rel="noopener noreferrer"
               className="text-[13px] font-semibold transition-colors hover:underline" style={{ color: '#3DDC84' }}>
               Message us on WhatsApp
             </a>

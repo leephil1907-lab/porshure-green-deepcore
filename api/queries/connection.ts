@@ -11,7 +11,7 @@ let instance: ReturnType<typeof drizzle<typeof fullSchema>>;
 export function getDb() {
   if (!env.hasDatabase) {
     throw new Error(
-      "DATABASE_URL is not configured. Set it in your Vercel project's environment variables to enable the contact form and admin dashboard.",
+      "DATABASE_URL is not configured. Set it in your hosting environment to enable the contact form and admin dashboard.",
     );
   }
   if (!instance) {

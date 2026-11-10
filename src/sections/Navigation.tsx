@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, LogOut, LayoutDashboard, Shield } from 'lucide-react';
-import { useAuth } from '@/hooks/useAuth';
+import { Menu, X } from 'lucide-react';
+import { trpc } from '@/providers/trpc';
 
 const navLinks = [
   { label: 'Services', href: '#services' },
@@ -15,7 +15,7 @@ const navLinks = [
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const { isAuthenticated, isAdmin, logout } = useAuth();
+  const { data: siteContent } = trpc.content.get.useQuery();
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -36,6 +36,7 @@ export default function Navigation() {
         ? 'bg-[#FFF8ED]/95 backdrop-blur-xl shadow-[0_1px_0_rgba(26,26,46,0.06)]'
         : 'bg-transparent'
     }`}>
+      {siteContent?.announcement && <div className="bg-[#14231D] px-4 py-2 text-center text-[11px] font-medium tracking-wide text-[#A8EAC4]">{siteContent.announcement}</div>}
       <div className="container-brand h-18 flex items-center justify-between" style={{ height: '72px' }}>
         <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
           className="flex items-center gap-3 group">
@@ -59,20 +60,6 @@ export default function Navigation() {
               {link.label}
             </a>
           ))}
-          {isAdmin && (
-            <a href="/admin" className="flex items-center gap-1.5 text-[13px] font-semibold transition-colors duration-300"
-              style={{ color: '#1A1A2E' }}>
-              <Shield size={14} style={{ color: '#3DDC84' }} />
-              Dashboard
-            </a>
-          )}
-          {isAuthenticated ? (
-            <button onClick={logout} className="flex items-center gap-1.5 text-[12px] font-medium transition-colors" style={{ color: '#6E7480' }}>
-              <LogOut size={14} /> Logout
-            </button>
-          ) : (
-            <a href="/login" className="brand-green-btn text-[11px] !py-2.5 !px-5">Admin</a>
-          )}
         </div>
 
         <button className="lg:hidden p-2" onClick={() => setIsMobileOpen(!isMobileOpen)}>
@@ -81,7 +68,7 @@ export default function Navigation() {
       </div>
 
       {isMobileOpen && (
-        <div className="lg:hidden absolute top-[72px] left-0 right-0 py-6 px-6 flex flex-col gap-1"
+        <div className="lg:hidden absolute top-[104px] left-0 right-0 py-6 px-6 flex flex-col gap-1"
           style={{ background: 'rgba(255,248,237,0.98)', backdropFilter: 'blur(12px)', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
           {navLinks.map((link) => (
             <a key={link.href} href={link.href} onClick={(e) => handleNavClick(e, link.href)}
@@ -89,7 +76,6 @@ export default function Navigation() {
               {link.label}
             </a>
           ))}
-          {isAdmin && <a href="/admin" className="flex items-center gap-2 text-[15px] font-semibold py-3 px-2" style={{ color: '#1A1A2E' }}><LayoutDashboard size={16} /> Dashboard</a>}
         </div>
       )}
     </nav>
