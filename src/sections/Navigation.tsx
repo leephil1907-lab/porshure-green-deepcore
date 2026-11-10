@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, LogOut, LayoutDashboard, Shield } from 'lucide-react';
-import { useAuth } from '@/hooks/useAuth';
+import { Menu, X } from 'lucide-react';
 import { trpc } from '@/providers/trpc';
 
 const navLinks = [
@@ -16,7 +15,6 @@ const navLinks = [
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const { isAuthenticated, isAdmin, logout } = useAuth();
   const { data: siteContent } = trpc.content.get.useQuery();
 
   useEffect(() => {
@@ -62,20 +60,6 @@ export default function Navigation() {
               {link.label}
             </a>
           ))}
-          {isAdmin && (
-            <a href="/admin" className="flex items-center gap-1.5 text-[13px] font-semibold transition-colors duration-300"
-              style={{ color: '#1A1A2E' }}>
-              <Shield size={14} style={{ color: '#3DDC84' }} />
-              Dashboard
-            </a>
-          )}
-          {isAuthenticated ? (
-            <button onClick={logout} className="flex items-center gap-1.5 text-[12px] font-medium transition-colors" style={{ color: '#6E7480' }}>
-              <LogOut size={14} /> Logout
-            </button>
-          ) : (
-            <a href="/login" className="brand-green-btn text-[11px] !py-2.5 !px-5">Admin</a>
-          )}
         </div>
 
         <button className="lg:hidden p-2" onClick={() => setIsMobileOpen(!isMobileOpen)}>
@@ -92,7 +76,6 @@ export default function Navigation() {
               {link.label}
             </a>
           ))}
-          {isAdmin && <a href="/admin" className="flex items-center gap-2 text-[15px] font-semibold py-3 px-2" style={{ color: '#1A1A2E' }}><LayoutDashboard size={16} /> Dashboard</a>}
         </div>
       )}
     </nav>
