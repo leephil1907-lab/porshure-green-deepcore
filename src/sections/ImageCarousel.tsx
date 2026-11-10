@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ArrowLeft, ArrowRight, FileCheck2, FolderCheck, ShieldCheck } from 'lucide-react';
 
 const slides = [
@@ -11,26 +11,50 @@ export default function ImageCarousel() {
   const [active, setActive] = useState(0);
   const [failed, setFailed] = useState<number[]>([]);
   useEffect(() => {
-    const timer = window.setInterval(() => setActive((value) => (value + 1) % slides.length), 5500);
+    const timer = window.setInterval(() => setActive(value => (value + 1) % slides.length), 6000);
     return () => window.clearInterval(timer);
   }, []);
-  const slide = slides[active];
-  const Icon = slide.icon;
-  const move = (direction: number) => setActive((value) => (value + direction + slides.length) % slides.length);
+  const ordered = useMemo(() => slides.map((_, offset) => (active + offset) % slides.length), [active]);
+  const current = slides[active];
+  const CurrentIcon = current.icon;
+  const move = (direction: number) => setActive(value => (value + direction + slides.length) % slides.length);
+  const imageFor = (index: number) => failed.includes(index) ? slides[index].fallback : slides[index].src;
+
   return (
-    <section className="container-brand min-w-0 py-6 md:py-12">
-      <div className="relative isolate min-h-[340px] w-full min-w-0 overflow-hidden rounded-[22px] bg-[#173B2B] shadow-[0_24px_70px_rgba(23,59,43,.16)] sm:rounded-[26px] md:min-h-[390px]">
-        {slides.map((item, index) => <img key={item.src} src={failed.includes(index) ? item.fallback : item.src} onError={() => setFailed(current => current.includes(index) ? current : [...current,index])} alt={item.title} loading={index===0?'eager':'lazy'} className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ${index === active ? 'opacity-55' : 'opacity-0'}`} />)}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#10271D]/95 via-[#10271D]/75 to-[#10271D]/10" />
-        <div key={active} className="relative z-10 flex min-h-[340px] w-full max-w-2xl flex-col justify-center px-5 py-9 text-white motion-safe:animate-[fadeIn_.5s_ease-out] sm:px-7 sm:py-12 md:min-h-[390px] md:px-14">
-          <span className="mb-5 inline-flex w-fit items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[.18em]"><Icon size={14}/>{slide.eyebrow}</span>
-          <h2 className="max-w-xl break-words font-[Manrope] text-[clamp(1.65rem,7vw,2.25rem)] font-extrabold leading-[1.08] tracking-[-.05em] md:text-5xl">{slide.title}</h2>
-          <p className="mt-4 max-w-lg text-sm leading-6 text-white/75 md:mt-5 md:text-base md:leading-7">{slide.copy}</p>
-          <div className="mt-8 flex items-center gap-3">
-            <button type="button" aria-label="Previous image" onClick={() => move(-1)} className="flex h-10 w-10 items-center justify-center rounded-full border border-white/30 bg-white/10 transition hover:bg-white/20"><ArrowLeft size={17}/></button>
-            <button type="button" aria-label="Next image" onClick={() => move(1)} className="flex h-10 w-10 items-center justify-center rounded-full border border-white/30 bg-white/10 transition hover:bg-white/20"><ArrowRight size={17}/></button>
-            <div className="ml-2 flex items-center gap-2" aria-label={`Slide ${active + 1} of ${slides.length}`}>{slides.map((item,index)=><button key={item.src} type="button" onClick={()=>setActive(index)} aria-label={`Show slide ${index+1}`} className={`h-1.5 rounded-full transition-all ${index===active?'w-8 bg-white':'w-3 bg-white/40'}`}/>)}</div>
+    <section className="container-brand min-w-0 py-7 md:py-12" aria-label="Porshure Green service highlights">
+      <div className="mb-5 flex min-w-0 flex-col gap-2 sm:flex-row sm:items-end sm:justify-between md:mb-7">
+        <div className="min-w-0"><p className="brand-label mb-2">A closer look</p><h2 className="brand-heading-lg">Good work starts with clarity.</h2></div>
+        <p className="max-w-sm text-sm leading-6 text-[#68766C]">Thoughtful document support, shown through the details that matter.</p>
+      </div>
+      <div className="grid min-w-0 gap-3 lg:grid-cols-[minmax(0,1.7fr)_minmax(220px,.8fr)]">
+        <div className="relative isolate min-h-[320px] min-w-0 overflow-hidden rounded-[22px] bg-[#173B2B] shadow-[0_24px_60px_rgba(23,59,43,.13)] sm:min-h-[360px] md:min-h-[430px]">
+          <img src={imageFor(active)} onError={() => setFailed(values => values.includes(active) ? values : [...values, active])} alt={current.title} className="absolute inset-0 h-full w-full object-cover" loading="lazy"/>
+          <div className="absolute inset-0 bg-gradient-to-r from-[#10271D]/90 via-[#10271D]/55 to-[#10271D]/10"/>
+          <div key={active} className="relative z-10 flex min-h-[320px] max-w-2xl flex-col justify-end px-5 pb-7 pt-12 text-white motion-safe:animate-[fadeIn_.5s_ease-out] sm:min-h-[360px] sm:px-7 sm:pb-9 md:min-h-[430px] md:px-12 md:pb-12">
+            <span className="mb-4 inline-flex w-fit items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[.18em]"><CurrentIcon size={14}/>{current.eyebrow}</span>
+            <h3 className="max-w-xl break-words font-[Manrope] text-[clamp(1.65rem,6vw,2.8rem)] font-extrabold leading-[1.08] tracking-[-.05em]">{current.title}</h3>
+            <p className="mt-3 max-w-lg text-sm leading-6 text-white/75 md:mt-4 md:text-base md:leading-7">{current.copy}</p>
+            <div className="mt-6 flex items-center gap-2.5">
+              <button type="button" aria-label="Previous highlight" onClick={() => move(-1)} className="flex h-10 w-10 items-center justify-center rounded-full border border-white/30 bg-white/10 transition hover:bg-white/20"><ArrowLeft size={17}/></button>
+              <button type="button" aria-label="Next highlight" onClick={() => move(1)} className="flex h-10 w-10 items-center justify-center rounded-full border border-white/30 bg-white/10 transition hover:bg-white/20"><ArrowRight size={17}/></button>
+              <span className="ml-2 text-xs font-semibold tracking-wider text-white/70">{String(active + 1).padStart(2,'0')} / {String(slides.length).padStart(2,'0')}</span>
+            </div>
           </div>
+        </div>
+        <div className="grid min-w-0 grid-cols-2 gap-3 lg:grid-cols-1">
+          {ordered.slice(1).map((index, position) => {
+            const item = slides[index];
+            const Icon = item.icon;
+            return <button key={item.src} type="button" onClick={() => setActive(index)} className="group relative min-h-[150px] min-w-0 overflow-hidden rounded-2xl bg-[#173B2B] text-left sm:min-h-[170px] lg:min-h-0">
+              <img src={imageFor(index)} onError={() => setFailed(values => values.includes(index) ? values : [...values,index])} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105"/>
+              <div className="absolute inset-0 bg-gradient-to-t from-[#10271D]/90 via-[#10271D]/25 to-transparent"/>
+              <div className="relative flex h-full min-h-[150px] flex-col justify-end p-4 text-white sm:min-h-[170px] lg:min-h-[208px]">
+                <span className="mb-2 flex h-8 w-8 items-center justify-center rounded-lg border border-white/25 bg-white/10"><Icon size={15}/></span>
+                <span className="text-xs font-bold leading-snug sm:text-sm">{item.eyebrow}</span>
+                <span className="mt-1 hidden text-xs leading-5 text-white/70 sm:block">{item.title}</span>
+              </div>
+            </button>;
+          })}
         </div>
       </div>
     </section>
