@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { trpc } from '@/providers/trpc';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ChevronDown, HelpCircle } from 'lucide-react';
