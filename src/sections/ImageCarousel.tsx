@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { createElement, useEffect, useMemo, useState } from 'react';
 import { ArrowLeft, ArrowRight, FileCheck2, FolderCheck, ShieldCheck } from 'lucide-react';
 
 const slides = [
@@ -31,7 +31,7 @@ export default function ImageCarousel() {
           <img src={imageFor(active)} onError={() => setFailed(values => values.includes(active) ? values : [...values, active])} alt={current.title} className="absolute inset-0 h-full w-full object-cover" loading="lazy"/>
           <div className="absolute inset-0 bg-gradient-to-r from-[#10271D]/90 via-[#10271D]/55 to-[#10271D]/10"/>
           <div key={active} className="relative z-10 flex min-h-[320px] max-w-2xl flex-col justify-end px-5 pb-7 pt-12 text-white motion-safe:animate-[fadeIn_.5s_ease-out] sm:min-h-[360px] sm:px-7 sm:pb-9 md:min-h-[430px] md:px-12 md:pb-12">
-            <span className="mb-4 inline-flex w-fit items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[.18em]"><CurrentIcon size={14}/>{current.eyebrow}</span>
+            <span className="mb-4 inline-flex w-fit items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[.18em]">{createElement(current.icon, { size: 14 })}{current.eyebrow}</span>
             <h3 className="max-w-xl break-words font-[Manrope] text-[clamp(1.65rem,6vw,2.8rem)] font-extrabold leading-[1.08] tracking-[-.05em]">{current.title}</h3>
             <p className="mt-3 max-w-lg text-sm leading-6 text-white/75 md:mt-4 md:text-base md:leading-7">{current.copy}</p>
             <div className="mt-6 flex items-center gap-2.5">
