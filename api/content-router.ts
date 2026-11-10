@@ -34,8 +34,8 @@ export const contentRouter = createRouter({
       return {
         ...defaultSiteContent,
         ...saved,
-        contactPhone: saved.contactPhone || defaultSiteContent.contactPhone,
-        whatsappPhone: saved.whatsappPhone || defaultSiteContent.whatsappPhone,
+        contactPhone: saved.contactPhone && saved.contactPhone.replace(/\\D/g, "") !== "14155345986" ? saved.contactPhone : defaultSiteContent.contactPhone,
+        whatsappPhone: saved.whatsappPhone && saved.whatsappPhone.replace(/\\D/g, "") !== "14155345986" ? saved.whatsappPhone : defaultSiteContent.whatsappPhone,
         contactEmail: saved.contactEmail || defaultSiteContent.contactEmail,
       };
     } catch (error) {
