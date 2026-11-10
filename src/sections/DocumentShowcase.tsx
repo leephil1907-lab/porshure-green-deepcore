@@ -82,7 +82,7 @@ export default function DocumentShowcase() {
             Documents We <span style={{ color: '#3DDC84' }}>Process</span>
           </h2>
           <p className="brand-body max-w-lg mx-auto">
-            A living showcase of the documents we handle daily. Hover to explore — each card represents a real service we provide.
+            Examples of document categories and file-preparation tasks we may be able to support, subject to reviewing your request.
           </p>
         </motion.div>
 
@@ -163,9 +163,9 @@ export default function DocumentShowcase() {
           className="flex flex-wrap items-center justify-center gap-6 mt-12"
         >
           {[
-            { icon: FileText, label: '50+ Document Types', color: '#3DDC84' },
-            { icon: Clock, label: '2-Hour Turnaround', color: '#6C8F5A' },
-            { icon: Shield, label: 'Bank-Level Security', color: '#3B8FD9' },
+            { icon: FileText, label: 'Scope confirmed first', color: '#3DDC84' },
+            { icon: Clock, label: 'Timeline agreed upfront', color: '#6C8F5A' },
+            { icon: Shield, label: 'Careful document handling', color: '#3B8FD9' },
           ].map((item) => (
             <motion.div
               key={item.label}

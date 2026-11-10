@@ -6,65 +6,9 @@ import { Check, Zap, Crown, Building } from 'lucide-react';
 gsap.registerPlugin(ScrollTrigger);
 
 const plans = [
-  {
-    name: 'Essential',
-    icon: Zap,
-    price: '$25',
-    period: 'per document',
-    color: '#6C8F5A',
-    description: 'Perfect for single document needs. Fast, accurate, and secure.',
-    features: [
-      'Single document processing',
-      'PDF conversion & formatting',
-      'Basic editing & cleanup',
-      '24-hour turnaround',
-      'Secure encrypted delivery',
-      '14-day auto file deletion',
-    ],
-    cta: 'Get Started',
-    popular: false,
-  },
-  {
-    name: 'Professional',
-    icon: Crown,
-    price: '$75',
-    period: 'per project',
-    color: '#3DDC84',
-    description: 'Multi-document projects with priority handling and full support.',
-    features: [
-      'Up to 10 documents per project',
-      'PDF conversion & merging',
-      'Advanced editing & redaction',
-      'Digital signature setup',
-      'Priority 2-hour turnaround',
-      'Dedicated support line',
-      'Progress tracking & updates',
-      '30-day revision window',
-    ],
-    cta: 'Most Popular',
-    popular: true,
-  },
-  {
-    name: 'Business',
-    icon: Building,
-    price: 'Custom',
-    period: 'enterprise pricing',
-    color: '#1A1A2E',
-    description: 'Volume processing for teams and organizations. Tailored solutions.',
-    features: [
-      'Unlimited document volume',
-      'Bulk processing & automation',
-      'Custom workflow design',
-      'API integration available',
-      'Dedicated account manager',
-      'Same-hour turnaround',
-      'Compliance reporting',
-      'SLA guarantee',
-      'White-label options',
-    ],
-    cta: 'Contact Us',
-    popular: false,
-  },
+  { name: 'Single Document', icon: Zap, price: 'Quote', period: 'based on scope', color: '#6C8F5A', description: 'For one document or a focused file-preparation task.', features: ['Document formatting', 'PDF conversion or cleanup', 'Scope confirmed before work'], cta: 'Request a Quote', popular: false },
+  { name: 'Document Project', icon: Crown, price: 'Quote', period: 'based on scope', color: '#3DDC84', description: 'For multiple files or a more involved document package.', features: ['Multiple document support', 'File organization and merging', 'Agreed deliverables and timeline'], cta: 'Request a Quote', popular: true },
+  { name: 'Business Support', icon: Building, price: 'Quote', period: 'based on scope', color: '#1A1A2E', description: 'For recurring or business-related document requirements.', features: ['Discuss your workflow', 'Confirm volume and requirements', 'Custom scope and quote'], cta: 'Contact Us', popular: false },
 ];
 
 export default function Pricing() {
@@ -86,11 +30,10 @@ export default function Pricing() {
     <section id="pricing" ref={sectionRef} className="section-padding grid-bg" style={{ backgroundColor: '#FFF8ED' }}>
       <div className="container-brand">
         <div className="pricing-header text-center mb-16">
-          <span className="brand-label mb-4 inline-block">Transparent Pricing</span>
-          <h2 className="brand-heading-lg mb-4">Simple Plans, <span style={{ color: '#3DDC84' }}>Clear Value</span></h2>
+          <span className="brand-label mb-4 inline-block">Pricing by Request</span>
+          <h2 className="brand-heading-lg mb-4">A Clear Quote Before Work Begins</h2>
           <p className="brand-body max-w-lg mx-auto">
-            No hidden fees. No surprise charges. Choose the plan that fits your needs
-            and pay only for what you use.
+            Every request is different. We review the document type, volume and requirements, then confirm the price and expected turnaround before you approve the work.
           </p>
         </div>
 
@@ -133,7 +76,7 @@ export default function Pricing() {
                 ))}
               </ul>
 
-              <a href="#contact" onClick={(e) => { e.preventDefault(); document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' }); }}
+              <a href="/contact"
                 className={`block w-full text-center py-3 rounded-xl text-[12px] font-semibold uppercase tracking-wider transition-all duration-300 ${
                   plan.popular
                     ? 'text-white hover:shadow-lg'
@@ -153,8 +96,7 @@ export default function Pricing() {
         {/* Payment methods note */}
         <div className="mt-12 text-center">
           <p className="text-[12px]" style={{ color: '#6E7480' }}>
-            We accept all major credit cards, PayPal, Cash App, Zelle, and Venmo.
-            Invoices available for business accounts.
+            Payment options and any applicable fees are confirmed with your quote.
           </p>
         </div>
       </div>

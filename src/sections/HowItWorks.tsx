@@ -9,30 +9,30 @@ const steps = [
   {
     number: '01',
     icon: Upload,
-    title: 'Upload Your Files',
-    desc: 'Securely upload your documents via our encrypted portal. We accept all major formats — PDFs, images, Word docs, scans, and more. No file size limits.',
-    details: ['Drag & drop interface', 'Bank-level encryption', 'All formats accepted'],
+    title: 'Tell Us What You Need',
+    desc: 'Describe the document task through the enquiry form, email or WhatsApp. We will explain how to share any files needed for the work.',
+    details: ['Describe your request', 'Share relevant requirements', 'File instructions provided'],
   },
   {
     number: '02',
     icon: Cpu,
-    title: 'We Process & Review',
-    desc: 'Our team examines every page, extracts data, validates content, and applies your specified formatting requirements. Quality checks at every stage.',
-    details: ['Expert document review', 'Data validation', 'Format standardization'],
+    title: 'We Confirm the Scope',
+    desc: 'We review the request, clarify the deliverables and confirm the expected turnaround and quote before work begins.',
+    details: ['Request review', 'Agreed deliverables', 'Quote and timing'],
   },
   {
     number: '03',
     icon: ClipboardCheck,
-    title: 'Quality Assurance',
-    desc: 'Before delivery, each document undergoes a thorough QA check. We verify accuracy, completeness, and compliance with your requirements.',
-    details: ['Double-check system', 'Compliance verification', 'Error correction'],
+    title: 'We Prepare Your Documents',
+    desc: 'Once you approve the scope, we carry out the agreed formatting, conversion, editing or file-organization work.',
+    details: ['Agreed document tasks', 'Careful formatting', 'Progress communication'],
   },
   {
     number: '04',
     icon: Send,
-    title: 'Delivered Securely',
-    desc: 'Receive your finalized documents via secure download link. All originals are automatically purged from our servers after 14 days for your privacy.',
-    details: ['Secure download link', 'Auto-deletion after 14 days', 'Delivery confirmation'],
+    title: 'Receive the Completed Work',
+    desc: 'We return the prepared files using the delivery method agreed with you and clarify any included revision arrangements.',
+    details: ['Files returned as agreed', 'Completion update', 'Revision terms clarified'],
   },
 ];
 
@@ -60,8 +60,7 @@ export default function HowItWorks() {
           <span className="brand-label mb-4 inline-block">The Process</span>
           <h2 className="brand-heading-lg mb-4">Four Steps to <span style={{ color: '#3DDC84' }}>Completion</span></h2>
           <p className="brand-body max-w-md mx-auto">
-            A streamlined workflow designed for speed, security, and precision.
-            From upload to delivery, every step is transparent.
+            A straightforward process that keeps the scope, price and next steps clear before work begins.
           </p>
         </div>
 
@@ -111,8 +110,8 @@ export default function HowItWorks() {
                 <ClipboardCheck size={22} color="#3DDC84" />
               </div>
               <div>
-                <div className="text-[14px] font-semibold" style={{ color: '#1A1A2E' }}>Quality Guaranteed</div>
-                <div className="text-[12px]" style={{ color: '#6E7480' }}>Every document is double-checked before delivery</div>
+                <div className="text-[14px] font-semibold" style={{ color: '#1A1A2E' }}>Careful final review</div>
+                <div className="text-[12px]" style={{ color: '#6E7480' }}>We review the agreed deliverables before returning them</div>
               </div>
             </div>
           </div>
