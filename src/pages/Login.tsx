@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { trpc } from "@/providers/trpc";
 import { Lock, Mail, ArrowRight, Leaf, Eye, EyeOff } from "lucide-react";
+import BrandLogo from "@/sections/BrandLogo";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -31,12 +32,7 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center" style={{ background: 'linear-gradient(145deg, #0D1C16 0%, #122920 40%, #0D1C16 100%)' }}>
       <div className="w-full max-w-sm mx-4">
         <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-2.5 mb-6">
-            <img src="/images/logo.png" alt="Porshure Green" className="w-12 h-12 object-contain" />
-            <div className="flex flex-col text-left">
-              <span className="font-bold text-[18px] text-white leading-tight">Porshure Green</span>
-              <span className="text-[9px] uppercase tracking-[3px] text-[#4AA882] leading-tight">Documents</span>
-            </div>
+          <div className="mb-6 flex justify-center"><BrandLogo light /></div>
           </div>
           <h1 className="text-[24px] font-bold text-white mb-2">Admin Login</h1>
           <p className="text-[14px] font-light text-[#7A9A8E]">Sign in to manage inquiries</p>
