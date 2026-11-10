@@ -48,7 +48,7 @@ export default function FAQ() {
                 <span className="flex items-center gap-3"><HelpCircle size={16} style={{ color: openIndex === i ? '#3DDC84' : '#C9C9C9', flexShrink: 0 }} /><span className="text-[14px] font-medium" style={{ color: '#1A1A2E', fontFamily: 'Inter' }}>{faq.q}</span></span>
                 <ChevronDown size={16} className="flex-shrink-0 transition-transform duration-300" style={{ color: '#6E7480', transform: openIndex === i ? 'rotate(180deg)' : 'rotate(0deg)' }} />
               </button>
-              <div className={`overflow-hidden transition-all duration-300 ${openIndex === i ? 'max-h-64 opacity-100' : 'max-h-0 opacity-0'}`}><div className="px-5 pb-5 pt-2 pl-12"><p className="text-[13px] leading-relaxed" style={{ color: '#6E7480' }}>{faq.a}</p></div></div>
+              <div className={`overflow-hidden transition-all duration-300 ${openIndex === i ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}><div className="px-5 pb-5 pt-2 pl-12"><p className="text-[13px] leading-relaxed" style={{ color: '#6E7480' }}>{faq.a}</p></div></div>
             </div>
           ))}
         </div>
