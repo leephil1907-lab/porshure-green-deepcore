@@ -4,7 +4,7 @@ import { trpc } from '@/providers/trpc';
 const footerLinks = {
   Services: [{ label: 'Document Processing', href: '#services' }, { label: 'PDF Conversion', href: '#services' }, { label: 'Document Merging', href: '#services' }, { label: 'Digital Signatures', href: '#services' }],
   Explore: [{ label: 'About Us', href: '#about' }, { label: 'How It Works', href: '#process' }, { label: 'Reviews', href: '#reviews' }, { label: 'FAQs', href: '#faq' }],
-  Information: [{ label: 'Privacy', href: '/privacy' }, { label: 'Terms', href: '/terms' }, { label: 'Contact', href: '#contact' }],
+  Information: [{ label: 'Security', href: '#security' }, { label: 'FAQs', href: '#faq' }, { label: 'Contact', href: '#contact' }],
 };
 
 export default function Footer() {
