@@ -8,8 +8,8 @@ import { TRPCError } from "@trpc/server";
 export const defaultSiteContent: SiteContent = {
   heroHeadline: "Organized with clarity",
   heroSubtitle: "Premium document preparation, formatting, and submission services. From paperwork to peace of mind — fast, confidential, and professional.",
-  contactPhone: "",
-  whatsappPhone: "",
+  contactPhone: "+1 (814) 791-5478",
+  whatsappPhone: "+1 (814) 791-5478",
   contactEmail: "porshuregreen@gmail.com",
   footerDescription: "Secure document support, organized with clarity. Professional preparation, formatting, and submission services you can trust.",
   announcement: "",
