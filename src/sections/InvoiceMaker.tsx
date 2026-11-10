@@ -7,7 +7,7 @@ const money = (value: number, currency: string) => new Intl.NumberFormat('en-US'
 
 function buildPdf(lines: string[]) {
   const clean = (value: string) => value.normalize('NFKD').replace(/[^\x20-\x7E]/g,'').replace(/([\\()])/g,'\\$1');
-  const stream = ['q','0.14 0.30 0.21 rg','48 790 34 34 re f','Q','BT','/F1 11 Tf','57 802 Td',`(${clean('PG')}) Tj`,'/F1 22 Tf','92 798 Td',`(${clean('PORSHURE GREEN')}) Tj`,'/F1 10 Tf','0 -18 Td',`(${clean('DOCUMENT SUPPORT  |  INVOICE')}) Tj`,'-44 -34 Td',...lines.flatMap((line)=>['0 -17 Td',`(${clean(line)}) Tj`]),'ET'].join('\\n');
+  const stream = ['q','0.14 0.30 0.21 rg','48 790 34 34 re f','Q','BT','/F1 11 Tf','57 802 Td',`(${clean('PG')}) Tj`,'/F1 22 Tf','92 798 Td',`(${clean('PORSHURE GREEN')}) Tj`,'/F1 10 Tf','0 -18 Td',`(${clean('DOCUMENT SUPPORT  |  INVOICE')}) Tj`,'-44 -34 Td',...lines.flatMap((line)=>['0 -17 Td',`(${clean(line)}) Tj`]),'ET'].join('\n');
   const objects = [
     '<< /Type /Catalog /Pages 2 0 R >>',
     '<< /Type /Pages /Kids [3 0 R] /Count 1 >>',
