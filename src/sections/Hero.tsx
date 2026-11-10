@@ -199,7 +199,7 @@ export default function Hero() {
           </div>
 
           {/* Right Image Section - Mobile Hidden, Desktop Visible */}
-          <div className="hero-image relative hidden lg:block">
+          <div className="hero-image relative block min-w-0">
             <div
               className="relative rounded-2xl overflow-hidden shadow-2xl transition-all duration-500"
               style={{ boxShadow: '0 24px 64px rgba(26,26,46,0.12)' }}
