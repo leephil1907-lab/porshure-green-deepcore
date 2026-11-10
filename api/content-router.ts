@@ -3,7 +3,6 @@ import { createRouter, publicQuery, adminQuery } from "./middleware";
 import { getDb } from "./queries/connection";
 import { siteContent, type SiteContent } from "@db/schema";
 import { eq } from "drizzle-orm";
-import { TRPCError } from "@trpc/server";
 
 export const defaultSiteContent: SiteContent = {
   heroHeadline: "Professional Document Preparation, Formatting & Submission—Without the Stress.",
@@ -42,8 +41,13 @@ export const contentRouter = createRouter({
         contactEmail: saved.contactEmail || defaultSiteContent.contactEmail,
       };
     } catch (error) {
-      if (error instanceof Error && error.message.includes("DATABASE_URL")) return defaultSiteContent;
-      throw new TRPCError({ code: "SERVICE_UNAVAILABLE", message: "Website content is temporarily unavailable." });
+      // The marketing site must still render if the database is unreachable,
+      // unprovisioned, or mid-migration: fall back to the approved defaults.
+      console.warn(
+        "[content.get] falling back to default site content:",
+        error instanceof Error ? error.message : error,
+      );
+      return defaultSiteContent;
     }
   }),
   update: adminQuery.input(contentInput).mutation(async ({ input }) => {

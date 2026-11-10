@@ -1,15 +1,12 @@
-import { useEffect, useRef, useState } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useEffect, useState } from 'react';
+import { useReveal } from '@/hooks/useReveal';
 import { Star, ChevronLeft, ChevronRight, Quote, MessageCircle } from 'lucide-react';
-
-gsap.registerPlugin(ScrollTrigger);
 
 const reviews = [
   {
     name: 'Liaa Dussè',
     avatar: 'LD',
-    color: '#3DDC84',
+    color: '#43845F',
     rating: 5,
     date: 'June 2026',
     source: 'WhatsApp',
@@ -39,7 +36,7 @@ const reviews = [
   {
     name: 'Joya Lacy',
     avatar: 'JL',
-    color: '#6C8F5A',
+    color: '#66816E',
     rating: 5,
     date: 'Verified Customer',
     source: 'Facebook',
@@ -48,7 +45,7 @@ const reviews = [
   {
     name: 'Ma-Lik MightyEast',
     avatar: 'MM',
-    color: '#1A1A2E',
+    color: '#1D3328',
     rating: 5,
     date: 'Verified Customer',
     source: 'Facebook',
@@ -75,46 +72,9 @@ const reviews = [
 ];
 
 export default function Reviews() {
-  const sectionRef = useRef<HTMLElement>(null);
+  const sectionRef = useReveal<HTMLElement>();
   const [activeIndex, setActiveIndex] = useState(0);
   const [autoPlayEnabled, setAutoPlayEnabled] = useState(true);
-
-  useEffect(() => {
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion) return;
-
-    const ctx = gsap.context(() => {
-      // Header animations
-      gsap.from('.reviews-header', {
-        opacity: 0,
-        y: 30,
-        duration: 0.7,
-        ease: 'power3.out',
-        scrollTrigger: { trigger: sectionRef.current, start: 'top 75%' },
-      });
-
-      // Main card animations
-      gsap.from('.reviews-main', {
-        opacity: 0,
-        y: 40,
-        duration: 0.8,
-        ease: 'power3.out',
-        scrollTrigger: { trigger: '.reviews-main', start: 'top 85%' },
-      });
-
-      // Stagger animations for review items
-      gsap.from('.review-item', {
-        opacity: 0,
-        x: -20,
-        duration: 0.6,
-        stagger: 0.1,
-        ease: 'power3.out',
-        scrollTrigger: { trigger: '.reviews-sidebar', start: 'top 85%' },
-      });
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
 
   // Auto-advance reviews
   useEffect(() => {
@@ -150,14 +110,14 @@ export default function Reviews() {
       id="reviews"
       ref={sectionRef}
       className="section-padding"
-      style={{ backgroundColor: '#FFF8ED' }}
+      style={{ backgroundColor: '#FFF9F0' }}
     >
       <div className="container-brand">
         {/* Header */}
-        <div className="reviews-header text-center mb-12 md:mb-14">
+        <div className="reviews-header text-center mb-12 md:mb-14 reveal">
           <span className="brand-label mb-4 inline-block">Testimonials</span>
           <h2 className="brand-heading-lg mb-4">
-            What Our <span style={{ color: '#3DDC84' }}>Clients</span> Say
+            What Our <span style={{ color: '#43845F' }}>Clients</span> Say
           </h2>
           <p className="brand-body max-w-md mx-auto">
             Real reviews from real people who trust Porshure Green with their most important
@@ -166,7 +126,7 @@ export default function Reviews() {
         </div>
 
         {/* Main Reviews Grid - Responsive */}
-        <div className="reviews-main grid grid-cols-1 lg:grid-cols-5 gap-6 md:gap-8">
+        <div className="reviews-main grid grid-cols-1 lg:grid-cols-5 gap-6 md:gap-8 reveal">
           {/* Featured Review - Mobile: 100%, Tablet/Desktop: 60% */}
           <div className="lg:col-span-3 w-full">
             <div
@@ -176,7 +136,7 @@ export default function Reviews() {
               <Quote
                 size={64}
                 className="absolute top-6 right-6 md:top-8 md:right-8"
-                style={{ color: 'rgba(61,220,132,0.08)' }}
+                style={{ color: 'rgba(67,132,95,0.08)' }}
               />
 
               {/* Review Content */}
@@ -192,7 +152,7 @@ export default function Reviews() {
                   <div>
                     <h4
                       className="text-sm md:text-base font-semibold truncate"
-                      style={{ color: '#1A1A2E', fontFamily: 'Inter' }}
+                      style={{ color: '#1D3328', fontFamily: "'DM Sans', system-ui, sans-serif" }}
                     >
                       {reviews[activeIndex].name}
                     </h4>
@@ -202,7 +162,7 @@ export default function Reviews() {
                           <Star key={i} size={12} color="#D4943A" fill="#D4943A" />
                         ))}
                       </div>
-                      <span className="text-[10px] md:text-[11px]" style={{ color: '#C9C9C9' }}>
+                      <span className="text-[10px] md:text-[11px]" style={{ color: '#C9D2C6' }}>
                         via {reviews[activeIndex].source}
                       </span>
                     </div>
@@ -212,7 +172,7 @@ export default function Reviews() {
                 {/* Review Text */}
                 <p
                   className="text-base md:text-lg lg:text-[19px] font-light leading-relaxed italic mb-6 md:mb-8"
-                  style={{ color: '#6E7480', fontFamily: 'Playfair Display' }}
+                  style={{ color: '#66736A', fontFamily: "'Manrope', sans-serif" }}
                 >
                   "{reviews[activeIndex].text}"
                 </p>
@@ -224,6 +184,11 @@ export default function Reviews() {
                       src={reviews[activeIndex].image}
                       alt={`${reviews[activeIndex].name}'s review`}
                       className="w-full h-full object-cover"
+                      loading="lazy"
+                      onError={(event) => {
+                        const wrapper = event.currentTarget.parentElement;
+                        if (wrapper) wrapper.style.display = 'none';
+                      }}
                     />
                   </div>
                 )}
@@ -240,7 +205,7 @@ export default function Reviews() {
                       className="h-2 rounded-full transition-all duration-300 hover:opacity-100"
                       style={{
                         width: i === activeIndex ? '24px' : '8px',
-                        background: i === activeIndex ? '#3DDC84' : '#C9C9C9',
+                        background: i === activeIndex ? '#43845F' : '#C9D2C6',
                         opacity: i === activeIndex ? 1 : 0.6,
                       }}
                       aria-label={`Go to review ${i + 1}`}
@@ -254,16 +219,16 @@ export default function Reviews() {
                     onClick={prev}
                     className="w-9 h-9 md:w-10 md:h-10 rounded-lg border flex items-center justify-center transition-all duration-300 hover:scale-105 active:scale-95"
                     style={{
-                      borderColor: '#C9C9C9',
-                      color: '#6E7480',
+                      borderColor: '#C9D2C6',
+                      color: '#66736A',
                     }}
                     onMouseEnter={(e) => {
-                      (e.currentTarget as HTMLButtonElement).style.borderColor = '#3DDC84';
-                      (e.currentTarget as HTMLButtonElement).style.color = '#3DDC84';
+                      (e.currentTarget as HTMLButtonElement).style.borderColor = '#43845F';
+                      (e.currentTarget as HTMLButtonElement).style.color = '#43845F';
                     }}
                     onMouseLeave={(e) => {
-                      (e.currentTarget as HTMLButtonElement).style.borderColor = '#C9C9C9';
-                      (e.currentTarget as HTMLButtonElement).style.color = '#6E7480';
+                      (e.currentTarget as HTMLButtonElement).style.borderColor = '#C9D2C6';
+                      (e.currentTarget as HTMLButtonElement).style.color = '#66736A';
                     }}
                     aria-label="Previous review"
                   >
@@ -273,16 +238,16 @@ export default function Reviews() {
                     onClick={next}
                     className="w-9 h-9 md:w-10 md:h-10 rounded-lg border flex items-center justify-center transition-all duration-300 hover:scale-105 active:scale-95"
                     style={{
-                      borderColor: '#C9C9C9',
-                      color: '#6E7480',
+                      borderColor: '#C9D2C6',
+                      color: '#66736A',
                     }}
                     onMouseEnter={(e) => {
-                      (e.currentTarget as HTMLButtonElement).style.borderColor = '#3DDC84';
-                      (e.currentTarget as HTMLButtonElement).style.color = '#3DDC84';
+                      (e.currentTarget as HTMLButtonElement).style.borderColor = '#43845F';
+                      (e.currentTarget as HTMLButtonElement).style.color = '#43845F';
                     }}
                     onMouseLeave={(e) => {
-                      (e.currentTarget as HTMLButtonElement).style.borderColor = '#C9C9C9';
-                      (e.currentTarget as HTMLButtonElement).style.color = '#6E7480';
+                      (e.currentTarget as HTMLButtonElement).style.borderColor = '#C9D2C6';
+                      (e.currentTarget as HTMLButtonElement).style.color = '#66736A';
                     }}
                     aria-label="Next review"
                   >
@@ -299,12 +264,12 @@ export default function Reviews() {
               <button
                 key={i}
                 onClick={() => handleSelectReview(i)}
-                className="review-item flex items-center gap-3 p-4 rounded-xl text-left transition-all duration-300 w-full hover:shadow-md active:scale-95"
+                className="review-item flex items-center gap-3 p-4 rounded-xl text-left transition-all duration-300 w-full hover:shadow-md active:scale-95 reveal"
                 style={{
-                  background: i === activeIndex ? 'rgba(61,220,132,0.06)' : 'white',
-                  border: `1px solid ${i === activeIndex ? 'rgba(61,220,132,0.2)' : 'rgba(26,26,46,0.06)'}`,
+                  background: i === activeIndex ? 'rgba(67,132,95,0.06)' : 'white',
+                  border: `1px solid ${i === activeIndex ? 'rgba(67,132,95,0.2)' : 'rgba(29,51,40,0.06)'}`,
                   boxShadow:
-                    i === activeIndex ? '0 2px 8px rgba(61,220,132,0.08)' : 'none',
+                    i === activeIndex ? '0 2px 8px rgba(67,132,95,0.08)' : 'none',
                 }}
                 aria-pressed={i === activeIndex}
               >
@@ -318,11 +283,11 @@ export default function Reviews() {
                   <div className="flex items-center gap-2">
                     <span
                       className="text-[13px] font-semibold truncate"
-                      style={{ color: '#1A1A2E' }}
+                      style={{ color: '#1D3328' }}
                     >
                       {review.name}
                     </span>
-                    <span className="text-[10px] flex-shrink-0" style={{ color: '#C9C9C9' }}>
+                    <span className="text-[10px] flex-shrink-0" style={{ color: '#C9D2C6' }}>
                       {review.source}
                     </span>
                   </div>
@@ -343,7 +308,7 @@ export default function Reviews() {
                 document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
               }}
               className="mt-3 flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-[12px] font-semibold uppercase tracking-wider transition-all duration-300 hover:scale-105 active:scale-95 shadow-md"
-              style={{ background: '#1A1A2E', color: 'white' }}
+              style={{ background: '#1D3328', color: 'white' }}
             >
               <MessageCircle size={14} /> Share Your Experience
             </a>
@@ -358,7 +323,7 @@ export default function Reviews() {
                 document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
               }}
               className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-[12px] font-semibold uppercase tracking-wider transition-all duration-300 hover:shadow-lg"
-              style={{ background: '#1A1A2E', color: 'white' }}
+              style={{ background: '#1D3328', color: 'white' }}
             >
               <MessageCircle size={14} /> Share Your Experience
             </a>
@@ -367,9 +332,9 @@ export default function Reviews() {
 
         {/* Review Counter */}
         <div className="mt-8 text-center">
-          <p className="text-sm" style={{ color: '#6E7480' }}>
-            Showing review <span style={{ color: '#3DDC84', fontWeight: 'bold' }}>{activeIndex + 1}</span> of{' '}
-            <span style={{ color: '#3DDC84', fontWeight: 'bold' }}>{reviews.length}</span>
+          <p className="text-sm" style={{ color: '#66736A' }}>
+            Showing review <span style={{ color: '#43845F', fontWeight: 'bold' }}>{activeIndex + 1}</span> of{' '}
+            <span style={{ color: '#43845F', fontWeight: 'bold' }}>{reviews.length}</span>
           </p>
         </div>
       </div>

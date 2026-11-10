@@ -6,10 +6,12 @@ import { defineConfig } from "vite"
 import { inspectAttr } from 'kimi-plugin-inspect-react'
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   plugins: [
     devServer({ entry: "api/boot.ts", exclude: [/^\/(?!api\/).*$/] }),
-    inspectAttr(), react()],
+    // code-path attributes are handy while developing, but must not ship to users
+    ...(command === "serve" ? [inspectAttr()] : []),
+    react()],
   server: {
     port: 3000,
     host: "0.0.0.0",
@@ -34,4 +36,4 @@ export default defineConfig({
     outDir: path.resolve(__dirname, "dist/public"),
     emptyOutDir: true,
   },
-});
+}));

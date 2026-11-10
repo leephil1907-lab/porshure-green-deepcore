@@ -1,10 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
+import { useReveal } from '@/hooks/useReveal';
 import { trpc } from '@/providers/trpc';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ChevronDown, HelpCircle } from 'lucide-react';
-
-gsap.registerPlugin(ScrollTrigger);
 
 const faqs = [
   { q: 'What types of documents can you help with?', a: 'We support a range of personal and business document tasks, including PDF conversion and merging, document formatting, proofreading and editing, CV and career documents, forms and application packs. If your request is unusual, contact us with the details so we can confirm whether it is within scope.' },
@@ -19,40 +16,30 @@ const faqs = [
 
 export default function FAQ() {
   const { data: siteContent } = trpc.content.get.useQuery();
-  const sectionRef = useRef<HTMLElement>(null);
+  const sectionRef = useReveal<HTMLElement>();
   const [openIndex, setOpenIndex] = useState<number | null>(0);
-
-  useEffect(() => {
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion) return;
-    const ctx = gsap.context(() => {
-      gsap.from('.faq-header', { opacity: 0, y: 30, duration: 0.7, ease: 'power3.out', scrollTrigger: { trigger: sectionRef.current, start: 'top 75%' } });
-      gsap.from('.faq-item', { opacity: 0, y: 20, stagger: 0.06, duration: 0.5, ease: 'power3.out', scrollTrigger: { trigger: '.faq-list', start: 'top 85%' } });
-    }, sectionRef);
-    return () => ctx.revert();
-  }, []);
 
   const whatsapp = (siteContent?.whatsappPhone || '').replace(/\\D/g, '') || '18147915478';
   return (
-    <section id="faq" ref={sectionRef} className="section-padding grid-bg" style={{ backgroundColor: '#FFF8ED' }}>
+    <section id="faq" ref={sectionRef} className="section-padding grid-bg" style={{ backgroundColor: '#FFF9F0' }}>
       <div className="container-brand">
-        <div className="faq-header text-center mb-14">
+        <div className="faq-header text-center mb-14 reveal">
           <span className="brand-label mb-4 inline-block">Common Questions</span>
-          <h2 className="brand-heading-lg mb-4">Frequently <span style={{ color: '#3DDC84' }}>Asked</span></h2>
+          <h2 className="brand-heading-lg mb-4">Frequently <span style={{ color: '#43845F' }}>Asked</span></h2>
           <p className="brand-body max-w-md mx-auto">Straightforward answers about our document preparation and support services.</p>
         </div>
         <div className="faq-list max-w-3xl mx-auto">
           {faqs.map((faq, i) => (
-            <div key={i} className="faq-item mb-3">
-              <button type="button" aria-expanded={openIndex === i} onClick={() => setOpenIndex(openIndex === i ? null : i)} className="w-full flex items-center justify-between gap-4 p-5 rounded-xl text-left transition-all duration-300" style={{ background: openIndex === i ? 'white' : 'rgba(255,255,255,0.6)', border: `1px solid ${openIndex === i ? 'rgba(61,220,132,0.2)' : 'rgba(26,26,46,0.06)'}`, boxShadow: openIndex === i ? '0 2px 12px rgba(26,26,46,0.06)' : 'none' }}>
-                <span className="flex items-center gap-3"><HelpCircle size={16} style={{ color: openIndex === i ? '#3DDC84' : '#C9C9C9', flexShrink: 0 }} /><span className="text-[14px] font-medium" style={{ color: '#1A1A2E', fontFamily: 'Inter' }}>{faq.q}</span></span>
-                <ChevronDown size={16} className="flex-shrink-0 transition-transform duration-300" style={{ color: '#6E7480', transform: openIndex === i ? 'rotate(180deg)' : 'rotate(0deg)' }} />
+            <div key={i} className="faq-item mb-3 reveal">
+              <button type="button" aria-expanded={openIndex === i} onClick={() => setOpenIndex(openIndex === i ? null : i)} className="w-full flex items-center justify-between gap-4 p-5 rounded-xl text-left transition-all duration-300" style={{ background: openIndex === i ? 'white' : 'rgba(255,255,255,0.6)', border: `1px solid ${openIndex === i ? 'rgba(67,132,95,0.2)' : 'rgba(29,51,40,0.06)'}`, boxShadow: openIndex === i ? '0 2px 12px rgba(29,51,40,0.06)' : 'none' }}>
+                <span className="flex items-center gap-3"><HelpCircle size={16} style={{ color: openIndex === i ? '#43845F' : '#C9D2C6', flexShrink: 0 }} /><span className="text-[14px] font-medium" style={{ color: '#1D3328', fontFamily: "'DM Sans', system-ui, sans-serif" }}>{faq.q}</span></span>
+                <ChevronDown size={16} className="flex-shrink-0 transition-transform duration-300" style={{ color: '#66736A', transform: openIndex === i ? 'rotate(180deg)' : 'rotate(0deg)' }} />
               </button>
-              <div className={`overflow-hidden transition-all duration-300 ${openIndex === i ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}><div className="px-5 pb-5 pt-2 pl-12"><p className="text-[13px] leading-relaxed" style={{ color: '#6E7480' }}>{faq.a}</p></div></div>
+              <div className={`overflow-hidden transition-all duration-300 ${openIndex === i ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}><div className="px-5 pb-5 pt-2 pl-12"><p className="text-[13px] leading-relaxed" style={{ color: '#66736A' }}>{faq.a}</p></div></div>
             </div>
           ))}
         </div>
-        <div className="mt-12 text-center"><div className="inline-flex flex-wrap items-center justify-center gap-3 px-6 py-4 rounded-xl" style={{ background: 'white', border: '1px solid rgba(26,26,46,0.06)' }}><span className="text-[13px]" style={{ color: '#6E7480' }}>Still have questions?</span><a href={`https://wa.me/${whatsapp}`} target="_blank" rel="noopener noreferrer" className="text-[13px] font-semibold transition-colors hover:underline" style={{ color: '#238A58' }}>Message us on WhatsApp</a></div></div>
+        <div className="mt-12 text-center"><div className="inline-flex flex-wrap items-center justify-center gap-3 px-6 py-4 rounded-xl" style={{ background: 'white', border: '1px solid rgba(29,51,40,0.06)' }}><span className="text-[13px]" style={{ color: '#66736A' }}>Still have questions?</span><a href={`https://wa.me/${whatsapp}`} target="_blank" rel="noopener noreferrer" className="text-[13px] font-semibold transition-colors hover:underline" style={{ color: '#238A58' }}>Message us on WhatsApp</a></div></div>
       </div>
     </section>
   );

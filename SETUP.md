@@ -1,17 +1,22 @@
-# Porshure Green — local run notes
+# Porshure Green — integration build
 
-Imported from `github.com/leephil1907-lab/porshure-green-deepcore`, **all branches**, and brought up
-fully stacked (frontend + tRPC API + real PostgreSQL).
+Imported from `github.com/leephil1907-lab/porshure-green-deepcore` with **every branch**, merged into
+one tree, built and running.
 
-## Import
+## Branches
 
-- Full clone (no `--depth`, all refs) at `/home/user/porshure-green-deepcore` — `main` checked out.
-- All 6 branches exist locally and tracking: `main`, `design/multipage-brand-refresh`,
-  `fix/brand-login-hero`, `fix/vercel-serverless-api-runtime`,
-  `production/premium-site-admin-cms`, `feature/enhance-reviews-mobile-animations`.
-- Each branch's full working tree is also extracted as plain files under `/home/user/branches/`
-  — see `/home/user/branches/BRANCHES.md` for the inventory and which files are branch-only.
-- Running commit: `main` @ `3e1d815` *Complete Porshure Green global website refresh*.
+All 6 upstream branches are present locally, plus a local integration branch:
+
+`main` · `design/multipage-brand-refresh` · `fix/brand-login-hero` ·
+`fix/vercel-serverless-api-runtime` · `production/premium-site-admin-cms` ·
+`feature/enhance-reviews-mobile-animations` · **`integration/all-branches`** ← checked out, running
+
+Full per-branch inventory (and the corrected analysis of what each branch really adds):
+`/home/user/branches/BRANCHES.md`. Plain-file copies of every branch: `/home/user/branches/<branch>/`.
+
+**Union result:** `main` was already a superset of 4 of the 5 side branches. The only file that
+existed nowhere else was `src/sections/HeroCarousel.tsx` (feature branch) — now included, giving
+the integration tree 154 files vs `main`'s 151.
 
 ## Status: running
 
@@ -22,62 +27,58 @@ fully stacked (frontend + tRPC API + real PostgreSQL).
 | Database | `porshure` (role `app`) |
 | Schema | `users`, `inquiries`, `site_content` + enums `role`, `inquiry_status` |
 
+Routes: `/` `/services` `/about` `/contact` `/login` `/admin` (+ SPA catch-all).
+
 ## Admin login
 
-- URL: `/admin` · Email: `admin@porshuregreen.com` · Password: `Porshure2026!`
+`/admin` · `admin@porshuregreen.com` · `Porshure2026!`
 
-Rotate the password with:
+Rotate: `node -e "console.log(require('bcryptjs').hashSync('NEW_PASSWORD', 10))"` → paste into
+`ADMIN_PASSWORD_HASH` in `.env` → restart.
 
-```bash
-node -e "console.log(require('bcryptjs').hashSync('YOUR_NEW_PASSWORD', 10))"
-# paste into ADMIN_PASSWORD_HASH in .env, restart
-```
-
-## Everyday commands
+## Commands
 
 ```bash
 npm run dev        # site + API on :3000
-npm run db:local   # (re)start local Postgres — idempotent, run after a sandbox restart
+npm run db:local   # (re)start local Postgres — idempotent, needed after a sandbox restart
 npm run db:push    # sync db/schema.ts into the database
 npm run db:seed    # insert default site_content row
 npm run check      # typecheck
 npm run build      # production build (dist/public + dist/boot.js)
-npm start          # serve the production build on :3000
+npm start          # serve the production build
 ```
 
-## Local patches applied on top of `main`
+## Local changes on `integration/all-branches`
 
-1. **`vite.config.ts`** — `host: 0.0.0.0`, `allowedHosts: true`, `preview` block. Without it the dev
-   server answers `403 Blocked request` for the preview hostname.
-2. **`api/queries/connection.ts`** — upstream only used `drizzle-orm/neon-http`, which speaks
-   *exclusively* to Neon's HTTP endpoint and cannot reach Supabase. It now picks the driver from
-   `DATABASE_URL`: Neon URL → neon-http (unchanged), anything else (Supabase, RDS, local, Docker) →
-   `postgres.js` with `prepare: false` (safe behind Supabase's pgbouncer pooler).
-3. **`db/seed.ts`** — upstream was a TODO stub; now inserts the default `site_content` row.
-4. **`scripts/local-db.sh`** + npm scripts `db:local`, `db:seed` — one-command local database.
-5. **`.env`** — created locally (gitignored): `DATABASE_URL`, `ADMIN_EMAIL`, `ADMIN_PASSWORD_HASH`,
-   `ADMIN_JWT_SECRET`. OAuth (Kimi) left blank = disabled.
+Committed as `9ac32a0`:
 
-Nothing else was touched; the earlier `Reviews.tsx` type error is already fixed upstream on `main`.
+1. `src/sections/HeroCarousel.tsx` — the one branch-only file, pulled in from
+   `feature/enhance-reviews-mobile-animations`.
+2. `vite.config.ts` — `host: 0.0.0.0`, `allowedHosts: true`, `preview` block (otherwise the dev
+   server 403s the preview hostname).
+3. `api/queries/connection.ts` — driver-aware: Neon URL → `drizzle-orm/neon-http`; any other
+   Postgres (Supabase, RDS, local, Docker) → `postgres.js` with `prepare: false`, safe behind
+   Supabase's pgbouncer pooler.
+4. `db/seed.ts` — was a TODO stub, now seeds the default `site_content` row.
+5. `scripts/local-db.sh` + `db:local` / `db:seed` npm scripts.
 
-## Switching to Supabase
+## Vercel
 
-Env only, no code change:
+Project `porshure-green-deepcore` (`prj_rzB77Hktya436P4CaRyU2Rx3O71f`, team
+`team_86BneTed80LMhbupeUcrRBTd`), linked to `leephil1907-lab/porshure-green-deepcore`, framework
+`vite` with a custom `vercel.json` (builds `api/boot.ts` as a Node function + static `dist/public`).
 
-```env
-DATABASE_URL=postgresql://postgres.<project-ref>:<password>@aws-0-eu-west-1.pooler.supabase.com:6543/postgres
-```
+- Production aliases: `www.porshuregreen.xyz`, `porshuregreen.xyz`, `porshure-green-deepcore.vercel.app`
+  — currently serving commit **`525358d`**, i.e. two commits behind `main` (`3e1d815`).
+- Latest preview: `fix/brand-login-hero` (`4e317f7`) → READY.
+- `design/multipage-brand-refresh` (`134b3bb`) → **ERROR**: `src/pages/Login.tsx`, JSX syntax error
+  at 108:4 ("Adjacent JSX elements must be wrapped in an enclosing tag").
 
-then `npm run db:push && npm run db:seed`.
+Deploying the integration branch needs a push to GitHub (no git credentials in this sandbox), or a
+Vercel token. The Vercel connector can deploy straight from a GitHub ref if you want that.
 
-**Blocker:** the connected Supabase account is on the free plan with 3 projects
-(`mike-interiors-cms` + `Axi-Trader` paused, `Degreensacre` active), so a 4th project is refused.
-Delete/pause one, upgrade the org, or point `DATABASE_URL` at an existing project.
+## Verified
 
-## Verified on this commit
-
-- `/`, `/login`, `/admin` → 200
-- `content.get` reads the DB (new global hero copy from `3e1d815`)
-- `login.login` → success with the admin credentials above, 401 on a bad password
-- `inquiry.create` → `inquiry.list` / `inquiry.stats` persist and require a session
-- `tsc -b` clean · `npm run build` succeeds · `npm start` serves the SPA + API
+- `tsc -b` clean · `npm run build` OK · `npm start` serves SPA + API
+- `/` `/services` `/about` `/contact` `/login` `/admin` → 200, all page modules transform without error
+- `content.get` reads Postgres · `inquiry.create` persists · `login.login` issues the admin cookie

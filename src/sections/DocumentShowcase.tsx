@@ -3,14 +3,14 @@ import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { FileText, Shield, Clock, CheckCircle2, Briefcase, GraduationCap, Home, Heart, Plane, Stethoscope } from 'lucide-react';
 
 const documents = [
-  { icon: Briefcase, title: 'Articles of Incorporation', category: 'Business', color: '#3DDC84', rotation: -8, x: -120, y: -60, scale: 1 },
-  { icon: GraduationCap, title: 'Academic Transcripts', category: 'Education', color: '#6C8F5A', rotation: 5, x: 140, y: -40, scale: 0.95 },
+  { icon: Briefcase, title: 'Articles of Incorporation', category: 'Business', color: '#43845F', rotation: -8, x: -120, y: -60, scale: 1 },
+  { icon: GraduationCap, title: 'Academic Transcripts', category: 'Education', color: '#66816E', rotation: 5, x: 140, y: -40, scale: 0.95 },
   { icon: Plane, title: 'Visa Application Packet', category: 'Immigration', color: '#3B8FD9', rotation: -4, x: -80, y: 80, scale: 1.05 },
   { icon: Home, title: 'Property Deed Transfer', category: 'Housing', color: '#D4943A', rotation: 10, x: 100, y: 60, scale: 0.9 },
   { icon: Stethoscope, title: 'Medical Records Request', category: 'Health', color: '#E74C3C', rotation: -6, x: 160, y: -90, scale: 1 },
   { icon: Heart, title: 'Power of Attorney', category: 'Family', color: '#9B6DD1', rotation: 3, x: -140, y: 30, scale: 0.92 },
-  { icon: FileText, title: 'PDF Conversion Bundle', category: 'General', color: '#1A1A2E', rotation: 7, x: 60, y: 100, scale: 1.02 },
-  { icon: Shield, title: 'Digital Signature Setup', category: 'Legal', color: '#3DDC84', rotation: -3, x: -60, y: -100, scale: 0.88 },
+  { icon: FileText, title: 'PDF Conversion Bundle', category: 'General', color: '#1D3328', rotation: 7, x: 60, y: 100, scale: 1.02 },
+  { icon: Shield, title: 'Digital Signature Setup', category: 'Legal', color: '#43845F', rotation: -3, x: -60, y: -100, scale: 0.88 },
 ];
 
 const containerVariants = {
@@ -59,7 +59,7 @@ export default function DocumentShowcase() {
   const rotate2 = useTransform(smoothProgress, [0, 1], [0, -4]);
 
   return (
-    <section ref={containerRef} className="relative overflow-hidden" style={{ backgroundColor: '#FFF8ED', paddingTop: '6rem', paddingBottom: '6rem' }}>
+    <section ref={containerRef} className="relative overflow-hidden" style={{ backgroundColor: '#FFF9F0', paddingTop: '6rem', paddingBottom: '6rem' }}>
       {/* Background grid pattern */}
       <div className="absolute inset-0 grid-bg opacity-50" />
 
@@ -79,7 +79,7 @@ export default function DocumentShowcase() {
         >
           <span className="brand-label mb-4 inline-block">Document Gallery</span>
           <h2 className="brand-heading-lg mb-4">
-            Documents We <span style={{ color: '#3DDC84' }}>Process</span>
+            Documents We <span style={{ color: '#43845F' }}>Process</span>
           </h2>
           <p className="brand-body max-w-lg mx-auto">
             Examples of document categories and file-preparation tasks we may be able to support, subject to reviewing your request.
@@ -137,14 +137,14 @@ export default function DocumentShowcase() {
                 </span>
 
                 {/* Title */}
-                <h4 className="text-[12px] font-semibold mt-2 leading-snug" style={{ color: '#1A1A2E', fontFamily: 'Inter' }}>
+                <h4 className="text-[12px] font-semibold mt-2 leading-snug" style={{ color: '#1D3328', fontFamily: "'DM Sans', system-ui, sans-serif" }}>
                   {doc.title}
                 </h4>
 
                 {/* Mini status bar */}
                 <div className="flex items-center gap-1.5 mt-3">
-                  <CheckCircle2 size={10} color="#3DDC84" />
-                  <span className="text-[9px] font-medium" style={{ color: '#6C8F5A' }}>Ready to process</span>
+                  <CheckCircle2 size={10} color="#43845F" />
+                  <span className="text-[9px] font-medium" style={{ color: '#66816E' }}>Ready to process</span>
                 </div>
 
                 {/* Paper shadow effect */}
@@ -163,19 +163,19 @@ export default function DocumentShowcase() {
           className="flex flex-wrap items-center justify-center gap-6 mt-12"
         >
           {[
-            { icon: FileText, label: 'Scope confirmed first', color: '#3DDC84' },
-            { icon: Clock, label: 'Timeline agreed upfront', color: '#6C8F5A' },
+            { icon: FileText, label: 'Scope confirmed first', color: '#43845F' },
+            { icon: Clock, label: 'Timeline agreed upfront', color: '#66816E' },
             { icon: Shield, label: 'Careful document handling', color: '#3B8FD9' },
           ].map((item) => (
             <motion.div
               key={item.label}
               className="flex items-center gap-2.5 px-5 py-3 rounded-xl"
-              style={{ background: 'white', border: '1px solid rgba(26,26,46,0.06)' }}
-              whileHover={{ y: -2, boxShadow: '0 4px 12px rgba(26,26,46,0.08)' }}
+              style={{ background: 'white', border: '1px solid rgba(29,51,40,0.06)' }}
+              whileHover={{ y: -2, boxShadow: '0 4px 12px rgba(29,51,40,0.08)' }}
               transition={{ type: 'spring', stiffness: 300, damping: 20 }}
             >
               <item.icon size={16} color={item.color} strokeWidth={1.5} />
-              <span className="text-[12px] font-semibold" style={{ color: '#1A1A2E' }}>{item.label}</span>
+              <span className="text-[12px] font-semibold" style={{ color: '#1D3328' }}>{item.label}</span>
             </motion.div>
           ))}
         </motion.div>

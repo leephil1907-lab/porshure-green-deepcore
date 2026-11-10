@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router'
+import { Routes, Route, useLocation } from 'react-router'
 import Home from './pages/Home'
 import ServicesPage from './pages/ServicesPage'
 import AboutPage from './pages/AboutPage'
@@ -6,9 +6,12 @@ import ContactPage from './pages/ContactPage'
 import AdminDashboard from './pages/AdminDashboard'
 import Login from './pages/Login'
 import NotFound from './pages/NotFound'
+import ContactFloat from './sections/ContactFloat'
 
 export default function App() {
-  return (
+  const { pathname } = useLocation();
+  const showContactFloat = !pathname.startsWith('/admin') && !pathname.startsWith('/login');
+  return (<>
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/services" element={<ServicesPage />} />
@@ -18,5 +21,6 @@ export default function App() {
       <Route path="/login" element={<Login />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
-  )
+    {showContactFloat && <ContactFloat />}
+  </>)
 }
