@@ -60,16 +60,16 @@ export default function AdminDashboard() {
 
   return (
     <div className="min-h-screen bg-[#0D1C16] text-white">
-      <header className="h-16 border-b border-[rgba(74,168,130,0.12)] bg-[rgba(13,28,22,0.95)] backdrop-blur-xl flex items-center justify-between px-6 sticky top-0 z-50">
+      <header className="admin-topbar min-h-16 border-b border-[rgba(74,168,130,0.12)] bg-[rgba(13,28,22,0.95)] backdrop-blur-xl flex items-center justify-between gap-2 px-3 sm:px-6 sticky top-0 z-50">
         <div className="flex items-center gap-4">
           <a href="/" className="flex items-center gap-2 text-[#7A9A8E] hover:text-white transition-colors">
             <ChevronLeft size={18} />
-            <span className="text-[13px]">Back to Site</span>
+            <span className="hidden text-[13px] sm:inline">Back to Site</span>
           </a>
           <div className="w-px h-6 bg-[rgba(255,255,255,0.1)]" />
           <div className="flex items-center gap-2.5">
             <LayoutDashboard size={18} color="#4AA882" />
-            <span className="font-semibold text-[15px]">Admin Dashboard</span>
+            <span className="hidden font-semibold text-[15px] sm:inline">Admin Dashboard</span>
           </div>
         </div>
         <div className="flex items-center gap-4">
@@ -85,7 +85,7 @@ export default function AdminDashboard() {
         </div>
       </header>
 
-      <div className="max-w-[1400px] mx-auto px-6 py-8">
+      <div className="admin-content max-w-[1400px] mx-auto px-4 sm:px-6 py-8">
         <section className="mb-10 rounded-2xl border border-[rgba(74,168,130,0.16)] bg-[rgba(255,255,255,0.035)] p-6 md:p-8">
           <div className="mb-6"><p className="mb-1 text-[10px] font-semibold uppercase tracking-[.2em] text-[#4AA882]">Content management</p><h2 className="text-xl font-semibold text-white">Website content</h2><p className="mt-1 text-sm text-[#7A9A8E]">Edit the homepage copy and contact details shown on the public website.</p></div>
           <form onSubmit={(event) => { event.preventDefault(); saveContent.mutate(contentForm); }} className="grid gap-5 md:grid-cols-2">
