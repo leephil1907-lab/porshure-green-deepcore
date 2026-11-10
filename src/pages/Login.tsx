@@ -10,10 +10,7 @@ export default function Login() {
 
   const loginMutation = trpc.login.login.useMutation({
     onSuccess: (data) => {
-      if (data.token) {
-        localStorage.setItem("admin_token", data.token);
-        window.location.href = "/admin";
-      }
+      if (data.success) window.location.href = "/admin";
     },
     onError: (err) => {
       setError(err.message || "Invalid email or password");
