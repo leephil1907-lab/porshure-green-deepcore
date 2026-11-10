@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react';
 import { ArrowLeft, ArrowRight, FileCheck2, FolderCheck, ShieldCheck } from 'lucide-react';
 
 const slides = [
-  { src: '/images/hero-main.jpg', eyebrow: 'Document preparation', title: 'Every detail, thoughtfully organized', copy: 'Clear, careful document support that helps you move forward with confidence.', icon: FileCheck2 },
-  { src: '/images/hands-docs.jpg', eyebrow: 'Personal support', title: 'A smoother way to handle paperwork', copy: 'Practical help with preparing, formatting and organizing important documents.', icon: FolderCheck },
-  { src: '/images/workflow-desk.jpg', eyebrow: 'A dependable process', title: 'Clarity from the first step to the last', copy: 'Know what is needed, what happens next and where your request stands.', icon: ShieldCheck },
+  { src: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=1800&q=85', fallback: '/images/hero-main.jpg', eyebrow: 'Document preparation', title: 'Every detail, thoughtfully organized', copy: 'Clear, careful document support that helps you move forward with confidence.', icon: FileCheck2 },
+  { src: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1800&q=85', fallback: '/images/hero-main.jpg', eyebrow: 'Personal support', title: 'A smoother way to handle paperwork', copy: 'Practical help with preparing, formatting and organizing important documents.', icon: FolderCheck },
+  { src: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1800&q=85', fallback: '/images/hero-main.jpg', eyebrow: 'A dependable process', title: 'Clarity from the first step to the last', copy: 'Know what is needed, what happens next and where your request stands.', icon: ShieldCheck },
 ];
 
 export default function ImageCarousel() {
   const [active, setActive] = useState(0);
+  const [failed, setFailed] = useState<number[]>([]);
   useEffect(() => {
     const timer = window.setInterval(() => setActive((value) => (value + 1) % slides.length), 5500);
     return () => window.clearInterval(timer);
@@ -19,7 +20,7 @@ export default function ImageCarousel() {
   return (
     <section className="container-brand py-8 md:py-12">
       <div className="relative isolate min-h-[330px] overflow-hidden rounded-[26px] bg-[#173B2B] shadow-[0_24px_70px_rgba(23,59,43,.16)] md:min-h-[390px]">
-        {slides.map((item, index) => <img key={item.src} src={item.src} alt={item.title} loading="lazy" className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ${index === active ? 'opacity-55' : 'opacity-0'}`} />)}
+        {slides.map((item, index) => <img key={item.src} src={failed.includes(index) ? item.fallback : item.src} onError={() => setFailed(current => current.includes(index) ? current : [...current,index])} alt={item.title} loading={index===0?'eager':'lazy'} className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ${index === active ? 'opacity-55' : 'opacity-0'}`} />)}
         <div className="absolute inset-0 bg-gradient-to-r from-[#10271D]/95 via-[#10271D]/75 to-[#10271D]/10" />
         <div key={active} className="relative z-10 flex min-h-[330px] max-w-2xl flex-col justify-center px-7 py-12 text-white motion-safe:animate-[fadeIn_.5s_ease-out] md:min-h-[390px] md:px-14">
           <span className="mb-5 inline-flex w-fit items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[.18em]"><Icon size={14}/>{slide.eyebrow}</span>
