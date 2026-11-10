@@ -1,5 +1,6 @@
 import { ArrowRight, Shield, Clock, FileCheck } from 'lucide-react';
 import { trpc } from '@/providers/trpc';
+import { Link } from 'react-router';
 import HeroImage from './HeroImage';
 
 export default function Hero() {
@@ -33,27 +34,8 @@ export default function Hero() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 md:gap-4 mb-7 md:mb-8">
-              <a
-                href="#services"
-                onClick={(e) => {
-                  e.preventDefault();
-                  document.querySelector('#services')?.scrollIntoView({ behavior: 'smooth' });
-                }}
-                className="brand-green-btn justify-center md:justify-start text-xs md:text-sm px-5 md:px-6 py-3 md:py-4"
-              >
-                Explore Services
-                <ArrowRight size={16} />
-              </a>
-              <a
-                href="#process"
-                onClick={(e) => {
-                  e.preventDefault();
-                  document.querySelector('#process')?.scrollIntoView({ behavior: 'smooth' });
-                }}
-                className="brand-outline-btn justify-center md:justify-start text-xs md:text-sm px-5 md:px-6 py-3 md:py-4"
-              >
-                See How It Works
-              </a>
+              <Link to="/services" className="brand-green-btn justify-center md:justify-start text-xs md:text-sm px-5 md:px-6 py-3 md:py-4">Explore Services <ArrowRight size={16} /></Link>
+              <Link to="/services#process" className="brand-outline-btn justify-center md:justify-start text-xs md:text-sm px-5 md:px-6 py-3 md:py-4">See How It Works</Link>
             </div>
 
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 md:gap-6 flex-wrap">
