@@ -8,7 +8,7 @@ export default function Footer() {
   const { data } = trpc.content.get.useQuery();
   const phone = data?.contactPhone?.trim() || '+1 (814) 791-5478';
   const rawWhatsapp = data?.whatsappPhone?.trim() || phone;
-  const whatsappDigits = rawWhatsapp.replace(/\\D/g, '') || '18147915478';
+  const whatsappDigits = rawWhatsapp.replace(/\D/g, '') || '18147915478';
   const email = data?.contactEmail?.trim() || 'porshuregreen@gmail.com';
 
   return <footer className="relative overflow-hidden bg-[#142F23] text-white">
@@ -21,7 +21,7 @@ export default function Footer() {
         <div className="mt-6 flex items-center gap-2.5">
           <a href={`https://wa.me/${whatsappDigits}`} target="_blank" rel="noopener noreferrer" aria-label="Chat with Porshure Green on WhatsApp" title="WhatsApp" className="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/[.06] text-[#D9EBDD] transition duration-200 hover:-translate-y-1 hover:border-[#9CCBA8] hover:bg-white/15"><WhatsAppIcon size={19}/></a>
           <a href={`mailto:${email}`} aria-label="Email Porshure Green" title="Email" className="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/[.06] text-[#D9EBDD] transition duration-200 hover:-translate-y-1 hover:border-[#9CCBA8] hover:bg-white/15"><Mail size={18}/></a>
-          <a href={`tel:${phone.replace(/[^+\\d]/g, '')}`} aria-label="Call Porshure Green" title="Phone" className="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/[.06] text-[#D9EBDD] transition duration-200 hover:-translate-y-1 hover:border-[#9CCBA8] hover:bg-white/15"><Phone size={18}/></a>
+          <a href={`tel:${phone.replace(/[^+\d]/g, '')}`} aria-label="Call Porshure Green" title="Phone" className="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/[.06] text-[#D9EBDD] transition duration-200 hover:-translate-y-1 hover:border-[#9CCBA8] hover:bg-white/15"><Phone size={18}/></a>
         </div>
       </div>
       <div><p className="mb-5 text-[10px] font-bold uppercase tracking-[.22em] text-[#A9D2B2]">Navigate</p><div className="space-y-3.5">{[['Home','/'],['Our services','/services'],['About Porshure Green','/about'],['Contact us','/contact']].map(([label,href])=><Link key={href} to={href} className="group flex w-fit items-center gap-2 text-sm text-white/65 transition hover:text-white">{label}<ArrowUpRight size={13} className="opacity-0 transition group-hover:opacity-100"/></Link>)}</div></div>
