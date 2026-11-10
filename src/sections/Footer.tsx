@@ -9,9 +9,9 @@ export default function Footer() {
   const whatsapp = data?.whatsappPhone?.trim() || '+1 (814) 791-5478';
   const email = data?.contactEmail?.trim() || 'porshuregreen@gmail.com';
   const contacts = [
-    { label: 'WhatsApp', icon: MessageCircle, href: `https://wa.me/${whatsapp.replace(/\\D/g, '')}`, color: '#31C879' },
+    { label: 'WhatsApp', icon: MessageCircle, href: `https://wa.me/${whatsapp.replace(/\D/g, '')}`, color: '#31C879' },
     { label: 'Email', icon: Mail, href: `mailto:${email}`, color: '#B9DCC2' },
-    { label: 'Call', icon: Phone, href: `tel:${phone.replace(/[^+\\d]/g, '')}`, color: '#B9DCC2' },
+    { label: 'Call', icon: Phone, href: `tel:${phone.replace(/[^+\d]/g, '')}`, color: '#B9DCC2' },
   ];
   return (
     <footer className="bg-[#142F23] text-white">
