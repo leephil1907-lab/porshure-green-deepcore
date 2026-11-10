@@ -5,6 +5,7 @@ import {
   varchar,
   text,
   timestamp,
+  jsonb,
 } from "drizzle-orm/pg-core";
 
 export const roleEnum = pgEnum("role", ["user", "admin"]);
@@ -49,3 +50,20 @@ export const inquiries = pgTable("inquiries", {
 
 export type Inquiry = typeof inquiries.$inferSelect;
 export type InsertInquiry = typeof inquiries.$inferInsert;
+
+
+export type SiteContent = {
+  heroHeadline: string;
+  heroSubtitle: string;
+  contactPhone: string;
+  whatsappPhone: string;
+  contactEmail: string;
+  footerDescription: string;
+  announcement: string;
+};
+
+export const siteContent = pgTable("site_content", {
+  key: varchar("key", { length: 80 }).primaryKey(),
+  value: jsonb("value").$type<SiteContent>().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().notNull().$onUpdate(() => new Date()),
+});
