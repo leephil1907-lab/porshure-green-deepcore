@@ -9,7 +9,7 @@ export const loginRouter = createRouter({
   login: publicQuery
     .input(
       z.object({
-        email: z.string().email("Valid email required"),
+        email: z.string().email("Valid email required").transform((value) => value.toLowerCase()),
         password: z.string().min(1, "Password required"),
       })
     )
