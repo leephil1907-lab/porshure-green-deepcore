@@ -7,11 +7,11 @@ export default function Hero() {
 
   return (
     <section
-      className="relative overflow-hidden pb-8 md:pb-12 lg:pb-20"
+      className="relative overflow-hidden pb-4 md:pb-6 lg:pb-8"
       style={{ backgroundColor: '#FFF8ED' }}
     >
-      <div className="container-brand pt-28 md:pt-32 pb-12 md:pb-20 px-4 md:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-12 lg:gap-14 items-center">
+      <div className="container-brand pt-24 md:pt-28 pb-8 md:pb-10 px-4 md:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-7 md:gap-9 lg:gap-11 items-center">
           <div className="max-w-2xl lg:max-w-xl mx-auto lg:mx-0 w-full">
             <div className="stamp-mark mb-5 inline-flex items-center">
               <Shield size={12} />
@@ -32,7 +32,7 @@ export default function Hero() {
               {siteContent?.heroSubtitle || 'Premium document preparation, formatting, and submission services. From paperwork to peace of mind — fast, confidential, and professional.'}
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-3 md:gap-4 mb-9 md:mb-10">
+            <div className="flex flex-col sm:flex-row gap-3 md:gap-4 mb-7 md:mb-8">
               <a
                 href="#services"
                 onClick={(e) => {
@@ -77,7 +77,7 @@ export default function Hero() {
 
           <div className="relative min-w-0">
             <div
-              className="relative h-[320px] sm:h-[400px] md:h-[480px] w-full overflow-hidden rounded-2xl bg-[#E8F0E9] shadow-2xl"
+              className="relative h-[300px] sm:h-[360px] md:h-[430px] w-full overflow-hidden rounded-2xl bg-[#E8F0E9] shadow-2xl"
               style={{ boxShadow: '0 24px 64px rgba(26,26,46,0.12)' }}
             >
               <HeroImage />
