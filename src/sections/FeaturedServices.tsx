@@ -10,7 +10,7 @@ const items = [
 
 export default function FeaturedServices() {
   return (
-    <section className="bg-[#F4F6EF] py-14 md:py-16">
+    <section id="services" className="bg-[#F4F6EF] py-14 md:py-16">
       <div className="container-brand">
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div><p className="brand-label mb-2">How we can help</p><h2 className="brand-heading-lg">Document work, made simpler.</h2></div>
