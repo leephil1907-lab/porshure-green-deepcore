@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { trpc } from '@/providers/trpc';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowRight, FileCheck, Clock, Shield } from 'lucide-react';
