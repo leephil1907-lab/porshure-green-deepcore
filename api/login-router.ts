@@ -49,13 +49,6 @@ export const loginRouter = createRouter({
     const cookieMatch = cookie.match(new RegExp(`${ADMIN_TOKEN_COOKIE}=([^;]+)`));
     let token = cookieMatch ? cookieMatch[1] : null;
 
-    // Fallback to Authorization header
-    if (!token) {
-      const authHeader = ctx.req.headers.get("authorization") || "";
-      const bearerMatch = authHeader.match(/^Bearer\s+(.+)$/);
-      token = bearerMatch ? bearerMatch[1] : null;
-    }
-
     if (!token || ADMIN_JWT_SECRET.length < 32) return null;
 
     try {
