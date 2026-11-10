@@ -1,8 +1,11 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ArrowRight, Shield, Clock, FileCheck } from 'lucide-react';
+import { trpc } from '@/providers/trpc';
+import HeroCarousel from './HeroCarousel';
 
 export default function Hero() {
+  const { data: siteContent } = trpc.content.get.useQuery();
   const sectionRef = useRef<HTMLSection>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
 
@@ -138,23 +141,7 @@ export default function Hero() {
                 className="hero-title brand-heading-xl text-3xl md:text-4xl lg:text-5xl font-bold leading-tight"
                 style={{ color: '#1A1A2E', fontFamily: 'Playfair Display' }}
               >
-                Organized with{' '}
-                <span className="relative inline-block">
-                  <span style={{ color: '#3DDC84' }}>clarity</span>
-                  <svg
-                    className="hero-title-underline absolute -bottom-1 md:-bottom-2 left-0 w-full"
-                    viewBox="0 0 200 8"
-                    fill="none"
-                    preserveAspectRatio="none"
-                  >
-                    <path
-                      d="M2 6C50 2 150 2 198 6"
-                      stroke="#3DDC84"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                    />
-                  </svg>
-                </span>
+                {siteContent?.heroHeadline || 'Organized with clarity'}
               </h1>
             </div>
 
@@ -163,8 +150,7 @@ export default function Hero() {
               className="hero-subtitle brand-body mb-6 md:mb-8 max-w-md text-base md:text-lg leading-relaxed"
               style={{ color: '#6E7480', fontFamily: 'Inter' }}
             >
-              Premium document preparation, formatting, and submission services. From paperwork to
-              peace of mind — fast, confidential, and professional.
+              {siteContent?.heroSubtitle || 'Premium document preparation, formatting, and submission services. From paperwork to peace of mind — fast, confidential, and professional.'}
             </p>
 
             {/* CTA Buttons - Responsive Layout */}
@@ -218,11 +204,7 @@ export default function Hero() {
               className="relative rounded-2xl overflow-hidden shadow-2xl transition-all duration-500"
               style={{ boxShadow: '0 24px 64px rgba(26,26,46,0.12)' }}
             >
-              <img
-                src="/images/hero-main.jpg"
-                alt="Organized documents on cream desk"
-                className="w-full h-auto object-cover"
-              />
+              <div className="relative h-[340px] md:h-[430px] w-full overflow-hidden rounded-2xl bg-[#E8F0E9]"><HeroCarousel /></div>
               {/* Overlay gradient */}
               <div className="absolute inset-0 bg-gradient-to-tr from-[#FFF8ED]/20 to-transparent" />
 
