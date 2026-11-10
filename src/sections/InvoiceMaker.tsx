@@ -24,7 +24,7 @@ function buildPdf(lines: string[]) {
 }
 
 export default function InvoiceMaker() {
-  const [invoiceNo,setInvoiceNo]=useState(`PG-${new Date().getFullYear()}-001`);
+  const [invoiceNo,setInvoiceNo]=useState(`PG-${new Date().getFullYear()}-${Date.now().toString().slice(-6)}`);
   const [issueDate,setIssueDate]=useState(new Date().toISOString().slice(0,10));
   const [dueDate,setDueDate]=useState('');
   const [client,setClient]=useState('');
@@ -38,7 +38,7 @@ export default function InvoiceMaker() {
   const total=subtotal+(subtotal*Math.max(0,tax)/100);
   const update=(id:number,key:keyof Omit<LineItem,'id'>,value:string)=>setItems(current=>current.map(item=>item.id===id?{...item,[key]:key==='description'?value:Number(value)}:item));
   const lines=[`Invoice: ${invoiceNo}`,`Issue date: ${issueDate}    Due date: ${dueDate||'Upon receipt'}`,`Bill to: ${client||'Client name'}`,`Email: ${clientEmail||'-'}`,`Address: ${address||'-'}`,'','Description | Qty | Rate | Amount',...items.map(item=>`${item.description} | ${item.quantity} | ${money(item.rate,currency)} | ${money(item.quantity*item.rate,currency)}`),'',`Subtotal: ${money(subtotal,currency)}`,`Tax: ${tax}% (${money(subtotal*tax/100,currency)})`,`TOTAL DUE: ${money(total,currency)}`,'',notes];
-  const download=(blob:Blob,name:string)=>{const url=URL.createObjectURL(blob);const link=document.createElement('a');link.href=url;link.download=name;link.click();URL.revokeObjectURL(url);};
+  const download=(blob:Blob,name:string)=>{const url=URL.createObjectURL(blob);const link=document.createElement('a');link.href=url;link.download=name.replace(/[\\/:*?\"<>|]/g,'-');document.body.appendChild(link);link.click();link.remove();window.setTimeout(()=>URL.revokeObjectURL(url),1500);};
   const downloadDoc=()=>{const rows=items.map(item=>`<tr><td>${esc(item.description)}</td><td>${item.quantity}</td><td>${money(item.rate,currency)}</td><td>${money(item.quantity*item.rate,currency)}</td></tr>`).join('');const html=`<html><head><meta charset="utf-8"></head><body style="font-family:Arial;color:#20392b"><h1 style="color:#244D36">PORSHURE GREEN</h1><p>DOCUMENT SUPPORT</p><hr><h2>INVOICE</h2><p><b>Invoice:</b> ${esc(invoiceNo)} &nbsp; <b>Issue:</b> ${issueDate} &nbsp; <b>Due:</b> ${dueDate||'Upon receipt'}</p><h3>Bill to</h3><p>${esc(client)}<br>${esc(clientEmail)}<br>${esc(address)}</p><table border="1" cellspacing="0" cellpadding="8" width="100%"><tr><th>Description</th><th>Qty</th><th>Rate</th><th>Amount</th></tr>${rows}</table><h3 style="text-align:right">Subtotal: ${money(subtotal,currency)}<br>Tax: ${tax}%<br>Total: ${money(total,currency)}</h3><p>${esc(notes)}</p><hr><small>porshuregreen.xyz · porshuregreen@gmail.com</small></body></html>`;download(new Blob(['\ufeff',html],{type:'application/msword'}),`${invoiceNo}.doc`);};
   const downloadPdf=()=>download(buildPdf(lines),`${invoiceNo}.pdf`);
   return <section className="mb-10 overflow-hidden rounded-2xl border border-white/10 bg-[#14251D]">
