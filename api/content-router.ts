@@ -30,7 +30,14 @@ export const contentRouter = createRouter({
     try {
       const db = getDb();
       const [row] = await db.select().from(siteContent).where(eq(siteContent.key, "site")).limit(1);
-      return { ...defaultSiteContent, ...(row?.value ?? {}) };
+      const saved = row?.value ?? {};
+      return {
+        ...defaultSiteContent,
+        ...saved,
+        contactPhone: saved.contactPhone || defaultSiteContent.contactPhone,
+        whatsappPhone: saved.whatsappPhone || defaultSiteContent.whatsappPhone,
+        contactEmail: saved.contactEmail || defaultSiteContent.contactEmail,
+      };
     } catch (error) {
       if (error instanceof Error && error.message.includes("DATABASE_URL")) return defaultSiteContent;
       throw new TRPCError({ code: "SERVICE_UNAVAILABLE", message: "Website content is temporarily unavailable." });
