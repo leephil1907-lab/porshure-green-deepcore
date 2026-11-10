@@ -55,10 +55,10 @@ export default function CTABanner() {
               <ArrowRight size={15} />
             </a>
             <a href={siteContent?.whatsappPhone ? `https://wa.me/${siteContent.whatsappPhone.replace(/\D/g, "")}` : "#contact"} target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl text-[13px] font-semibold uppercase tracking-wider transition-all duration-300 hover:shadow-xl"
-              style={{ background: 'rgba(255,255,255,0.15)', color: 'white', border: '1px solid rgba(255,255,255,0.2)' }}>
-              <MessageCircle size={17} />
-              Chat with us on WhatsApp
+              aria-label="Open Porshure Green on WhatsApp" title="WhatsApp"
+              className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/30 text-white transition-all duration-300 hover:-translate-y-1 hover:bg-white/15 hover:shadow-xl"
+              style={{ background: 'rgba(255,255,255,0.15)' }}>
+              <MessageCircle size={22} aria-hidden="true" />
             </a>
           </div>
 
