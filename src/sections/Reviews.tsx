@@ -170,8 +170,7 @@ export default function Reviews() {
           {/* Featured Review - Mobile: 100%, Tablet/Desktop: 60% */}
           <div className="lg:col-span-3 w-full">
             <div
-              className="paper-card !p-6 md:!p-8 lg:!p-10 relative overflow-hidden transition-all duration-500 ease-out"
-              style={{ minHeight: '300px', md: '320px' }}
+              className="paper-card !p-6 md:!p-8 lg:!p-10 relative min-h-[300px] md:min-h-[320px] overflow-hidden transition-all duration-500 ease-out"
             >
               {/* Quote Icon */}
               <Quote
