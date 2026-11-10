@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useAuth } from '@/hooks/useAuth';
+import InvoiceMaker from '@/sections/InvoiceMaker';
 import { trpc } from '@/providers/trpc';
 import {
   LayoutDashboard, Mail, MailOpen, Reply, Archive,
@@ -93,6 +94,8 @@ export default function AdminDashboard() {
             {saveContent.error && <p role="alert" className="text-sm text-red-300 md:col-span-2">{saveContent.error.message}</p>}{saveContent.isSuccess && <p className="text-sm text-[#8FE4B4] md:col-span-2">Website content saved.</p>}
           </form>
         </section>
+
+        <InvoiceMaker />
 
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
           {[
