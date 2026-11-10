@@ -17,9 +17,9 @@ export default function Footer() {
   const whatsapp = data?.whatsappPhone?.trim() || '';
   const email = data?.contactEmail || 'porshuregreen@gmail.com';
   const contacts = [
-    ...(whatsapp ? [{ icon: MessageCircle, label: 'WhatsApp', value: whatsapp, href: `https://wa.me/${whatsapp.replace(/\D/g, '')}`, color: '#25D366' }] : []),
-    { icon: Mail, label: 'Email', value: email, href: `mailto:${email}`, color: '#3DDC84' },
-    ...(phone ? [{ icon: Phone, label: 'Call', value: phone, href: `tel:${phone.replace(/[^+\d]/g, '')}`, color: '#3DDC84' }] : []),
+    ...(whatsapp ? [{ icon: WhatsAppIcon, label: 'WhatsApp', href: `https://wa.me/${whatsapp.replace(/\D/g, '')}`, color: '#25D366' }] : []),
+    { icon: Mail, label: 'Email', href: `mailto:${email}`, color: '#3DDC84' },
+    ...(phone ? [{ icon: Phone, label: 'Call', href: `tel:${phone.replace(/[^+\d]/g, '')}`, color: '#3DDC84' }] : []),
   ];
   return (
     <footer id="contact" className="relative overflow-hidden bg-[#14231D] text-white">
