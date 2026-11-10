@@ -33,9 +33,8 @@ export default function Login() {
       <div className="w-full max-w-sm mx-4">
         <div className="text-center mb-8">
           <div className="mb-6 flex justify-center"><BrandLogo light /></div>
-          </div>
           <h1 className="text-[24px] font-bold text-white mb-2">Admin Login</h1>
-          <p className="text-[14px] font-light text-[#7A9A8E]">Sign in to manage inquiries</p>
+          <p className="text-[14px] font-light text-[#A9C3B5]">Sign in to manage inquiries</p>
         </div>
 
         <div className="bg-[rgba(255,255,255,0.03)] border border-[rgba(74,168,130,0.12)] rounded-2xl p-8">
@@ -47,36 +46,39 @@ export default function Login() {
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-5">
             <div>
-              <label className="block text-[11px] font-semibold uppercase tracking-[1.5px] text-[#7A9A8E] mb-2">Email</label>
+              <label className="block text-[11px] font-semibold uppercase tracking-[1.5px] text-[#A9C3B5] mb-2">Email</label>
               <div className="relative">
-                <Mail size={16} color="#7A9A8E" className="absolute left-4 top-1/2 -translate-y-1/2" />
+                <Mail size={16} color="#A9C3B5" className="absolute left-4 top-1/2 -translate-y-1/2" />
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-11 pr-4 py-3 rounded-xl bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] text-[14px] text-white placeholder:text-[#5A7A6E] focus:outline-none focus:border-[#4AA882] focus:ring-2 focus:ring-[rgba(74,168,130,0.15)] transition-all"
+                  className="w-full pl-11 pr-4 py-3 rounded-xl bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] text-[14px] text-white placeholder:text-[#789487] focus:outline-none focus:border-[#4AA882] focus:ring-2 focus:ring-[rgba(74,168,130,0.15)] transition-all"
                   placeholder="admin@email.com"
+                  autoComplete="username"
                   required
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-[11px] font-semibold uppercase tracking-[1.5px] text-[#7A9A8E] mb-2">Password</label>
+              <label className="block text-[11px] font-semibold uppercase tracking-[1.5px] text-[#A9C3B5] mb-2">Password</label>
               <div className="relative">
-                <Lock size={16} color="#7A9A8E" className="absolute left-4 top-1/2 -translate-y-1/2" />
+                <Lock size={16} color="#A9C3B5" className="absolute left-4 top-1/2 -translate-y-1/2" />
                 <input
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-11 pr-11 py-3 rounded-xl bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] text-[14px] text-white placeholder:text-[#5A7A6E] focus:outline-none focus:border-[#4AA882] focus:ring-2 focus:ring-[rgba(74,168,130,0.15)] transition-all"
+                  className="w-full pl-11 pr-11 py-3 rounded-xl bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] text-[14px] text-white placeholder:text-[#789487] focus:outline-none focus:border-[#4AA882] focus:ring-2 focus:ring-[rgba(74,168,130,0.15)] transition-all"
                   placeholder="Enter your password"
+                  autoComplete="current-password"
                   required
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-[#7A9A8E] hover:text-white transition-colors"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-[#A9C3B5] hover:text-white transition-colors"
                 >
                   {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
@@ -94,14 +96,14 @@ export default function Login() {
           </form>
 
           <div className="mt-6 pt-6 border-t border-[rgba(255,255,255,0.06)] text-center">
-            <a href="/" className="text-[13px] text-[#7A9A8E] hover:text-[#4AA882] transition-colors flex items-center justify-center gap-1.5">
+            <a href="/" className="text-[13px] text-[#A9C3B5] hover:text-[#4AA882] transition-colors flex items-center justify-center gap-1.5">
               <Leaf size={14} />
               Back to website
             </a>
           </div>
         </div>
 
-        <p className="mt-6 text-center text-[12px] text-[#4A6A5E]">
+        <p className="mt-6 text-center text-[12px] text-[#789487]">
           Protected area. Authorized personnel only.
         </p>
       </div>
