@@ -273,3 +273,7 @@ img { display: block; max-width: 100%; }
 .brand-green-btn, .brand-outline-btn { min-height: 48px; border-radius: 999px; transition: transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s, background .35s; }
 .brand-green-btn:hover, .brand-outline-btn:hover { transform: translateY(-3px); }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
+
+
+body, button, input, textarea, select, option { font-family: 'DM Sans', system-ui, sans-serif !important; }
+h1, h2, h3, h4 { font-family: 'Cormorant Garamond', Georgia, serif !important; }
