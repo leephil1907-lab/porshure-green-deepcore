@@ -16,7 +16,6 @@ export default function ImageCarousel() {
   }, []);
   const ordered = useMemo(() => slides.map((_, offset) => (active + offset) % slides.length), [active]);
   const current = slides[active];
-  const CurrentIcon = current.icon;
   const move = (direction: number) => setActive(value => (value + direction + slides.length) % slides.length);
   const imageFor = (index: number) => failed.includes(index) ? slides[index].fallback : slides[index].src;
 
@@ -42,7 +41,7 @@ export default function ImageCarousel() {
           </div>
         </div>
         <div className="grid min-w-0 grid-cols-2 gap-3 lg:grid-cols-1">
-          {ordered.slice(1).map((index, position) => {
+          {ordered.slice(1).map((index) => {
             const item = slides[index];
             const Icon = item.icon;
             return <button key={item.src} type="button" onClick={() => setActive(index)} className="group relative min-h-[150px] min-w-0 overflow-hidden rounded-2xl bg-[#173B2B] text-left sm:min-h-[170px] lg:min-h-0">
