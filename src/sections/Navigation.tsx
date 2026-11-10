@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Menu, X, LogOut, LayoutDashboard, Shield } from 'lucide-react';
-import { useAuth } from '@/hooks/useAuth';\nimport { trpc } from '@/providers/trpc';
+import { useAuth } from '@/hooks/useAuth';
+import { trpc } from '@/providers/trpc';
 
 const navLinks = [
   { label: 'Services', href: '#services' },
@@ -15,7 +16,8 @@ const navLinks = [
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const { isAuthenticated, isAdmin, logout } = useAuth();\n  const { data: siteContent } = trpc.content.get.useQuery();
+  const { isAuthenticated, isAdmin, logout } = useAuth();
+  const { data: siteContent } = trpc.content.get.useQuery();
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
