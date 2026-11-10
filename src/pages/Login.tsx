@@ -3,7 +3,7 @@ import { trpc } from "@/providers/trpc";
 import { Lock, Mail, ArrowRight, Leaf, Eye, EyeOff } from "lucide-react";
 
 export default function Login() {
-  const [email, setEmail] = useState("porshuregreen@gmail.com");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
