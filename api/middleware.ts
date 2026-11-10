@@ -11,7 +11,7 @@ const t = initTRPC.context<TrpcContext>().create({
 export const createRouter = t.router;
 export const publicQuery = t.procedure;
 
-// Admin auth middleware — checks for admin JWT token in cookie or Authorization header
+// Admin auth middleware — validates the signed HTTP-only admin session cookie
 const requireAdmin = t.middleware(async (opts) => {
   const { ctx } = opts;
 
