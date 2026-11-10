@@ -180,10 +180,16 @@ export default function AdminDashboard() {
                               </button>
                             )}
                             {inquiry.status !== 'replied' && (
-                              <button onClick={() => updateStatus.mutate({ id: inquiry.id, status: 'replied' })}
-                                className="p-1.5 rounded-lg hover:bg-[rgba(74,168,130,0.15)] transition-colors" title="Mark as Replied">
-                                <Reply size={14} color="#4AA882" />
-                              </button>
+                              <>
+                                <a href={`mailto:${inquiry.email}?subject=${encodeURIComponent('Re: Your Porshure Green enquiry')}&body=${encodeURIComponent(`Hello ${inquiry.fullName},\\n\\nThank you for contacting Porshure Green.\\n\\n\\nKind regards,\\nPorshure Green\\n`)}`}
+                                  className="p-1.5 rounded-lg hover:bg-[rgba(74,168,130,0.15)] transition-colors" title="Reply by email">
+                                  <Reply size={14} color="#4AA882" />
+                                </a>
+                                <button onClick={() => updateStatus.mutate({ id: inquiry.id, status: 'replied' })}
+                                  className="p-1.5 rounded-lg hover:bg-[rgba(74,168,130,0.15)] transition-colors" title="Mark as Replied">
+                                  <CheckCircle size={14} color="#4AA882" />
+                                </button>
+                              </>
                             )}
                             {inquiry.status !== 'archived' && (
                               <button onClick={() => updateStatus.mutate({ id: inquiry.id, status: 'archived' })}
