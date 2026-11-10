@@ -56,11 +56,14 @@ export default function HeroCarousel() {
 
   useEffect(() => {
     const container = containerRef.current;
-    if (!container) return;
+    if (!container || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.domElement.style.position = "absolute";
+    renderer.domElement.style.inset = "0";
+    renderer.domElement.style.zIndex = "1";
     container.appendChild(renderer.domElement);
 
     const scene = new THREE.Scene();
@@ -140,6 +143,8 @@ export default function HeroCarousel() {
   }, []);
 
   return (
-    <div ref={containerRef} aria-hidden="true" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 0 }} />
+    <div ref={containerRef} aria-hidden="true" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 0 }}>
+      <img src="/images/hero-main.jpg" alt="" className="h-full w-full object-cover" style={{ position: "absolute", inset: 0 }} />
+    </div>
   );
 }
