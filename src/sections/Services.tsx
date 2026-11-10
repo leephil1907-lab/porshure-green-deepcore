@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { motion } from 'framer-motion';
-import { FileText, Merge, PenTool, Signature, ArrowUpRight, Zap, Shield, Clock } from 'lucide-react';
+import { FileText, Merge, PenTool, Signature, ArrowUpRight, ClipboardCheck, MessageCircle, FolderCheck } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -10,32 +10,32 @@ const services = [
   {
     icon: FileText,
     title: 'Convert to PDF',
-    desc: 'Transform any document format into clean, universally compatible PDFs. We handle scans, images, Word files, and more — delivering perfectly formatted outputs every time.',
-    features: ['Multi-format input', 'OCR text extraction', 'Compressed output'],
+    desc: 'Convert supported Word files, images and scans into clean, easy-to-share PDFs. We confirm file requirements before starting.',
+    features: ['PDF conversion', 'File review', 'Output checks'],
     color: '#3DDC84',
     bg: 'rgba(61, 220, 132, 0.06)',
   },
   {
     icon: Merge,
     title: 'Merge Documents',
-    desc: 'Combine multiple files into a single, organized master document. We add bookmarks, table of contents, and proper page numbering for seamless navigation.',
-    features: ['Smart ordering', 'Auto bookmarks', 'Page numbering'],
+    desc: 'Combine multiple files into one clearly ordered document, with page arrangement based on your instructions.',
+    features: ['File arrangement', 'Page order', 'Combined PDF'],
     color: '#6C8F5A',
     bg: 'rgba(108, 143, 90, 0.06)',
   },
   {
     icon: PenTool,
     title: 'Editor Tools',
-    desc: 'Clean up, format, and polish your documents. We redact sensitive info, adjust layouts, add annotations, and ensure every page meets professional standards.',
-    features: ['Redaction', 'Layout formatting', 'Annotation cleanup'],
+    desc: 'Improve document layout, consistency and readability through formatting and agreed editing tasks.',
+    features: ['Layout formatting', 'Text cleanup', 'Readability review'],
     color: '#1A1A2E',
     bg: 'rgba(26, 26, 46, 0.04)',
   },
   {
     icon: Signature,
     title: 'Digital Signature Setup',
-    desc: 'Prepare documents for legally binding digital execution. We configure signature fields, routing workflows, and compliance-ready document packages.',
-    features: ['Signature fields', 'Routing setup', 'Legal compliance'],
+    desc: 'Prepare signature-ready files and organize the documents needed for your chosen signing process. Legal validity and signing requirements depend on the platform and jurisdiction.',
+    features: ['Signature-ready layout', 'Field placement', 'File organization'],
     color: '#3DDC84',
     bg: 'rgba(61, 220, 132, 0.06)',
   },
@@ -71,8 +71,7 @@ export default function Services() {
           <span className="brand-label mb-4 inline-block">What We Do</span>
           <h2 className="brand-heading-lg mb-4">Document Services, <span style={{ color: '#3DDC84' }}>Refined</span></h2>
           <p className="brand-body max-w-lg mx-auto">
-            Four core capabilities designed to handle every aspect of your document workflow —
-            from conversion to compliance-ready delivery.
+            Practical document preparation and file organization for personal, professional and business needs.
           </p>
         </div>
 
@@ -150,9 +149,9 @@ export default function Services() {
           className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-4"
         >
           {[
-            { icon: Zap, title: 'Lightning Fast', desc: 'Under 2-hour turnaround on most documents', color: '#3DDC84' },
-            { icon: Shield, title: 'Bank-Level Security', desc: 'AES-256 encryption for all file transfers', color: '#6C8F5A' },
-            { icon: Clock, title: 'Always Available', desc: '24/7 support via WhatsApp, Email & iMessage', color: '#3B8FD9' },
+            { icon: ClipboardCheck, title: 'Clear scope', desc: 'We confirm the requested work before it begins', color: '#3DDC84' },
+            { icon: FolderCheck, title: 'Organized delivery', desc: 'Files arranged to match the agreed requirements', color: '#6C8F5A' },
+            { icon: MessageCircle, title: 'Direct communication', desc: 'Updates through your agreed contact channel', color: '#3B8FD9' },
           ].map((item) => (
             <motion.div
               key={item.title}
