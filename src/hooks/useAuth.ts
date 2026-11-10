@@ -11,8 +11,7 @@ export function useAuth() {
 
   const logoutMutation = trpc.login.logout.useMutation({
     onSuccess: () => {
-      localStorage.removeItem("admin_token");
-      utils.invalidate();
+        utils.invalidate();
       window.location.href = "/login";
     },
   });
