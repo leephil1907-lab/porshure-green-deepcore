@@ -39,7 +39,7 @@
   input,select,textarea { max-width:100%; min-width:0; }
   * { @apply border-border; }
   h1,h2,h3,h4 { font-family: 'Manrope', sans-serif; font-weight: 700; line-height: 1.12; letter-spacing: -.04em; }
-  img { display: block; max-width: 100%; }
+  img, video, svg { max-width: 100%; }\nimg { display: block; height: auto; }\n#root { width: 100%; min-width: 0; overflow-x: clip; }\nmain, section, header, footer, nav, article, .container-brand { min-width: 0; }\nbutton, a { max-width: 100%; }
   a,button { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
   :focus-visible { outline: 3px solid rgba(67,132,95,.65); outline-offset: 3px; }
 }
