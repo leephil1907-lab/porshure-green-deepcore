@@ -68,7 +68,8 @@
   .brand-heading-xl { font-size:clamp(2rem,9vw,2.8rem); }
   .brand-heading-lg { font-size:clamp(1.65rem,7vw,2.25rem); }
   img,video,svg { max-width:100%; }
-  .invoice-item-row { grid-template-columns:minmax(0,1fr) 58px 82px 26px; gap:6px; }
+  .invoice-item-row { grid-template-columns:minmax(0,1fr) minmax(0,1fr) 28px; gap:8px; }
+  .invoice-item-row > label:first-child { grid-column:1 / -1; }
   .admin-topbar { min-height:64px; height:auto; padding-block:10px; }
   .admin-content { padding-inline:16px; }
   .admin-user-email { display:none; }
