@@ -13,7 +13,7 @@ export default function AdminDashboard() {
   const navigate = useNavigate();
   const { user, isAuthenticated, isAdmin, isLoading, logout } = useAuth();
   const { data: siteContent, refetch: refetchContent } = trpc.content.get.useQuery();
-  const [contentForm, setContentForm] = useState({ heroHeadline: 'Organized with clarity', heroSubtitle: 'Premium document preparation, formatting, and submission services. From paperwork to peace of mind — fast, confidential, and professional.', contactPhone: '+1 (814) 791-5478', whatsappPhone: '+1 (814) 791-5478', contactEmail: 'porshuregreen@gmail.com', footerDescription: 'Secure document support, organized with clarity. Professional preparation, formatting, and submission services you can trust.', announcement: '' });
+  const [contentForm, setContentForm] = useState({ heroHeadline: 'Professional Document Preparation, Formatting & Submission—Without the Stress.', heroSubtitle: 'Porshure Green helps individuals, professionals, students, and businesses worldwide prepare polished, accurate, submission-ready documents with careful handling and dependable support.', contactPhone: '+1 (814) 791-5478', whatsappPhone: '+1 (814) 791-5478', contactEmail: 'porshuregreen@gmail.com', footerDescription: 'Professional document preparation, formatting and submission support for individuals, professionals and businesses worldwide.', announcement: '' });
   useEffect(() => { if (siteContent) setContentForm((current) => ({ ...current, ...siteContent })); }, [siteContent]);
   const saveContent = trpc.content.update.useMutation({ onSuccess: () => refetchContent() });
 
