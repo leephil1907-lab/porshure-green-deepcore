@@ -21,7 +21,7 @@ const requireAdmin = t.middleware(async (opts) => {
   let token = cookieMatch ? cookieMatch[1] : null;
 
   // Fallback to Authorization header
-  if (!token) {
+  if (!token || ADMIN_JWT_SECRET.length < 32) {
     const authHeader = ctx.req.headers.get("authorization") || "";
     const bearerMatch = authHeader.match(/^Bearer\s+(.+)$/);
     token = bearerMatch ? bearerMatch[1] : null;
