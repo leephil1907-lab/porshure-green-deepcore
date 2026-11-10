@@ -38,6 +38,7 @@ export default function Navigation() {
         ? 'bg-[#FFF8ED]/95 backdrop-blur-xl shadow-[0_1px_0_rgba(26,26,46,0.06)]'
         : 'bg-transparent'
     }`}>
+      {siteContent?.announcement && <div className="bg-[#14231D] px-4 py-2 text-center text-[11px] font-medium tracking-wide text-[#A8EAC4]">{siteContent.announcement}</div>}
       <div className="container-brand h-18 flex items-center justify-between" style={{ height: '72px' }}>
         <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
           className="flex items-center gap-3 group">
