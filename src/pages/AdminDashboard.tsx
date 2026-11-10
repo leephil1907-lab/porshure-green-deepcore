@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useAuth } from '@/hooks/useAuth';
 import { trpc } from '@/providers/trpc';
@@ -10,7 +10,11 @@ import {
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
-  const { isAuthenticated, isAdmin, isLoading, logout } = useAuth();
+  const { user, isAuthenticated, isAdmin, isLoading, logout } = useAuth();
+  const { data: siteContent, refetch: refetchContent } = trpc.content.get.useQuery();
+  const [contentForm, setContentForm] = useState({ heroHeadline: 'Organized with clarity', heroSubtitle: 'Premium document preparation, formatting, and submission services. From paperwork to peace of mind — fast, confidential, and professional.', contactPhone: '', whatsappPhone: '', contactEmail: 'porshuregreen@gmail.com', footerDescription: 'Secure document support, organized with clarity. Professional preparation, formatting, and submission services you can trust.', announcement: '' });
+  useEffect(() => { if (siteContent) setContentForm((current) => ({ ...current, ...siteContent })); }, [siteContent]);
+  const saveContent = trpc.content.update.useMutation({ onSuccess: () => refetchContent() });
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
@@ -70,7 +74,7 @@ export default function AdminDashboard() {
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
             <User size={14} color="#7A9A8E" />
-            <span className="text-[13px] text-[#7A9A8E]">porshuregreen@gmail.com</span>
+            <span className="text-[13px] text-[#7A9A8E]">{user?.email || 'Administrator'}</span>
           </div>
           <span className="px-2 py-0.5 rounded-full bg-[rgba(74,168,130,0.15)] text-[10px] font-semibold uppercase tracking-wider text-[#4AA882]">Admin</span>
           <button onClick={logout} className="flex items-center gap-1.5 text-[12px] text-[#7A9A8E] hover:text-white transition-colors">
@@ -81,6 +85,15 @@ export default function AdminDashboard() {
       </header>
 
       <div className="max-w-[1400px] mx-auto px-6 py-8">
+        <section className="mb-10 rounded-2xl border border-[rgba(74,168,130,0.16)] bg-[rgba(255,255,255,0.035)] p-6 md:p-8">
+          <div className="mb-6"><p className="mb-1 text-[10px] font-semibold uppercase tracking-[.2em] text-[#4AA882]">Content management</p><h2 className="text-xl font-semibold text-white">Website content</h2><p className="mt-1 text-sm text-[#7A9A8E]">Edit the homepage copy and contact details shown on the public website.</p></div>
+          <form onSubmit={(event) => { event.preventDefault(); saveContent.mutate(contentForm); }} className="grid gap-5 md:grid-cols-2">
+            {([['heroHeadline','Homepage headline'],['heroSubtitle','Homepage introduction'],['contactPhone','Telephone number'],['whatsappPhone','WhatsApp number'],['contactEmail','Contact email'],['footerDescription','Footer description'],['announcement','Announcement banner']] as const).map(([key,label]) => <label key={key} className="flex flex-col gap-2 text-xs font-medium text-[#A7BDB2]">{label}{key === 'heroSubtitle' || key === 'footerDescription' || key === 'announcement' ? <textarea value={contentForm[key]} onChange={(event) => setContentForm((current) => ({ ...current, [key]: event.target.value }))} rows={key === 'announcement' ? 2 : 3} className="w-full rounded-xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white outline-none transition focus:border-[#4AA882]" /> : <input value={contentForm[key]} onChange={(event) => setContentForm((current) => ({ ...current, [key]: event.target.value }))} className="w-full rounded-xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white outline-none transition focus:border-[#4AA882]" />}</label>)}
+            <div className="flex items-center justify-between gap-3 md:col-span-2"><p className="text-xs text-[#7A9A8E]">Leave phone fields blank to hide those contact actions.</p><button type="submit" disabled={saveContent.isPending} className="rounded-full bg-[#3DDC84] px-6 py-3 text-xs font-bold uppercase tracking-wider text-[#14231D] transition hover:-translate-y-0.5 disabled:opacity-50">{saveContent.isPending ? 'Saving…' : 'Save website changes'}</button></div>
+            {saveContent.error && <p role="alert" className="text-sm text-red-300 md:col-span-2">{saveContent.error.message}</p>}{saveContent.isSuccess && <p className="text-sm text-[#8FE4B4] md:col-span-2">Website content saved.</p>}
+          </form>
+        </section>
+
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
           {[
             { label: 'Total', value: stats?.total ?? 0, icon: Inbox, color: '#4AA882' },
