@@ -11,7 +11,7 @@ export default function Hero() {
       className="relative overflow-hidden pb-4 md:pb-6 lg:pb-8"
       style={{ backgroundColor: '#FFF9F0' }}
     >
-      <div className="container-brand pt-24 md:pt-28 pb-8 md:pb-10 px-4 md:px-6 lg:px-8">
+      <div className="container-brand pt-24 md:pt-28 pb-8 md:pb-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-7 md:gap-9 lg:gap-11 items-center">
           <div className="max-w-2xl lg:max-w-xl mx-auto lg:mx-0 w-full">
             <div className="stamp-mark mb-5 inline-flex items-center">
