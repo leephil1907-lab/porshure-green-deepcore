@@ -5,7 +5,6 @@ import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 import { appRouter } from "./router.js";
 import { createContext } from "./context.js";
 import { createOAuthCallbackHandler } from "./kimi/auth.js";
-import { Paths } from "@contracts/constants";
 
 const app = new Hono<{ Bindings: HttpBindings }>();
 
@@ -17,7 +16,7 @@ app.get("/api/health", (c) =>
   c.json({ ok: true, service: "porshure-green-api" }),
 );
 
-app.get(Paths.oauthCallback, createOAuthCallbackHandler());
+app.get("/api/oauth/callback", createOAuthCallbackHandler());
 
 app.use("/api/trpc/*", async (c) => {
   return fetchRequestHandler({
