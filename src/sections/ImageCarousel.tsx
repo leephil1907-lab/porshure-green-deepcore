@@ -18,14 +18,14 @@ export default function ImageCarousel() {
   const Icon = slide.icon;
   const move = (direction: number) => setActive((value) => (value + direction + slides.length) % slides.length);
   return (
-    <section className="container-brand py-8 md:py-12">
-      <div className="relative isolate min-h-[330px] overflow-hidden rounded-[26px] bg-[#173B2B] shadow-[0_24px_70px_rgba(23,59,43,.16)] md:min-h-[390px]">
+    <section className="container-brand min-w-0 py-6 md:py-12">
+      <div className="relative isolate min-h-[340px] w-full min-w-0 overflow-hidden rounded-[22px] bg-[#173B2B] shadow-[0_24px_70px_rgba(23,59,43,.16)] sm:rounded-[26px] md:min-h-[390px]">
         {slides.map((item, index) => <img key={item.src} src={failed.includes(index) ? item.fallback : item.src} onError={() => setFailed(current => current.includes(index) ? current : [...current,index])} alt={item.title} loading={index===0?'eager':'lazy'} className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ${index === active ? 'opacity-55' : 'opacity-0'}`} />)}
         <div className="absolute inset-0 bg-gradient-to-r from-[#10271D]/95 via-[#10271D]/75 to-[#10271D]/10" />
-        <div key={active} className="relative z-10 flex min-h-[330px] max-w-2xl flex-col justify-center px-7 py-12 text-white motion-safe:animate-[fadeIn_.5s_ease-out] md:min-h-[390px] md:px-14">
+        <div key={active} className="relative z-10 flex min-h-[340px] w-full max-w-2xl flex-col justify-center px-5 py-9 text-white motion-safe:animate-[fadeIn_.5s_ease-out] sm:px-7 sm:py-12 md:min-h-[390px] md:px-14">
           <span className="mb-5 inline-flex w-fit items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[.18em]"><Icon size={14}/>{slide.eyebrow}</span>
-          <h2 className="max-w-xl font-[Manrope] text-3xl font-extrabold leading-[1.08] tracking-[-.05em] md:text-5xl">{slide.title}</h2>
-          <p className="mt-5 max-w-lg text-sm leading-7 text-white/75 md:text-base">{slide.copy}</p>
+          <h2 className="max-w-xl break-words font-[Manrope] text-[clamp(1.65rem,7vw,2.25rem)] font-extrabold leading-[1.08] tracking-[-.05em] md:text-5xl">{slide.title}</h2>
+          <p className="mt-4 max-w-lg text-sm leading-6 text-white/75 md:mt-5 md:text-base md:leading-7">{slide.copy}</p>
           <div className="mt-8 flex items-center gap-3">
             <button type="button" aria-label="Previous image" onClick={() => move(-1)} className="flex h-10 w-10 items-center justify-center rounded-full border border-white/30 bg-white/10 transition hover:bg-white/20"><ArrowLeft size={17}/></button>
             <button type="button" aria-label="Next image" onClick={() => move(1)} className="flex h-10 w-10 items-center justify-center rounded-full border border-white/30 bg-white/10 transition hover:bg-white/20"><ArrowRight size={17}/></button>
