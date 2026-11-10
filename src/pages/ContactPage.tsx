@@ -8,11 +8,11 @@ export default function ContactPage() {
   const email = data?.contactEmail?.trim() || 'porshuregreen@gmail.com';
   const phone = data?.contactPhone?.trim() || '+1 (814) 791-5478';
   const whatsapp = data?.whatsappPhone?.trim() || '+1 (814) 791-5478';
-  const digits = (value: string) => value.replace(/\\D/g, '');
+  const digits = (value: string) => value.replace(/\D/g, '');
   const items = [
     { title: 'WhatsApp', detail: 'Chat with our team', icon: MessageCircle, href: 'https://wa.me/' + digits(whatsapp), color: '#238A58' },
     { title: 'Email', detail: email, icon: Mail, href: 'mailto:' + email, color: '#238A58' },
-    { title: 'Phone', detail: phone, icon: Phone, href: 'tel:' + phone.replace(/[^+\\d]/g, ''), color: '#238A58' },
+    { title: 'Phone', detail: phone, icon: Phone, href: 'tel:' + phone.replace(/[^+\d]/g, ''), color: '#238A58' },
   ];
   return (
     <div className="min-h-screen bg-[#FFF9F0]">
