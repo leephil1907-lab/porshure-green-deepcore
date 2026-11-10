@@ -6,7 +6,7 @@ import HeroCarousel from './HeroCarousel';
 
 export default function Hero() {
   const { data: siteContent } = trpc.content.get.useQuery();
-  const sectionRef = useRef<HTMLSection>(null);
+  const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
