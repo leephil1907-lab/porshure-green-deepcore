@@ -2,7 +2,7 @@
   "version": 2,
   "builds": [
     {
-      "src": "api/boot.ts",
+      "src": "api/vercel.ts",
       "use": "@vercel/node"
     },
     {
@@ -16,7 +16,7 @@
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "/api/boot.ts"
+      "dest": "/api/vercel.ts"
     },
     {
       "src": "/assets/(.*)",
@@ -32,6 +32,7 @@
     }
   ],
   "env": {
-    "NODE_ENV": "production"
+    "NODE_ENV": "production",
+    "NODEJS_HELPERS": "0"
   }
 }
