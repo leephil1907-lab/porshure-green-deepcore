@@ -1,6 +1,7 @@
-// Vercel executes this Hono application as a serverless function.
-// Keep this entry point free of process listeners and filesystem-based
-// static serving; Vercel serves the frontend assets from its CDN.
+// Vercel's Node runtime expects a Node.js request/response handler.
+// Adapt Hono's Fetch-based app through the official Node server adapter.
+// Static assets remain served by Vercel's CDN via vercel.json routes.
+import { getRequestListener } from "@hono/node-server";
 import app from "./app.js";
 
-export default app;
+export default getRequestListener(app.fetch);
