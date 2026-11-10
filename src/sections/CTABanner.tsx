@@ -6,6 +6,7 @@ import { ArrowRight, FileCheck, Clock, Shield } from 'lucide-react';
 gsap.registerPlugin(ScrollTrigger);
 
 export default function CTABanner() {
+  const { data: siteContent } = trpc.content.get.useQuery();
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -52,7 +53,7 @@ export default function CTABanner() {
               Start Your Upload
               <ArrowRight size={15} />
             </a>
-            <a href="https://wa.me/14155345986" target="_blank" rel="noopener noreferrer"
+            <a href={siteContent?.whatsappPhone ? `https://wa.me/${siteContent.whatsappPhone.replace(/\D/g, "")}` : "#contact"} target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl text-[13px] font-semibold uppercase tracking-wider transition-all duration-300 hover:shadow-xl"
               style={{ background: 'rgba(255,255,255,0.15)', color: 'white', border: '1px solid rgba(255,255,255,0.2)' }}>
               WhatsApp Us
