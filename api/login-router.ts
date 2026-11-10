@@ -14,7 +14,7 @@ export const loginRouter = createRouter({
       })
     )
     .mutation(async ({ input, ctx }) => {
-      if (input.email !== ADMIN_EMAIL) {
+      if (!ADMIN_EMAIL || !ADMIN_PASSWORD_HASH || ADMIN_JWT_SECRET.length < 32) {\n        throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Administrator authentication is not configured." });\n      }\n      if (input.email !== ADMIN_EMAIL) {
         throw new TRPCError({ code: "UNAUTHORIZED", message: "Invalid email or password" });
       }
 
@@ -37,7 +37,7 @@ export const loginRouter = createRouter({
         }`
       );
 
-      return { success: true, token };
+      return { success: true };
     }),
 
   me: publicQuery.query(async ({ ctx }) => {
