@@ -34,6 +34,9 @@ export const contentRouter = createRouter({
       return {
         ...defaultSiteContent,
         ...saved,
+        heroHeadline: saved.heroHeadline && saved.heroHeadline !== 'Organized with clarity' ? saved.heroHeadline : defaultSiteContent.heroHeadline,
+        heroSubtitle: saved.heroSubtitle && !saved.heroSubtitle.startsWith('Premium document preparation, formatting, and submission services.') ? saved.heroSubtitle : defaultSiteContent.heroSubtitle,
+        footerDescription: saved.footerDescription && !saved.footerDescription.startsWith('Secure document support, organized with clarity.') ? saved.footerDescription : defaultSiteContent.footerDescription,
         contactPhone: saved.contactPhone && saved.contactPhone.replace(/\D/g, "") !== "14155345986" ? saved.contactPhone : defaultSiteContent.contactPhone,
         whatsappPhone: saved.whatsappPhone && saved.whatsappPhone.replace(/\D/g, "") !== "14155345986" ? saved.whatsappPhone : defaultSiteContent.whatsappPhone,
         contactEmail: saved.contactEmail || defaultSiteContent.contactEmail,
