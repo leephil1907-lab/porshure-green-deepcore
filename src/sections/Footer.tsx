@@ -1,4 +1,4 @@
-import { Mail, Phone, ArrowUpRight, MapPin, Clock3 } from 'lucide-react';
+import { Mail, Phone, ArrowUpRight, Clock3 } from 'lucide-react';
 import { Link } from 'react-router';
 import { trpc } from '@/providers/trpc';
 import BrandLogo from './BrandLogo';
