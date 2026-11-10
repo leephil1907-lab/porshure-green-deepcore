@@ -6,9 +6,9 @@ import { Lock, Timer, ShieldCheck } from 'lucide-react';
 gsap.registerPlugin(ScrollTrigger);
 
 const features = [
-  { icon: Lock, title: 'End-to-End Encryption', desc: 'All files are encrypted in transit using TLS 1.3 and at rest with AES-256 bit encryption. Your data is never exposed.' },
-  { icon: Timer, title: 'Auto-Destruction', desc: "Once your service is completed and delivered, all original and processed files are permanently purged from our servers within 14 days." },
-  { icon: ShieldCheck, title: 'Strict Compliance', desc: 'Our workflows adhere to strict data protection regulations, ensuring your personal and business records are handled legally and securely.' },
+  { icon: Lock, title: 'Thoughtful handling', desc: 'We ask you to share only the files and information needed for the agreed document task.' },
+  { icon: Timer, title: 'Clear expectations', desc: 'We confirm the expected turnaround and deliverables with you before work begins.' },
+  { icon: ShieldCheck, title: 'Respect for privacy', desc: 'Your documents are treated with care. Contact us before sharing highly sensitive records so we can explain the handling process.' },
 ];
 
 export default function Security() {
@@ -38,11 +38,11 @@ export default function Security() {
         <div ref={headerRef} className="text-center mb-16">
           <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[rgba(74,168,130,0.12)] border border-[rgba(74,168,130,0.2)] mb-5">
             <ShieldCheck size={12} color="#4AA882" />
-            <span className="text-[11px] font-semibold uppercase tracking-[2px] text-[#4AA882]">Zero-Trust Architecture</span>
+            <span className="text-[11px] font-semibold uppercase tracking-[2px] text-[#4AA882]">Our approach</span>
           </span>
-          <h2 className="text-[clamp(28px,4vw,42px)] font-bold text-white leading-[1.15] tracking-tight">Uncompromising Security</h2>
+          <h2 className="text-[clamp(28px,4vw,42px)] font-bold text-white leading-[1.15] tracking-tight">Careful Document Handling</h2>
           <p className="mt-4 text-[16px] font-light text-[#7A9A8E] max-w-[600px] mx-auto leading-relaxed">
-            Your documents contain sensitive information. Our entire infrastructure is designed around protecting your privacy with military-grade encryption and strict access protocols.
+            Your documents may contain personal or business information. We focus on clear communication, careful handling and requesting only the information needed for the agreed work.
           </p>
         </div>
         <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-3 gap-6">
