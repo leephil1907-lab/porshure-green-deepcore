@@ -53,6 +53,7 @@ export const loginRouter = createRouter({
 
     try {
       const { payload } = await jwtVerify(token, ADMIN_JWT_SECRET, { clockTolerance: 60 });
+      if (payload.role !== "admin" || payload.email !== ADMIN_EMAIL) return null;
       return { email: payload.email as string, role: payload.role as string };
     } catch {
       return null;
@@ -62,7 +63,7 @@ export const loginRouter = createRouter({
   logout: publicQuery.mutation(async ({ ctx }) => {
     ctx.resHeaders.append(
       "set-cookie",
-      `${ADMIN_TOKEN_COOKIE}=; HttpOnly; Path=/; Max-Age=0; SameSite=Lax`
+      `${ADMIN_TOKEN_COOKIE}=; HttpOnly; Path=/; Max-Age=0; SameSite=Lax${process.env.NODE_ENV === "production" ? "; Secure" : ""}`
     );
     return { success: true };
   }),
