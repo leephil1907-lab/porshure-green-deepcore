@@ -31,13 +31,13 @@ export default function Navigation() {
       <div className="container-brand flex h-[76px] items-center justify-between">
         <BrandLogo />
         <nav aria-label="Main navigation" className="hidden items-center gap-8 md:flex">
-          {navLinks.map((link) => <Link key={link.href} to={link.href} className={`text-[13px] font-semibold transition-colors hover:text-[#43845F] ${location.pathname === link.href ? 'text-[#285B3C]' : 'text-[#657269]'}`}>{link.label}</Link>)}
+          {navLinks.map((link) => <Link key={link.href} to={link.href} className={`text-[14px] font-semibold transition-colors hover:text-[#43845F] ${location.pathname === link.href ? 'text-[#285B3C]' : 'text-[#657269]'}`}>{link.label}</Link>)}
         </nav>
-        <Link to="/contact" className="hidden min-h-11 items-center gap-2 rounded-full bg-[#244D36] px-5 text-[12px] font-semibold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-[#326648] md:inline-flex">Get in touch <ArrowUpRight size={15}/></Link>
+        <Link to="/contact" className="hidden min-h-11 items-center gap-2 rounded-full bg-[#244D36] px-5 text-[13px] font-semibold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-[#326648] md:inline-flex">Get in touch <ArrowUpRight size={15}/></Link>
         <button type="button" aria-label={isMobileOpen ? 'Close menu' : 'Open menu'} aria-expanded={isMobileOpen} className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#dfe6dc] text-[#234331] md:hidden" onClick={() => setIsMobileOpen(!isMobileOpen)}>{isMobileOpen ? <X size={20}/> : <Menu size={20}/>}</button>
       </div>
       {isMobileOpen && <nav aria-label="Mobile navigation" className="border-t border-[#e8e9df] bg-[#FFF9F0] px-5 pb-6 pt-3 shadow-xl md:hidden">
-        {navLinks.map((link) => <Link key={link.href} to={link.href} className="block border-b border-[#e9ece4] py-4 text-[15px] font-medium text-[#294536]">{link.label}</Link>)}
+        {navLinks.map((link) => <Link key={link.href} to={link.href} className="block border-b border-[#e9ece4] py-4 text-[16px] font-medium text-[#294536]">{link.label}</Link>)}
         <Link to="/contact" className="mt-5 flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#244D36] text-sm font-semibold text-white">Get in touch <ArrowUpRight size={16}/></Link>
       </nav>}
     </header>
