@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -45,7 +45,7 @@
   }
 
   body {
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: 'DM Sans', system-ui, sans-serif;
     background-color: var(--cream);
     color: var(--ink);
     -webkit-font-smoothing: antialiased;
@@ -59,7 +59,7 @@
   }
 
   h1, h2, h3, h4 {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: 'Cormorant Garamond', Georgia, serif;
     font-weight: 600;
     line-height: 1.15;
     letter-spacing: -0.02em;
@@ -68,7 +68,7 @@
 
 @layer components {
   .brand-heading-xl {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: 'Cormorant Garamond', Georgia, serif;
     font-size: clamp(2.5rem, 5.5vw, 4.5rem);
     font-weight: 700;
     line-height: 1.08;
@@ -77,7 +77,7 @@
   }
 
   .brand-heading-lg {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: 'Cormorant Garamond', Georgia, serif;
     font-size: clamp(2rem, 4vw, 3.25rem);
     font-weight: 600;
     line-height: 1.12;
@@ -86,7 +86,7 @@
   }
 
   .brand-heading-md {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: 'Cormorant Garamond', Georgia, serif;
     font-size: clamp(1.5rem, 2.5vw, 2rem);
     font-weight: 600;
     line-height: 1.2;
@@ -95,7 +95,7 @@
   }
 
   .brand-body {
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: 'DM Sans', system-ui, sans-serif;
     font-size: 1.0625rem;
     font-weight: 400;
     line-height: 1.7;
@@ -103,7 +103,7 @@
   }
 
   .brand-label {
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: 'DM Sans', system-ui, sans-serif;
     font-size: 0.6875rem;
     font-weight: 600;
     text-transform: uppercase;
@@ -118,7 +118,7 @@
     padding: 0.875rem 2rem;
     background: var(--green);
     color: var(--ink);
-    font-family: 'Inter', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     font-size: 0.8125rem;
     font-weight: 600;
     text-transform: uppercase;
@@ -142,7 +142,7 @@
     padding: 0.875rem 2rem;
     background: transparent;
     color: var(--ink);
-    font-family: 'Inter', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     font-size: 0.8125rem;
     font-weight: 600;
     text-transform: uppercase;
@@ -255,3 +255,21 @@
 .animate-fade-in {
   animation: fade-in 0.6s ease-out forwards;
 }
+
+
+/* Premium motion and responsive polish */
+:root { color-scheme: light; }
+html { scroll-padding-top: 88px; }
+body { letter-spacing: -0.012em; }
+::selection { background: rgba(61,220,132,.28); color: #14251d; }
+a, button { -webkit-tap-highlight-color: transparent; }
+button, a { touch-action: manipulation; }
+img { display: block; max-width: 100%; }
+:focus-visible { outline: 3px solid rgba(61,220,132,.75); outline-offset: 3px; }
+.section-padding { padding-block: clamp(4rem, 8vw, 7.5rem); }
+.container-brand { width: min(100% - 2.5rem, 1320px); }
+.paper-card { border-radius: 1.35rem; box-shadow: 0 10px 35px rgba(26,26,46,.055); }
+.paper-card:hover { transform: translateY(-7px); box-shadow: 0 24px 60px rgba(26,26,46,.11); }
+.brand-green-btn, .brand-outline-btn { min-height: 48px; border-radius: 999px; transition: transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s, background .35s; }
+.brand-green-btn:hover, .brand-outline-btn:hover { transform: translateY(-3px); }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
