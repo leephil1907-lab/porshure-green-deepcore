@@ -1,15 +1,15 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Leaf, Shield, Clock, Users } from 'lucide-react';
+import { FileCheck, Shield, MessageCircle, FolderCheck } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const highlights = [
-  { icon: Leaf, label: 'Carbon Neutral Certified' },
-  { icon: Shield, label: 'SOC 2 Type II' },
-  { icon: Clock, label: '24/7 Support' },
-  { icon: Users, label: '120+ Experts' },
+  { icon: FileCheck, label: 'Document preparation' },
+  { icon: Shield, label: 'Careful handling' },
+  { icon: MessageCircle, label: 'Direct communication' },
+  { icon: FolderCheck, label: 'Organized files' },
 ];
 
 export default function About() {
@@ -58,17 +58,17 @@ export default function About() {
         <div ref={textRef}>
           <span className="inline-block text-[11px] font-semibold uppercase tracking-[3px] text-[#4AA882] mb-4">About Us</span>
           <h2 className="text-[clamp(28px,4vw,42px)] font-bold text-[#1A2E28] leading-[1.15] tracking-tight mb-6">
-            Rooted in Innovation,<br />Committed to Sustainability
+            Document Support Built Around Clarity
           </h2>
           <p className="text-[16px] font-light text-[#5A7A6E] leading-[1.7] mb-5">
-            Founded in 2018, Porshure Green was born from a simple belief: document management shouldn't cost the earth. We've helped over 500 organizations eliminate paper waste, reduce storage costs by 70%, and reclaim thousands of hours previously lost to manual document handling.
+            Porshure Green helps individuals, professionals and businesses worldwide prepare, format and organize important documents. Our focus is practical support: understanding the task, agreeing the scope and returning clear, usable files.
           </p>
           <p className="text-[16px] font-light text-[#5A7A6E] leading-[1.7] mb-8">
-            Our team of 120+ experts combines deep expertise in document management, AI/ML, information security, and environmental sustainability. We're proud to be carbon-neutral certified and maintain SOC 2 Type II compliance.
+            Every request is different. We communicate what is included, what information is needed and the expected turnaround before work begins. For tasks that require official approval or third-party submission, we make the limits of our role clear.
           </p>
-          <a href="#contact" onClick={(e) => { e.preventDefault(); document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' }); }}
+          <a href="/contact"
             className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-[13px] font-semibold uppercase tracking-[1.5px] border-2 border-[#4AA882] text-[#4AA882] hover:bg-[#4AA882] hover:text-white transition-all duration-300">
-            Meet Our Team
+            Contact Porshure Green
           </a>
         </div>
       </div>
