@@ -107,7 +107,7 @@ export default function DocumentSamples() {
   const current = active === null ? null : categories[active];
 
   return (
-    <section id="samples" ref={sectionRef} className="section-padding" style={{ backgroundColor: '#FFF9F0' }}>
+    <section id="samples" ref={sectionRef} className="section-padding" style={{ backgroundColor: '#FFF9F0', paddingTop: 'clamp(1.1rem,1.8vw,1.6rem)' }}>
       <div className="container-brand">
         <div className="samples-header text-center mb-12 reveal">
           <span className="brand-label mb-4 inline-block">Document Library</span>
