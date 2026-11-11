@@ -10,6 +10,11 @@ import ProofStrip from '@/sections/ProofStrip';
 import CTABanner from '@/sections/CTABanner';
 import Footer from '@/sections/Footer';
 
+import { trpc } from '@/providers/trpc';
+
 export default function Home() {
-  return <div className="min-h-screen overflow-x-clip bg-[#FFF9F0]"><Navigation/><main className="min-w-0"><Hero/><ImageCarousel/><TrustedBy/><FeaturedServices/><HomeProcess/><ReviewWall/><ProofStrip/><DeskNote/><CTABanner/></main><Footer/></div>;
+  const { data: siteContent } = trpc.content.get.useQuery();
+  const showsReviews = siteContent?.showReviewWall !== false;
+  const showsProof = siteContent?.showProofStrip !== false;
+  return <div className="min-h-screen overflow-x-clip bg-[#FFF9F0]"><Navigation/><main className="min-w-0"><Hero/><ImageCarousel/><TrustedBy/><FeaturedServices/><HomeProcess/>{showsReviews && <ReviewWall/>}{showsProof && <ProofStrip/>}<DeskNote/><CTABanner/></main><Footer/></div>;
 }

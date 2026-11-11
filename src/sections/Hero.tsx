@@ -42,13 +42,15 @@ export default function Hero() {
                 <span className="ml-1 text-[#52675A]">Loved by clients</span>
               </span>
             </div>
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-[#EFF4EC] px-3 py-1.5 text-[11px] font-semibold text-[#3D6B4E]">
-              <span className="relative flex h-1.5 w-1.5">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#43845F] opacity-75" />
-                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#43845F]" />
+            {siteContent?.acceptingRequests !== false && (
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-[#EFF4EC] px-3 py-1.5 text-[11px] font-semibold text-[#3D6B4E]">
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#43845F] opacity-75" />
+                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#43845F]" />
+                </span>
+                Accepting new requests
               </span>
-              Accepting new requests
-            </span>
+            )}
           </div>
           <h1 className="brand-heading-xl mb-5 text-[clamp(2.15rem,9vw,3rem)] md:text-5xl lg:text-6xl" style={{color:'#1D3328'}}>{siteContent?.heroHeadline || 'Professional Document Preparation, Formatting & Submission—Without the Stress.'}</h1>
           <p className="brand-body mb-7 max-w-lg text-base leading-relaxed md:mb-8 md:text-lg" style={{color:'#59695F'}}>{siteContent?.heroSubtitle || 'Porshure Green helps individuals, professionals, students, and businesses worldwide prepare polished, accurate, submission-ready documents with careful handling and dependable support.'}</p>

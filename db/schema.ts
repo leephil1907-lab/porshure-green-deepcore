@@ -60,6 +60,12 @@ export type SiteContent = {
   contactEmail: string;
   footerDescription: string;
   announcement: string;
+  /** Site-wide switches, all controlled from the admin control panel. */
+  announcementEnabled: boolean;
+  acceptingRequests: boolean;
+  showReviewWall: boolean;
+  showProofStrip: boolean;
+  responseTime: string;
 };
 
 export const siteContent = pgTable("site_content", {

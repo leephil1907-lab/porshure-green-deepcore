@@ -1,0 +1,130 @@
+/* ------------------------------------------------------------------
+   Admin control panel theme
+   The dashboard is built on a dark green canvas. Rather than duplicate
+   every component for a second palette, the light theme remaps the
+   handful of colours in use. `data-theme` lives on .admin-shell.
+   ------------------------------------------------------------------ */
+
+.admin-shell {
+  color-scheme: dark;
+  --pg-admin-bg: #0d1c16;
+  --pg-admin-panel: rgba(255, 255, 255, 0.035);
+  --pg-admin-panel-strong: #ffffff;
+  --pg-admin-line: #d8e3d2;
+  --pg-admin-ink: #16281f;
+  --pg-admin-muted: #5c6b61;
+  --pg-admin-accent: #2f7a55;
+}
+
+.admin-shell[data-theme='light'] {
+  color-scheme: light;
+  background-color: #f3f6f0;
+  color: #16281f;
+}
+
+/* page + bars */
+.admin-shell[data-theme='light'] [class*='bg-[#0D1C16]'] {
+  background-color: #f3f6f0 !important;
+}
+.admin-shell[data-theme='light'] [class*='bg-[rgba(13,28,22'] {
+  background-color: rgba(255, 255, 255, 0.94) !important;
+}
+
+/* cards, rows, hovers */
+.admin-shell[data-theme='light'] [class*='bg-[rgba(255,255,255,0.03'] {
+  background-color: #ffffff !important;
+  box-shadow: 0 1px 2px rgba(22, 40, 31, 0.04);
+}
+.admin-shell[data-theme='light'] [class*='bg-[rgba(255,255,255,0.02'] {
+  background-color: #f6f9f3 !important;
+}
+.admin-shell[data-theme='light'] [class*='bg-black/20'] {
+  background-color: #ffffff !important;
+}
+.admin-shell[data-theme='light'] [class*='bg-[rgba(74,168,130,0.08'] {
+  background-color: rgba(67, 132, 95, 0.08) !important;
+}
+.admin-shell[data-theme='light'] [class*='bg-[rgba(74,168,130,0.15'] {
+  background-color: rgba(67, 132, 95, 0.14) !important;
+}
+.admin-shell[data-theme='light'] [class*='bg-[rgba(74,168,130,0.18'] {
+  background-color: rgba(67, 132, 95, 0.16) !important;
+}
+.admin-shell[data-theme='light'] [class*='bg-[rgba(74,168,130,0.1'] {
+  background-color: rgba(67, 132, 95, 0.1) !important;
+}
+
+/* borders */
+.admin-shell[data-theme='light'] [class*='border-[rgba(74,168,130'] {
+  border-color: #d8e3d2 !important;
+}
+.admin-shell[data-theme='light'] [class*='border-white/1'] {
+  border-color: #e0e8da !important;
+}
+.admin-shell[data-theme='light'] [class*='border-[rgba(255,255,255'] {
+  border-color: #e6ece2 !important;
+}
+
+/* text */
+.admin-shell[data-theme='light'] [class*='text-white'] {
+  color: #16281f !important;
+}
+.admin-shell[data-theme='light'] [class*='text-[#7A9A8E]'] {
+  color: #5c6b61 !important;
+}
+.admin-shell[data-theme='light'] [class*='text-[#A7BDB2]'] {
+  color: #3f5648 !important;
+}
+.admin-shell[data-theme='light'] [class*='text-[#5A7A6E]'] {
+  color: #66736a !important;
+}
+.admin-shell[data-theme='light'] [class*='text-[#8FE4B4]'] {
+  color: #2e7d53 !important;
+}
+.admin-shell[data-theme='light'] [class*='text-[#4AA882]'] {
+  color: #2f7a55 !important;
+}
+.admin-shell[data-theme='light'] [class*='text-[#8CA79A]'],
+.admin-shell[data-theme='light'] [class*='text-[#809184]'],
+.admin-shell[data-theme='light'] [class*='text-[#718176]'] {
+  color: #5c6b61 !important;
+}
+.admin-shell[data-theme='light'] [class*='text-[#A8DDB7]'],
+.admin-shell[data-theme='light'] [class*='text-[#85C69D]'] {
+  color: #2f7a55 !important;
+}
+.admin-shell[data-theme='light'] [class*='bg-[#14251D]'] {
+  background-color: #ffffff !important;
+}
+.admin-shell[data-theme='light'] [class*='bg-[#3D8057]'],
+.admin-shell[data-theme='light'] [class*='bg-[#4A9667]'] {
+  background-color: #43845f !important;
+}
+.admin-shell[data-theme='light'] [class*='text-red-300'] {
+  color: #b3261e !important;
+}
+
+/* inputs */
+.admin-shell[data-theme='light'] input,
+.admin-shell[data-theme='light'] textarea,
+.admin-shell[data-theme='light'] select {
+  color: #16281f !important;
+}
+.admin-shell[data-theme='light'] input::placeholder,
+.admin-shell[data-theme='light'] textarea::placeholder {
+  color: #8a968c !important;
+}
+
+/* invoice maker keeps its own scoped styles */
+.admin-shell[data-theme='light'] .invoice-label {
+  color: #4c6156 !important;
+}
+.admin-shell[data-theme='light'] .invoice-input {
+  border-color: #d7e0d2 !important;
+  background: #ffffff !important;
+  color: #16281f !important;
+}
+.admin-shell[data-theme='light'] .admin-nav a,
+.admin-shell[data-theme='light'] .admin-nav button {
+  color: #3f5648;
+}

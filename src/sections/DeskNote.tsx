@@ -1,11 +1,14 @@
 import { Link } from 'react-router';
 import { ArrowRight, Coffee, Heart, MessageCircle } from 'lucide-react';
+import { trpc } from '@/providers/trpc';
 
 /**
  * A deliberately human section: the site is run by one person, and this is
  * where that shows. Personality without inventing credentials or claims.
  */
 export default function DeskNote() {
+  const { data: siteContent } = trpc.content.get.useQuery();
+  const replyTime = siteContent?.responseTime?.trim() || 'Reply usually within a few hours';
   return (
     <section className="section-padding">
       <div className="container-brand">
@@ -45,7 +48,7 @@ export default function DeskNote() {
 
               <div className="mt-5 flex flex-wrap items-center gap-2">
                 {[
-                  { icon: MessageCircle, text: 'Reply usually within a few hours' },
+                  { icon: MessageCircle, text: replyTime },
                   { icon: Heart, text: 'Your files stay private' },
                 ].map((item) => (
                   <span key={item.text} className="inline-flex items-center gap-1.5 rounded-full border border-[#E1E8DC] bg-[#F9FBF7] px-3 py-1.5 text-[12px] font-medium text-[#3D5247]">

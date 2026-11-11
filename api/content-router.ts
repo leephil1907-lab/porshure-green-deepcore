@@ -12,6 +12,11 @@ export const defaultSiteContent: SiteContent = {
   contactEmail: "porshuregreen@gmail.com",
   footerDescription: "Professional document preparation, formatting and submission support for individuals, professionals and businesses worldwide.",
   announcement: "",
+  announcementEnabled: false,
+  acceptingRequests: true,
+  showReviewWall: true,
+  showProofStrip: true,
+  responseTime: "Reply usually within a few hours",
 };
 
 const contentInput = z.object({
@@ -22,6 +27,11 @@ const contentInput = z.object({
   contactEmail: z.string().trim().email().max(320),
   footerDescription: z.string().trim().min(10).max(300),
   announcement: z.string().trim().max(180),
+  announcementEnabled: z.boolean().optional(),
+  acceptingRequests: z.boolean().optional(),
+  showReviewWall: z.boolean().optional(),
+  showProofStrip: z.boolean().optional(),
+  responseTime: z.string().trim().max(80).optional(),
 });
 
 export const contentRouter = createRouter({
@@ -52,8 +62,10 @@ export const contentRouter = createRouter({
   }),
   update: adminQuery.input(contentInput).mutation(async ({ input }) => {
     const db = getDb();
-    await db.insert(siteContent).values({ key: "site", value: input })
-      .onConflictDoUpdate({ target: siteContent.key, set: { value: input, updatedAt: new Date() } });
-    return { success: true, content: input };
+    // Older rows predate the switch fields, so merge over the defaults.
+    const value: SiteContent = { ...defaultSiteContent, ...input };
+    await db.insert(siteContent).values({ key: "site", value })
+      .onConflictDoUpdate({ target: siteContent.key, set: { value, updatedAt: new Date() } });
+    return { success: true, content: value };
   }),
 });

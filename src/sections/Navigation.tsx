@@ -80,7 +80,7 @@ export default function Navigation() {
           : 'border-transparent bg-[#FFF9F0]/96'
       }`}
     >
-      {siteContent?.announcement && (
+      {(siteContent?.announcementEnabled ?? true) && siteContent?.announcement && (
         <div className="bg-[#173B2B] px-4 py-2 text-center text-[11px] font-medium tracking-wide text-[#D8E8D8]">
           {siteContent.announcement}
         </div>
