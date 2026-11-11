@@ -136,3 +136,12 @@ are the ones already on GitHub, and `main` still contains the invisible-pricing/
 - Admin: tabbed dashboard (Inquiries / Website content / Invoice maker) with a "new" badge, quick
   action cards, client-side back link, accessible labels on every row action, and real newlines in the
   reply mailto body.
+
+### Deployment notes
+
+- `/api/health` reports `config.database`, `config.adminEmail`, `config.adminPasswordHash` and
+  `config.adminJwtSecret` as booleans so a broken production deployment is one request away.
+- `ADMIN_JWT_SECRET` must be at least 32 bytes, otherwise the admin login endpoint answers
+  "Administrator authentication is not configured".
+- Server imports in `api/`, `db/` and `contracts/` use explicit relative paths with `.js`
+  extensions: Vercel type-checks functions with `nodenext`, which rejects `@db/*` aliases.
