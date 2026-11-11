@@ -1,7 +1,7 @@
 import "dotenv/config";
-import { getDb } from "../api/queries/connection";
-import { siteContent } from "./schema";
-import { defaultSiteContent } from "../api/content-router";
+import { getDb } from "../api/queries/connection.js";
+import { siteContent } from "./schema.js";
+import { defaultSiteContent } from "../api/content-router.js";
 
 async function seed() {
   const db = getDb();

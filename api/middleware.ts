@@ -1,8 +1,8 @@
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
-import type { TrpcContext } from "./context";
+import type { TrpcContext } from "./context.js";
 import { jwtVerify } from "jose";
-import { ADMIN_JWT_SECRET, ADMIN_TOKEN_COOKIE } from "./admin-config";
+import { ADMIN_JWT_SECRET, ADMIN_TOKEN_COOKIE } from "./admin-config.js";
 
 const t = initTRPC.context<TrpcContext>().create({
   transformer: superjson,

@@ -1,7 +1,7 @@
 import { z } from "zod";
-import { createRouter, publicQuery, adminQuery } from "./middleware";
-import { getDb } from "./queries/connection";
-import { siteContent, type SiteContent } from "@db/schema";
+import { createRouter, publicQuery, adminQuery } from "./middleware.js";
+import { getDb } from "./queries/connection.js";
+import { siteContent, type SiteContent } from "../db/schema.js";
 import { eq } from "drizzle-orm";
 
 export const defaultSiteContent: SiteContent = {

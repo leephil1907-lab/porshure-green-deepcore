@@ -1,8 +1,8 @@
 import { z } from "zod";
 import bcrypt from "bcryptjs";
 import { SignJWT, jwtVerify } from "jose";
-import { createRouter, publicQuery } from "./middleware";
-import { ADMIN_EMAIL, ADMIN_PASSWORD_HASH, ADMIN_JWT_SECRET, ADMIN_TOKEN_COOKIE } from "./admin-config";
+import { createRouter, publicQuery } from "./middleware.js";
+import { ADMIN_EMAIL, ADMIN_PASSWORD_HASH, ADMIN_JWT_SECRET, ADMIN_TOKEN_COOKIE } from "./admin-config.js";
 import { TRPCError } from "@trpc/server";
 
 export const loginRouter = createRouter({

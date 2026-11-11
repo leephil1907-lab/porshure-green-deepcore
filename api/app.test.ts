@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import app from "./app";
+import app from "./app.js";
 
 describe("API health endpoint", () => {
   it("returns a successful response without requiring database credentials", async () => {

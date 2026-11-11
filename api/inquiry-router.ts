@@ -1,7 +1,7 @@
 import { z } from "zod";
-import { createRouter, publicQuery, adminQuery } from "./middleware";
-import { getDb } from "./queries/connection";
-import { inquiries } from "@db/schema";
+import { createRouter, publicQuery, adminQuery } from "./middleware.js";
+import { getDb } from "./queries/connection.js";
+import { inquiries } from "../db/schema.js";
 import { eq, desc } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 
