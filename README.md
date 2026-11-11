@@ -55,3 +55,5 @@ After deployment, verify:
 - `/admin` remains protected until a valid administrator session is present.
 
 See `.env.example` for the complete environment-variable list.
+
+<!-- redeploy: rotated admin session secret -->
