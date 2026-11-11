@@ -145,3 +145,14 @@ are the ones already on GitHub, and `main` still contains the invisible-pricing/
   "Administrator authentication is not configured".
 - Server imports in `api/`, `db/` and `contracts/` use explicit relative paths with `.js`
   extensions: Vercel type-checks functions with `nodenext`, which rejects `@db/*` aliases.
+
+### Secret hygiene
+
+- Store every credential (`ADMIN_JWT_SECRET`, `ADMIN_PASSWORD_HASH`, `ADMIN_EMAIL`, `DATABASE_URL`,
+  `APP_ID`, `APP_SECRET`) as a **Sensitive** Vercel env var, never as *encrypted*/"config":
+  encrypted vars are readable through the API and Vercel flags them with `securityIssues:
+  ["readable-secret"]`.
+- Sensitive vars cannot be read back or edited in place — to rotate one, delete it and create it
+  again with the same key, then deploy. That is the intended workflow, not a bug.
+- Verify deployments through `/api/health`'s boolean flags; there is no reason to read a secret
+  value back to check it.
