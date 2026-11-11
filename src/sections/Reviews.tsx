@@ -9,71 +9,54 @@ const reviews = [
     avatar: 'LD',
     color: '#43845F',
     rating: 5,
-    date: 'June 2026',
-    source: 'WhatsApp',
-    text: "Yess ma'am, everything looks great thank you so much I will be working with you again. Porshure Green made the whole process so smooth!",
+    date: 'Email · June',
+    source: 'Email',
+    text: "Yess ma'am, everything looks great. Thank you so much — I will be working with you again.",
     image: '/images/reviews/liaa-review.jpg',
-  },
-  {
-    name: 'Kelicia Prossey',
-    avatar: 'KP',
-    color: '#D4943A',
-    rating: 5,
-    date: 'Verified Customer',
-    source: 'Facebook',
-    text: "I highly recommend Porshure Green. She was very professional, friendly, and completed the work much faster than I expected. The quality of her work was excellent, and she paid attention to every detail. She made the entire process easy and stress-free, and I couldn't be happier with the results.",
-    image: '/images/reviews/kelicia-review.jpg',
-  },
-  {
-    name: 'Brittany',
-    avatar: 'BR',
-    color: '#9B6DD1',
-    rating: 5,
-    date: 'Verified Customer',
-    source: 'WhatsApp',
-    text: "I got approved! Thank you so much! You are seriously the best. I'm crying real tears of joy. Thank you so much for everything you did for me!",
-    image: '/images/reviews/brittany-review.jpg',
   },
   {
     name: 'Joya Lacy',
     avatar: 'JL',
     color: '#66816E',
     rating: 5,
-    date: 'Verified Customer',
+    date: 'Facebook recommendation',
     source: 'Facebook',
-    text: "Thank you for your help and patience. If anyone is looking for a fast turn around on your documents, I recommend you send a message right now to Ms. Green. Professional and reliable!",
+    text: 'Thank you for your help and patience. If anyone is looking for a fast turn around on your documents, I recommend you send a message right now to Ms. Green.',
+    image: '/images/reviews/joya-review.jpg',
   },
   {
     name: 'Ma-Lik MightyEast',
     avatar: 'MM',
-    color: '#1D3328',
+    color: '#B4633A',
     rating: 5,
-    date: 'Verified Customer',
+    date: 'Facebook comment',
     source: 'Facebook',
-    text: "Once again thank you ms Porshure Green the documents have been approved. Get in tune with this woman for any documentation you may need — great prices and work quick as hell!",
+    text: 'Once again thank you ms Porshure Green — the documents have been approved. Get in tune with this woman for any documentation you may need. Great prices and work quick as hell!',
+    image: '/images/reviews/malik-review.jpg',
   },
   {
     name: 'Johári Green',
     avatar: 'JG',
-    color: '#D4943A',
+    color: '#7A5AA8',
     rating: 5,
-    date: 'Verified Customer',
-    source: 'Email',
-    text: "Thank you so much for helping me out! You definitely did what needed to be done I appreciate it. The documents came back perfect and on time.",
-  },
-  {
-    name: 'Ashley McRae',
-    avatar: 'AM',
-    color: '#9B6DD1',
-    rating: 5,
-    date: 'Verified Customer',
-    source: 'WhatsApp',
-    text: "You are the GOAT!!! I will not play about you! Thank you very much #MsMakeItHappen. Fast, accurate, and so easy to work with. Five stars every time!",
+    date: 'Facebook recommendation',
+    source: 'Facebook',
+    text: 'Thank you so much for helping me out! You definitely did what needed to be done — I appreciate it!',
+    image: '/images/reviews/johari-review.jpg',
   },
 ];
 
+// Real screenshots of the messages clients sent us (cropped, PII removed).
+const reviewImages: Record<string, string> = {
+  'Liaa Dussè': '/images/reviews/liaa-review.jpg',
+  'Joya Lacy': '/images/reviews/joya-review.jpg',
+  'Ma-Lik MightyEast': '/images/reviews/malik-review.jpg',
+  'Johári Green': '/images/reviews/johari-review.jpg',
+};
+
 export default function Reviews() {
   const sectionRef = useReveal<HTMLElement>();
+  const [zoom, setZoom] = useState<string | null>(null);
   const { data: siteContent } = trpc.content.get.useQuery();
   const whatsappDigits = siteContent?.whatsappPhone?.replace(/\D/g, '') || '18147915478';
   const shareHref = `https://wa.me/${whatsappDigits}?text=${encodeURIComponent("Hello Porshure Green, I'd like to share my experience with your service.")}`;
@@ -173,29 +156,39 @@ export default function Reviews() {
                   </div>
                 </div>
 
-                {/* Review Text */}
+                {/* Review Text + real screenshot side by side, so nothing sits empty */}
+                <div className="md:flex md:items-start md:gap-6">
                 <p
-                  className="text-base md:text-lg lg:text-[19px] font-light leading-relaxed italic mb-6 md:mb-8"
+                  className="text-base md:text-lg lg:text-[19px] font-light leading-relaxed italic mb-6 md:mb-0 md:flex-1"
                   style={{ color: '#66736A', fontFamily: "'Manrope', sans-serif" }}
                 >
                   "{reviews[activeIndex].text}"
                 </p>
 
-                {/* Review Image - if available */}
-                {reviews[activeIndex].image && (
-                  <div className="mb-6 md:mb-8 rounded-lg overflow-hidden shadow-md max-h-48 md:max-h-64">
+                {/* Proof: a real screenshot of the message the client sent */}
+                {reviewImages[reviews[activeIndex].name] && (
+                  <button
+                    type="button"
+                    onClick={() => setZoom(reviewImages[reviews[activeIndex].name])}
+                    className="group/proof relative mx-auto block w-fit max-w-[min(100%,300px)] shrink-0 overflow-hidden rounded-xl border border-[#E4E9E1] bg-white p-1.5 shadow-[0_10px_24px_rgba(29,51,40,0.10)] transition-shadow hover:shadow-[0_16px_32px_rgba(29,51,40,0.16)]"
+                    aria-label={`Open ${reviews[activeIndex].name}'s original message`}
+                  >
                     <img
-                      src={reviews[activeIndex].image}
-                      alt={`${reviews[activeIndex].name}'s review`}
-                      className="w-full h-full object-cover"
+                      src={reviewImages[reviews[activeIndex].name]}
+                      alt={`Screenshot of the message ${reviews[activeIndex].name} sent to Porshure Green`}
+                      className="block max-h-[290px] w-auto max-w-full rounded-lg transition-transform duration-500 group-hover/proof:scale-[1.015]"
                       loading="lazy"
                       onError={(event) => {
-                        const wrapper = event.currentTarget.parentElement;
+                        const wrapper = event.currentTarget.closest('button');
                         if (wrapper) wrapper.style.display = 'none';
                       }}
                     />
-                  </div>
+                    <span className="pointer-events-none absolute inset-x-1.5 bottom-1.5 rounded-md bg-white/90 px-2 py-1 text-center text-[9.5px] font-bold uppercase tracking-[.1em] text-[#3D5247] shadow-sm backdrop-blur">
+                      Tap to zoom
+                    </span>
+                  </button>
                 )}
+                </div>
               </div>
 
               {/* Navigation Controls - Mobile Optimized */}
@@ -338,6 +331,28 @@ export default function Reviews() {
           </p>
         </div>
       </div>
+
+      {zoom && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="Client message"
+          onClick={() => setZoom(null)}
+          className="fixed inset-0 z-[1200] flex items-center justify-center bg-[#0E1F18]/70 p-4 backdrop-blur-sm"
+        >
+          <div className="relative max-h-[90vh] overflow-auto rounded-2xl bg-white p-2 shadow-2xl" onClick={(event) => event.stopPropagation()}>
+            <button
+              type="button"
+              onClick={() => setZoom(null)}
+              className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-[#3D5247] shadow"
+              aria-label="Close"
+            >
+              ×
+            </button>
+            <img src={zoom} alt="Full client message" className="max-h-[82vh] w-auto rounded-xl" />
+          </div>
+        </div>
+      )}
     </section>
   );
 }

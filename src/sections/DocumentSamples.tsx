@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useReveal } from '@/hooks/useReveal';
 import AnimatedNumber from '@/components/AnimatedNumber';
-import DocPreview from '@/components/DocPreview';
 import { Link } from 'react-router';
 import {
   ArrowRight, ArrowUpRight, Briefcase, GraduationCap, Home, Heart, Plane, Stethoscope, X, Check,
@@ -12,6 +11,7 @@ const categories = [
   {
     icon: Briefcase,
     title: 'Business & Corporate',
+    photo: '/images/docs/business.jpg',
     color: '#43845F',
     variant: 'letter' as const,
     docs: [
@@ -24,6 +24,7 @@ const categories = [
   {
     icon: GraduationCap,
     title: 'Education & Academic',
+    photo: '/images/docs/education.jpg',
     color: '#66816E',
     variant: 'form' as const,
     docs: [
@@ -36,6 +37,7 @@ const categories = [
   {
     icon: Home,
     title: 'Housing & Property',
+    photo: '/images/docs/housing.jpg',
     color: '#D4943A',
     variant: 'letter' as const,
     docs: [
@@ -48,6 +50,7 @@ const categories = [
   {
     icon: Heart,
     title: 'Family & Personal',
+    photo: '/images/docs/family.jpg',
     color: '#9B6DD1',
     variant: 'certificate' as const,
     docs: [
@@ -60,6 +63,7 @@ const categories = [
   {
     icon: Plane,
     title: 'Immigration & Travel',
+    photo: '/images/docs/travel.jpg',
     color: '#3B8FD9',
     variant: 'form' as const,
     docs: [
@@ -72,6 +76,7 @@ const categories = [
   {
     icon: Stethoscope,
     title: 'Medical & Health',
+    photo: '/images/docs/medical.jpg',
     color: '#E74C3C',
     variant: 'form' as const,
     docs: [
@@ -111,6 +116,17 @@ export default function DocumentSamples() {
             We process hundreds of document types across six major categories.
             Tap any category to preview a sample — if it is paperwork, we handle it.
           </p>
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
+            {['Business filings', 'School paperwork', 'Housing packets', 'Travel documents', 'Medical records'].map((sticker, i) => (
+              <span
+                key={sticker}
+                className="rounded-full border border-dashed border-[#CFDCC8] bg-white/70 px-3 py-1 text-[11.5px] font-semibold text-[#4C6156] transition-transform duration-200 hover:scale-105"
+                style={{ transform: `rotate(${i % 2 === 0 ? -1.4 : 1.2}deg)` }}
+              >
+                {sticker}
+              </span>
+            ))}
+          </div>
         </div>
 
         <div className="samples-grid grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -125,13 +141,18 @@ export default function DocumentSamples() {
             >
               <div className="flex items-stretch gap-4 p-5">
                 {/* sample preview: lifts slightly on hover like a sheet of paper being picked up */}
-                <div className="relative w-[86px] shrink-0">
-                  <DocPreview
-                    color={cat.color}
-                    title={cat.docs[0].name}
-                    variant={cat.variant}
-                    className="w-full drop-shadow-[0_8px_18px_rgba(29,51,40,0.14)] transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-[-2deg]"
-                  />
+                <div className="relative w-[92px] shrink-0">
+                  <div className="relative overflow-hidden rounded-lg ring-1 ring-black/5 shadow-[0_10px_22px_rgba(29,51,40,0.16)] transition-transform duration-300 group-hover:-translate-y-1 group-hover:-rotate-2">
+                    <img
+                      src={cat.photo}
+                      alt={`${cat.title} documents`}
+                      className="h-[86px] w-full object-cover"
+                      loading="lazy"
+                      width={184}
+                      height={172}
+                    />
+                    <span className="absolute inset-0 ring-1 ring-inset ring-white/25" />
+                  </div>
                 </div>
 
                 <div className="min-w-0 flex-1">
@@ -232,10 +253,17 @@ export default function DocumentSamples() {
                 </button>
               </div>
 
-              <div className="mt-5 grid gap-5 sm:grid-cols-[190px_1fr] sm:gap-7">
-                <div className="flex items-start justify-center gap-2 sm:justify-start">
-                  <DocPreview color={current.color} title={current.docs[0].name} variant={current.variant} className="w-[150px] drop-shadow-[0_14px_28px_rgba(29,51,40,0.18)]" />
-                  <DocPreview color={current.color} title={current.docs[1].name} variant={current.variant} className="mt-5 hidden w-[150px] rotate-3 opacity-90 drop-shadow-[0_14px_28px_rgba(29,51,40,0.14)] sm:block" />
+              <div className="mt-5 grid gap-5 sm:grid-cols-[220px_1fr] sm:gap-7">
+                <div className="space-y-3">
+                  <img
+                    src={current.photo}
+                    alt={`${current.title} documents on a desk`}
+                    className="h-[150px] w-full rounded-xl object-cover shadow-[0_14px_30px_rgba(29,51,40,0.18)] sm:h-[190px]"
+                    loading="lazy"
+                  />
+                  <p className="text-center text-[11px] font-semibold uppercase tracking-[.14em]" style={{ color: current.color }}>
+                    Sample pack
+                  </p>
                 </div>
 
                 <ul className="space-y-3">
