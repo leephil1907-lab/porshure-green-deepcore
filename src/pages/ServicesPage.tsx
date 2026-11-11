@@ -6,6 +6,7 @@ import Services from '@/sections/Services';
 import HowItWorks from '@/sections/HowItWorks';
 import DocumentShowcase from '@/sections/DocumentShowcase';
 import DocumentSamples from '@/sections/DocumentSamples';
+import ProofStrip from '@/sections/ProofStrip';
 import Pricing from '@/sections/Pricing';
 import FAQ from '@/sections/FAQ';
 import CTABanner from '@/sections/CTABanner';
@@ -52,6 +53,7 @@ export default function ServicesPage() {
         <HowItWorks />
         <DocumentShowcase />
         <DocumentSamples />
+        <ProofStrip />
         <Pricing />
         <FAQ />
         <CTABanner />
