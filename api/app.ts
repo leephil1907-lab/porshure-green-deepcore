@@ -13,7 +13,17 @@ app.use(bodyLimit({ maxSize: 50 * 1024 * 1024 }));
 // A lightweight endpoint for deployment and uptime checks. It deliberately
 // does not depend on the database or any third-party authentication provider.
 app.get("/api/health", (c) =>
-  c.json({ ok: true, service: "porshure-green-api" }),
+  c.json({
+    ok: true,
+    service: "porshure-green-api",
+    // Deployment diagnostics: booleans only, never the values themselves.
+    config: {
+      database: Boolean(process.env.DATABASE_URL),
+      adminEmail: Boolean((process.env.ADMIN_EMAIL || "").trim()),
+      adminPasswordHash: (process.env.ADMIN_PASSWORD_HASH || "").startsWith("$2"),
+      adminJwtSecret: (process.env.ADMIN_JWT_SECRET || "").length >= 32,
+    },
+  }),
 );
 
 app.get("/api/oauth/callback", createOAuthCallbackHandler());
