@@ -81,8 +81,24 @@
   .paper-tab-left::before { content:''; position:absolute; left:0; top:1.4rem; bottom:1.4rem; width:3px; border-radius:0 2px 2px 0; background:#43845F; opacity:0; transition:opacity .25s; }
   .paper-tab-left:hover::before { opacity:1; }
   .stamp-mark { display:inline-flex; align-items:center; gap:.4rem; padding:.4rem .8rem; border:1px solid rgba(67,132,95,.18); border-radius:999px; background:#edf4ed; color:#416B50; font-size:.68rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
-  .section-padding { padding-block:clamp(3.5rem,6vw,5.25rem); }
+  .section-padding { padding-block:clamp(2.75rem,4.4vw,4rem); }
   .container-brand { width:min(100% - 2.5rem, 1240px); margin-inline:auto; }
+  /* Hero entrance: staggered rise, pure CSS so it can never block content. */
+  .hero-stagger > * { animation: hero-rise .7s cubic-bezier(.22,1,.36,1) both; }
+  .hero-stagger > *:nth-child(1) { animation-delay: .04s; }
+  .hero-stagger > *:nth-child(2) { animation-delay: .1s; }
+  .hero-stagger > *:nth-child(3) { animation-delay: .16s; }
+  .hero-stagger > *:nth-child(4) { animation-delay: .22s; }
+  .hero-stagger > *:nth-child(5) { animation-delay: .28s; }
+  .hero-stagger > *:nth-child(6) { animation-delay: .34s; }
+  @keyframes hero-rise { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:none; } }
+
+  .marquee-track { animation: marquee-scroll 38s linear infinite; }
+  .marquee:hover .marquee-track,
+  .marquee:focus-within .marquee-track { animation-play-state: paused; }
+  @keyframes marquee-scroll { from { transform: translate3d(0,0,0); } to { transform: translate3d(-50%,0,0); } }
+  [id] { scroll-margin-top: 104px; }
+
   /* Scroll reveal: hidden only while an IntersectionObserver is watching it.
      Content is never left invisible if the observer or JS fails. */
   .reveal { opacity:0; transform:translateY(16px); transition:opacity .65s cubic-bezier(.22,1,.36,1), transform .65s cubic-bezier(.22,1,.36,1); }
@@ -103,6 +119,9 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity:1 !important; transform:none !important; transition:none !important; }
+  .hero-stagger > * { animation:none !important; opacity:1 !important; transform:none !important; }
+  .marquee { overflow-x:auto; }
+  .marquee-track { animation:none !important; }
   *, *::before, *::after {
     scroll-behavior: auto !important;
     animation-duration: .01ms !important;

@@ -1,4 +1,5 @@
 import { useReveal } from '@/hooks/useReveal';
+import AnimatedNumber from '@/components/AnimatedNumber';
 import { Briefcase, GraduationCap, Home, Heart, Plane, FileCheck, Stethoscope } from 'lucide-react';
 
 const categories = [
@@ -120,13 +121,18 @@ export default function DocumentSamples() {
         <div className="mt-14 flex items-center justify-center">
           <div className="flex flex-wrap items-center justify-center gap-8 py-5 px-8 rounded-xl" style={{ background: 'white', border: '1px solid rgba(29,51,40,0.06)' }}>
             {[
-              { value: '50+', label: 'Document Types' },
-              { value: '6', label: 'Categories' },
-              { value: '500+', label: 'Files Processed' },
-              { value: '99.9%', label: 'Accuracy Rate' },
+              { value: 50, suffix: '+', label: 'Document Types' },
+              { value: 6, suffix: '', label: 'Categories' },
+              { value: 500, suffix: '+', label: 'Files Processed' },
+              { value: 99.9, suffix: '%', decimals: 1, label: 'Accuracy Rate' },
             ].map((stat) => (
               <div key={stat.label} className="text-center">
-                <div className="text-[22px] font-bold" style={{ color: '#1D3328', fontFamily: "'Manrope', sans-serif" }}>{stat.value}</div>
+                <AnimatedNumber
+                  value={stat.value}
+                  decimals={stat.decimals ?? 0}
+                  suffix={stat.suffix}
+                  className="block text-[22px] font-bold"
+                />
                 <div className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: '#66736A' }}>{stat.label}</div>
               </div>
             ))}

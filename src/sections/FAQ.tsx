@@ -19,7 +19,7 @@ export default function FAQ() {
   const sectionRef = useReveal<HTMLElement>();
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
-  const whatsapp = (siteContent?.whatsappPhone || '').replace(/\\D/g, '') || '18147915478';
+  const whatsapp = (siteContent?.whatsappPhone || '').replace(/\D/g, '') || '18147915478';
   return (
     <section id="faq" ref={sectionRef} className="section-padding grid-bg" style={{ backgroundColor: '#FFF9F0' }}>
       <div className="container-brand">

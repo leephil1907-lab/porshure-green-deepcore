@@ -10,7 +10,7 @@ export default function ContactPage() {
   const email = data?.contactEmail?.trim() || 'porshuregreen@gmail.com';
   const phone = data?.contactPhone?.trim() || '+1 (814) 791-5478';
   const rawWhatsapp = data?.whatsappPhone?.trim() || '';
-  const whatsapp = rawWhatsapp.replace(/\\D/g, '') || '18147915478';
+  const whatsapp = rawWhatsapp.replace(/\D/g, '') || '18147915478';
   const [form, setForm] = useState({ fullName: '', email: '', serviceNeeded: '', message: '' });
   const [submittedId, setSubmittedId] = useState<number | null>(null);
   const createInquiry = trpc.inquiry.create.useMutation({
@@ -27,7 +27,7 @@ export default function ContactPage() {
   const items = [
     { title: 'WhatsApp', detail: 'Chat with our team', icon: WhatsAppIcon, href: `https://wa.me/${whatsapp}`, color: '#238A58', brand: true },
     { title: 'Email', detail: email, icon: Mail, href: 'mailto:' + email, color: '#238A58' },
-    { title: 'Phone', detail: phone, icon: Phone, href: 'tel:' + phone.replace(/[^+\\d]/g, ''), color: '#238A58' },
+    { title: 'Phone', detail: phone, icon: Phone, href: 'tel:' + phone.replace(/[^+\d]/g, ''), color: '#238A58' },
   ];
   return <div className="min-h-screen overflow-x-clip bg-[#FFF9F0]"><Navigation/><main className="pt-[72px]">
     <section className="bg-white py-14 md:py-20"><div className="container-brand">

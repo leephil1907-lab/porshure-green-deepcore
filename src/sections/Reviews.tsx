@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useReveal } from '@/hooks/useReveal';
 import { Star, ChevronLeft, ChevronRight, Quote, MessageCircle } from 'lucide-react';
+import { trpc } from '@/providers/trpc';
 
 const reviews = [
   {
@@ -73,6 +74,9 @@ const reviews = [
 
 export default function Reviews() {
   const sectionRef = useReveal<HTMLElement>();
+  const { data: siteContent } = trpc.content.get.useQuery();
+  const whatsappDigits = siteContent?.whatsappPhone?.replace(/\D/g, '') || '18147915478';
+  const shareHref = `https://wa.me/${whatsappDigits}?text=${encodeURIComponent("Hello Porshure Green, I'd like to share my experience with your service.")}`;
   const [activeIndex, setActiveIndex] = useState(0);
   const [autoPlayEnabled, setAutoPlayEnabled] = useState(true);
 
@@ -302,11 +306,9 @@ export default function Reviews() {
 
             {/* CTA Button */}
             <a
-              href="#contact"
-              onClick={(e) => {
-                e.preventDefault();
-                document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
-              }}
+              href={shareHref}
+              target="_blank"
+              rel="noopener noreferrer"
               className="mt-3 flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-[12px] font-semibold uppercase tracking-wider transition-all duration-300 hover:scale-105 active:scale-95 shadow-md"
               style={{ background: '#1D3328', color: 'white' }}
             >
@@ -317,11 +319,9 @@ export default function Reviews() {
           {/* Mobile CTA - Visible on mobile only */}
           <div className="lg:hidden">
             <a
-              href="#contact"
-              onClick={(e) => {
-                e.preventDefault();
-                document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
-              }}
+              href={shareHref}
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-[12px] font-semibold uppercase tracking-wider transition-all duration-300 hover:shadow-lg"
               style={{ background: '#1D3328', color: 'white' }}
             >

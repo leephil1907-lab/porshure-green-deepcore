@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Link, useNavigate } from 'react-router';
 import { useAuth } from '@/hooks/useAuth';
 import InvoiceMaker from '@/sections/InvoiceMaker';
 import { trpc } from '@/providers/trpc';
 import {
   LayoutDashboard, Mail, MailOpen, Reply, Archive,
   Trash2, RefreshCw, LogOut, Inbox, CheckCircle,
-  AlertCircle, ChevronLeft, User,
+  AlertCircle, ChevronLeft, User, ReceiptText, LayoutPanelLeft,
 } from 'lucide-react';
 
 export default function AdminDashboard() {
@@ -16,6 +17,7 @@ export default function AdminDashboard() {
   const [contentForm, setContentForm] = useState({ heroHeadline: 'Professional Document Preparation, Formatting & Submission—Without the Stress.', heroSubtitle: 'Porshure Green helps individuals, professionals, students, and businesses worldwide prepare polished, accurate, submission-ready documents with careful handling and dependable support.', contactPhone: '+1 (814) 791-5478', whatsappPhone: '+1 (814) 791-5478', contactEmail: 'porshuregreen@gmail.com', footerDescription: 'Professional document preparation, formatting and submission support for individuals, professionals and businesses worldwide.', announcement: '' });
   useEffect(() => { if (siteContent) setContentForm((current) => ({ ...current, ...siteContent })); }, [siteContent]);
   const saveContent = trpc.content.update.useMutation({ onSuccess: () => refetchContent() });
+  const [tab, setTab] = useState<'inquiries' | 'content' | 'invoice'>('inquiries');
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
@@ -62,10 +64,10 @@ export default function AdminDashboard() {
     <div className="min-h-screen bg-[#0D1C16] text-white">
       <header className="admin-topbar min-h-16 border-b border-[rgba(74,168,130,0.12)] bg-[rgba(13,28,22,0.95)] backdrop-blur-xl flex items-center justify-between gap-2 px-3 sm:px-6 sticky top-0 z-50">
         <div className="flex items-center gap-4">
-          <a href="/" className="flex items-center gap-2 text-[#7A9A8E] hover:text-white transition-colors">
+          <Link to="/" className="flex items-center gap-2 text-[#7A9A8E] hover:text-white transition-colors">
             <ChevronLeft size={18} />
-            <span className="hidden text-[13px] sm:inline">Back to Site</span>
-          </a>
+            <span className="hidden text-[13px] sm:inline">Back to site</span>
+          </Link>
           <div className="w-px h-6 bg-[rgba(255,255,255,0.1)]" />
           <div className="flex items-center gap-2.5">
             <LayoutDashboard size={18} color="#4AA882" />
@@ -85,7 +87,35 @@ export default function AdminDashboard() {
         </div>
       </header>
 
-      <div className="admin-content max-w-[1400px] mx-auto px-4 sm:px-6 py-8">
+      <div className="admin-content max-w-[1400px] mx-auto px-4 sm:px-6 py-6">
+        <div role="tablist" aria-label="Admin sections" className="sticky top-16 z-40 mb-6 flex gap-1 overflow-x-auto rounded-xl border border-[rgba(74,168,130,0.16)] bg-[rgba(13,28,22,0.96)] p-1.5 backdrop-blur">
+          {([
+            { id: 'inquiries', label: 'Inquiries', icon: Inbox, badge: stats?.new ?? 0 },
+            { id: 'content', label: 'Website content', icon: LayoutPanelLeft, badge: 0 },
+            { id: 'invoice', label: 'Invoice maker', icon: ReceiptText, badge: 0 },
+          ] as const).map((item) => (
+            <button
+              key={item.id}
+              role="tab"
+              aria-selected={tab === item.id}
+              onClick={() => setTab(item.id)}
+              className={`relative inline-flex shrink-0 items-center gap-2 rounded-lg px-4 py-2.5 text-[12.5px] font-semibold transition-colors ${tab === item.id ? 'text-white' : 'text-[#7A9A8E] hover:text-white'}`}
+            >
+              <item.icon size={15} />
+              {item.label}
+              {item.badge > 0 && (
+                <span className="rounded-full bg-[#3B8FD9] px-1.5 py-0.5 text-[10px] font-bold text-white">{item.badge}</span>
+              )}
+              {tab === item.id && (
+                <motion.span layoutId="admin-tab-pill" className="absolute inset-0 -z-10 rounded-lg bg-[rgba(74,168,130,0.18)] ring-1 ring-[rgba(74,168,130,0.35)]" transition={{ type: 'spring', stiffness: 420, damping: 34 }} />
+              )}
+            </button>
+          ))}
+        </div>
+
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div key={tab} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.18, ease: 'easeOut' }}>
+        {tab === 'content' && (
         <section className="mb-10 rounded-2xl border border-[rgba(74,168,130,0.16)] bg-[rgba(255,255,255,0.035)] p-6 md:p-8">
           <div className="mb-6"><p className="mb-1 text-[10px] font-semibold uppercase tracking-[.2em] text-[#4AA882]">Content management</p><h2 className="text-xl font-semibold text-white">Website content</h2><p className="mt-1 text-sm text-[#7A9A8E]">Edit the homepage copy and contact details shown on the public website.</p></div>
           <form onSubmit={(event) => { event.preventDefault(); saveContent.mutate(contentForm); }} className="grid gap-5 md:grid-cols-2">
@@ -94,9 +124,11 @@ export default function AdminDashboard() {
             {saveContent.error && <p role="alert" className="text-sm text-red-300 md:col-span-2">{saveContent.error.message}</p>}{saveContent.isSuccess && <p className="text-sm text-[#8FE4B4] md:col-span-2">Website content saved.</p>}
           </form>
         </section>
+        )}
 
-        <InvoiceMaker />
+        {tab === 'invoice' && <InvoiceMaker />}
 
+        {tab === 'inquiries' && (<>
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
           {[
             { label: 'Total', value: stats?.total ?? 0, icon: Inbox, color: '#4AA882' },
@@ -175,30 +207,30 @@ export default function AdminDashboard() {
                           <div className="flex items-center gap-1.5">
                             {inquiry.status === 'new' && (
                               <button onClick={() => updateStatus.mutate({ id: inquiry.id, status: 'read' })}
-                                className="p-1.5 rounded-lg hover:bg-[rgba(212,148,58,0.15)] transition-colors" title="Mark as Read">
+                                className="p-1.5 rounded-lg hover:bg-[rgba(212,148,58,0.15)] transition-colors" title="Mark as Read" aria-label={`Mark enquiry from ${inquiry.fullName} as read`}>
                                 <MailOpen size={14} color="#D4943A" />
                               </button>
                             )}
                             {inquiry.status !== 'replied' && (
                               <>
-                                <a href={`mailto:${inquiry.email}?subject=${encodeURIComponent('Re: Your Porshure Green enquiry')}&body=${encodeURIComponent(`Hello ${inquiry.fullName},\\n\\nThank you for contacting Porshure Green.\\n\\n\\nKind regards,\\nPorshure Green\\n`)}`}
-                                  className="p-1.5 rounded-lg hover:bg-[rgba(74,168,130,0.15)] transition-colors" title="Reply by email">
+                                <a href={`mailto:${inquiry.email}?subject=${encodeURIComponent('Re: Your Porshure Green enquiry')}&body=${encodeURIComponent(`Hello ${inquiry.fullName},\n\nThank you for contacting Porshure Green.\n\n\nKind regards,\nPorshure Green\n`)}`}
+                                  className="p-1.5 rounded-lg hover:bg-[rgba(74,168,130,0.15)] transition-colors" title="Reply by email" aria-label={`Reply to ${inquiry.fullName} by email`}>
                                   <Reply size={14} color="#4AA882" />
                                 </a>
                                 <button onClick={() => updateStatus.mutate({ id: inquiry.id, status: 'replied' })}
-                                  className="p-1.5 rounded-lg hover:bg-[rgba(74,168,130,0.15)] transition-colors" title="Mark as Replied">
+                                  className="p-1.5 rounded-lg hover:bg-[rgba(74,168,130,0.15)] transition-colors" title="Mark as Replied" aria-label={`Mark enquiry from ${inquiry.fullName} as replied`}>
                                   <CheckCircle size={14} color="#4AA882" />
                                 </button>
                               </>
                             )}
                             {inquiry.status !== 'archived' && (
                               <button onClick={() => updateStatus.mutate({ id: inquiry.id, status: 'archived' })}
-                                className="p-1.5 rounded-lg hover:bg-[rgba(138,154,148,0.15)] transition-colors" title="Archive">
+                                className="p-1.5 rounded-lg hover:bg-[rgba(138,154,148,0.15)] transition-colors" title="Archive" aria-label={`Archive enquiry from ${inquiry.fullName}`}>
                                 <Archive size={14} color="#8A9A94" />
                               </button>
                             )}
                             <button onClick={() => { if (confirm('Delete this inquiry?')) deleteInquiry.mutate({ id: inquiry.id }); }}
-                              className="p-1.5 rounded-lg hover:bg-[rgba(231,76,60,0.15)] transition-colors" title="Delete">
+                              className="p-1.5 rounded-lg hover:bg-[rgba(231,76,60,0.15)] transition-colors" title="Delete" aria-label={`Delete enquiry from ${inquiry.fullName}`}>
                               <Trash2 size={14} color="#E74C3C" />
                             </button>
                           </div>
@@ -211,6 +243,35 @@ export default function AdminDashboard() {
             </div>
           )}
         </div>
+
+        <div className="mt-6 grid gap-3 sm:grid-cols-3">
+          {[
+            { label: 'Preview website', detail: 'Open the live homepage', icon: LayoutPanelLeft, to: '/' },
+            { label: 'Edit contact details', detail: 'Phone, WhatsApp and email', icon: MailOpen, tab: 'content' as const },
+            { label: 'Create an invoice', detail: 'Export a branded PDF or DOC', icon: ReceiptText, tab: 'invoice' as const },
+          ].map((action) => (
+            action.to ? (
+              <Link key={action.label} to={action.to} className="group flex items-center gap-3 rounded-xl border border-[rgba(74,168,130,0.16)] bg-[rgba(255,255,255,0.03)] p-4 transition hover:border-[rgba(74,168,130,0.4)] hover:bg-[rgba(74,168,130,0.08)]">
+                <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-[rgba(74,168,130,0.15)] text-[#4AA882]"><action.icon size={16} /></span>
+                <span className="min-w-0">
+                  <span className="block text-[13px] font-semibold text-white">{action.label}</span>
+                  <span className="block text-[11px] text-[#7A9A8E]">{action.detail}</span>
+                </span>
+              </Link>
+            ) : (
+              <button key={action.label} type="button" onClick={() => setTab(action.tab!)} className="group flex items-center gap-3 rounded-xl border border-[rgba(74,168,130,0.16)] bg-[rgba(255,255,255,0.03)] p-4 text-left transition hover:border-[rgba(74,168,130,0.4)] hover:bg-[rgba(74,168,130,0.08)]">
+                <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-[rgba(74,168,130,0.15)] text-[#4AA882]"><action.icon size={16} /></span>
+                <span className="min-w-0">
+                  <span className="block text-[13px] font-semibold text-white">{action.label}</span>
+                  <span className="block text-[11px] text-[#7A9A8E]">{action.detail}</span>
+                </span>
+              </button>
+            )
+          ))}
+        </div>
+        </>)}
+          </motion.div>
+        </AnimatePresence>
       </div>
     </div>
   );

@@ -6,7 +6,7 @@ import WhatsAppIcon from './WhatsAppIcon';
 export default function CTABanner() {
   const { data } = trpc.content.get.useQuery();
   const whatsapp = data?.whatsappPhone?.trim() || data?.contactPhone?.trim() || '+1 (814) 791-5478';
-  const digits = whatsapp.replace(/\\D/g, '') || '18147915478';
+  const digits = whatsapp.replace(/\D/g, '') || '18147915478';
   return (
     <section className="bg-[#1B3B2A] py-12 md:py-14">
       <div className="container-brand grid gap-7 md:grid-cols-[1fr_auto] md:items-center">

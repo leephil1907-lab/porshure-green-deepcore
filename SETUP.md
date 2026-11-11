@@ -123,3 +123,16 @@ git push origin integration/all-branches:main   # then Vercel auto-deploys
 
 Production was deliberately **not** redeployed during this pass: the only refs Vercel can build
 are the ones already on GitHub, and `main` still contains the invisible-pricing/review bugs.
+
+## Round 2 polish (motion, dead clicks, admin)
+
+- Navigation: Services mega-dropdown (desktop hover/focus, mobile accordion share one `serviceMenu`
+  source), animated active-link underline, scroll-progress bar, Escape close, body scroll lock.
+- Pages: `ScrollManager` retries anchor targets on later frames, so in-page links work even while the
+  page transition is still mounting. `AnimatePresence` route transitions; hero staggered CSS entrance;
+  trusted-by marquee; animated counters in the samples strip.
+- Dead-click fixes: `#contact` CTA replaced with WhatsApp; WhatsApp/tel links now strip non-digits
+  correctly (`/\\D/g` typo in ContactPage, CTABanner, FAQ produced `wa.me/+1 (814) ...` links).
+- Admin: tabbed dashboard (Inquiries / Website content / Invoice maker) with a "new" badge, quick
+  action cards, client-side back link, accessible labels on every row action, and real newlines in the
+  reply mailto body.
