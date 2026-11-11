@@ -15,8 +15,10 @@ Full per-branch inventory (and the corrected analysis of what each branch really
 `/home/user/branches/BRANCHES.md`. Plain-file copies of every branch: `/home/user/branches/<branch>/`.
 
 **Union result:** `main` was already a superset of 4 of the 5 side branches. The only file that
-existed nowhere else was `src/sections/HeroCarousel.tsx` (feature branch) — now included, giving
-the integration tree 154 files vs `main`'s 151.
+existed nowhere else was `src/sections/HeroCarousel.tsx` (feature branch) — an older three.js hero
+that duplicates `Hero` + `ImageCarousel`. It was merged in, then removed as a duplicate along with
+the other orphan sections, so the final tree is 148 files vs `main`'s 151 (3 net fewer, no dead
+code). `gsap`, `lenis`, `three` and `@types/three` were dropped with it.
 
 ## Status: running
 
@@ -82,3 +84,42 @@ Vercel token. The Vercel connector can deploy straight from a GitHub ref if you 
 - `tsc -b` clean · `npm run build` OK · `npm start` serves SPA + API
 - `/` `/services` `/about` `/contact` `/login` `/admin` → 200, all page modules transform without error
 - `content.get` reads Postgres · `inquiry.create` persists · `login.login` issues the admin cookie
+
+
+## Design + behaviour pass (commit `ac1aace`)
+
+The site was half-migrated from an abandoned theme. Fixed:
+
+| Issue | Before | After |
+|---|---|---|
+| Palette | 7 sections on old `#3DDC84`/`#1A1A2E` | brand tokens `#43845F`/`#1D3328`/cream |
+| Type | `Inter` + `Playfair Display` never loaded → `/services` and testimonials rendered in a different typeface | Manrope (headings) / DM Sans (body) everywhere |
+| Pricing cards | **invisible** (GSAP reveal never fired, stuck at `opacity:0`) | `IntersectionObserver` reveal, cannot strand content |
+| Review list | **invisible** on `/about` for the same reason | same fix |
+| Floating WhatsApp | component existed but was mounted nowhere | mounted on all public routes |
+| Review screenshots | 3 broken image links | hidden gracefully (`onError`) |
+| `content.get` | any DB error → whole site 503 | falls back to approved defaults |
+| `.grid-bg` | referenced but never defined | defined |
+| `code-path` debug attrs | shipped in the production bundle | dev only |
+| Dead code | 7 orphan sections/components + 4 unused deps | removed |
+
+Verified with a headless browser on the production build: 0 sections hidden, 0 page errors, 0
+broken images, `/`, `/services`, `/about`, `/contact`, `/login`, `/admin` all render, contact form
+persists to `inquiries`, admin login reaches the dashboard.
+
+## Getting it live
+
+Production is served from GitHub `main`. This branch is committed locally only:
+
+```
+release/porshure-green-deepcore-integration.bundle   # full branch, fetchable
+release/patches/000{1,2}-*.patch                     # or apply the two commits
+```
+
+```bash
+git fetch /path/to/porshure-green-deepcore-integration.bundle integration/all-branches
+git push origin integration/all-branches:main   # then Vercel auto-deploys
+```
+
+Production was deliberately **not** redeployed during this pass: the only refs Vercel can build
+are the ones already on GitHub, and `main` still contains the invisible-pricing/review bugs.
