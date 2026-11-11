@@ -7,8 +7,7 @@ export default function BrandLogo({ inverse = false, light = false }: { inverse?
         <img src="/images/porshure-green-mark.svg" alt="" aria-hidden="true" width="38" height="38" className="h-[38px] w-[38px] object-contain" />
       </span>
       <span className="flex flex-col leading-none">
-        <span className={`font-[Manrope] text-[18px] font-extrabold tracking-[-.055em] ${inverse ? 'text-[#173B2B]' : light ? 'text-white' : 'text-[#1D3328]'}`}>Porshure Green</span>
-        <span className={`mt-1.5 text-[9px] font-bold uppercase tracking-[.23em] ${inverse ? 'text-[#66816E]' : light ? 'text-[#A9D2B2]' : 'text-[#708A76]'}`}>Document Support</span>
+        <span className={`font-[Manrope] text-[19px] font-extrabold tracking-[-.055em] ${inverse ? 'text-[#173B2B]' : light ? 'text-white' : 'text-[#1D3328]'}`}>Porshure Green</span>
       </span>
     </Link>
   );
