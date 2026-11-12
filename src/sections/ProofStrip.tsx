@@ -1,6 +1,6 @@
-import { useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router';
-import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight, ShieldCheck, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight, Pause, Play, ShieldCheck, X } from 'lucide-react';
 
 type Proof = {
   src: string;
@@ -18,85 +18,149 @@ type Proof = {
 const proofs: Proof[] = [
   {
     src: '/images/proof/utility-bill.jpg',
-    pos: 'bottom',
     job: 'Utility bill',
     caption: '“Response is quick & prompt! Great turnaround time — I was able to get items same day.”',
     channel: 'WhatsApp',
+    pos: 'bottom',
   },
   {
     src: '/images/proof/apartment-approved.jpg',
-    pos: 'center',
     job: 'Apartment application',
     caption: '“Hey there, I was approved for the apartment — thank u so so so much.”',
     channel: 'WhatsApp',
+    pos: 'center',
   },
   {
     src: '/images/proof/servsafe-certificate.jpg',
-    pos: 'center',
     job: 'ServSafe certificate',
     caption: '“Access and give me feedback” … “You did an amazing job.”',
     channel: 'WhatsApp',
+    pos: 'center',
   },
   {
     src: '/images/proof/recommend-files.jpg',
-    pos: 'top',
     job: 'Payroll files, split',
     caption: '“I appreciate your patience with me, I’ll be sure to recommend you to anyone and everyone.”',
     channel: 'iMessage',
+    pos: 'top',
   },
   {
     src: '/images/proof/ged-transcript.jpg',
-    pos: 'center',
     job: 'GED transcript',
     caption: '“Thank you so much” … “It looks great!”',
     channel: 'WhatsApp',
+    pos: 'center',
   },
   {
     src: '/images/proof/amazon-form.jpg',
-    pos: 'center',
     job: 'Amazon accommodation form',
     caption: 'Reformatted to the client’s exact request, then: “Thank you so much!”',
     channel: 'WhatsApp',
+    pos: 'center',
   },
   {
     src: '/images/proof/approved-brittany.jpg',
-    pos: 'center',
     job: 'Housing approval',
     caption: '“I got approved 😂😂😂” — “Wow, I’m happy for you.”',
     channel: 'WhatsApp',
+    pos: 'center',
   },
   {
     src: '/images/proof/work-review.jpg',
-    pos: 'bottom',
     job: 'Same-day paperwork',
     caption: '“It looks great, you did an amazing job 😍😍”',
     channel: 'WhatsApp',
+    pos: 'bottom',
   },
   {
     src: '/images/proof/rooms-to-go.jpg',
-    pos: 'bottom',
     job: 'Furniture order confirmation',
     caption: 'Order documents prepared and payment confirmed, same evening.',
     channel: 'WhatsApp',
+    pos: 'bottom',
   },
   {
     src: '/images/proof/rating-request.jpg',
-    pos: 'center',
     job: 'Follow-up after delivery',
     caption: '“Is there anywhere I can put a rating or review?”',
     channel: 'iMessage',
+    pos: 'center',
   },
 ];
 
+const AUTOPLAY_MS = 3800;
+
 export default function ProofStrip() {
   const trackRef = useRef<HTMLDivElement>(null);
+  const cardRef = useRef<HTMLButtonElement>(null);
   const [open, setOpen] = useState<Proof | null>(null);
+  const [index, setIndex] = useState(0);
+  const [playing, setPlaying] = useState(true);
+  const [hovering, setHovering] = useState(false);
+  const [visible, setVisible] = useState(false);
 
-  const scrollBy = (dir: number) => {
-    const el = trackRef.current;
-    if (!el) return;
-    el.scrollBy({ left: dir * Math.min(el.clientWidth * 0.8, 640), behavior: 'smooth' });
-  };
+  const step = useCallback(() => {
+    const track = trackRef.current;
+    const card = cardRef.current;
+    if (!track || !card) return 0;
+    const style = getComputedStyle(track);
+    const gap = parseFloat(style.columnGap || style.gap || '16') || 16;
+    return card.offsetWidth + gap;
+  }, []);
+
+  const goTo = useCallback((next: number, behavior: ScrollBehavior = 'smooth') => {
+    const track = trackRef.current;
+    const size = step();
+    if (!track || !size) return;
+    const target = ((next % proofs.length) + proofs.length) % proofs.length;
+    track.scrollTo({ left: target * size, behavior });
+    setIndex(target);
+  }, [step]);
+
+  // Keep the dots honest when the visitor swipes or clicks an arrow themselves.
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    let raf = 0;
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const size = step();
+        if (size) setIndex(Math.round(track.scrollLeft / size) % proofs.length);
+      });
+    };
+    track.addEventListener('scroll', onScroll, { passive: true });
+    return () => { track.removeEventListener('scroll', onScroll); cancelAnimationFrame(raf); };
+  }, [step]);
+
+  // Only animate while the carousel is actually on screen.
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track || typeof IntersectionObserver === 'undefined') { setVisible(true); return; }
+    const observer = new IntersectionObserver(
+      ([entry]) => setVisible(entry.isIntersecting),
+      { threshold: 0.25 },
+    );
+    observer.observe(track);
+    return () => observer.disconnect();
+  }, []);
+
+  // Autoplay: pauses on hover, on focus, while a screenshot is open, when the
+  // tab is hidden, and for visitors who prefer reduced motion.
+  useEffect(() => {
+    const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    if (reduced || !playing || hovering || open || !visible) return;
+    const timer = window.setInterval(() => {
+      if (document.hidden) return;
+      const size = step();
+      const track = trackRef.current;
+      if (!track || !size) return;
+      const atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 8;
+      if (atEnd || index === proofs.length - 1) goTo(-1, 'auto'), requestAnimationFrame(() => goTo(0));
+      else goTo(index + 1);
+    }, AUTOPLAY_MS);
+    return () => window.clearInterval(timer);
+  }, [playing, hovering, open, visible, index, goTo, step]);
 
   return (
     <section className="section-padding overflow-hidden" style={{ backgroundColor: '#F4F7F1' }}>
@@ -119,7 +183,16 @@ export default function ProofStrip() {
             </span>
             <button
               type="button"
-              onClick={() => scrollBy(-1)}
+              onClick={() => setPlaying((current) => !current)}
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-[#DCE4D6] bg-white text-[#3D5247] transition hover:bg-[#EEF3E9]"
+              aria-label={playing ? 'Pause autoplay' : 'Resume autoplay'}
+              title={playing ? 'Pause autoplay' : 'Resume autoplay'}
+            >
+              {playing ? <Pause size={14} /> : <Play size={14} />}
+            </button>
+            <button
+              type="button"
+              onClick={() => goTo(index - 1)}
               className="flex h-9 w-9 items-center justify-center rounded-full border border-[#DCE4D6] bg-white text-[#3D5247] transition hover:bg-[#EEF3E9]"
               aria-label="Previous screenshots"
             >
@@ -127,7 +200,7 @@ export default function ProofStrip() {
             </button>
             <button
               type="button"
-              onClick={() => scrollBy(1)}
+              onClick={() => goTo(index + 1)}
               className="flex h-9 w-9 items-center justify-center rounded-full border border-[#DCE4D6] bg-white text-[#3D5247] transition hover:bg-[#EEF3E9]"
               aria-label="Next screenshots"
             >
@@ -141,13 +214,24 @@ export default function ProofStrip() {
         <div
           ref={trackRef}
           id="proof-track"
+          role="region"
+          aria-roledescription="carousel"
+          aria-label="Real client conversations"
+          onMouseEnter={() => setHovering(true)}
+          onMouseLeave={() => setHovering(false)}
+          onFocusCapture={() => setHovering(true)}
+          onBlurCapture={() => setHovering(false)}
+          onTouchStart={() => setHovering(true)}
+          onTouchEnd={() => window.setTimeout(() => setHovering(false), 2500)}
           className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
-          {proofs.map((proof) => (
+          {proofs.map((proof, i) => (
             <button
               key={proof.src}
+              ref={i === 0 ? cardRef : undefined}
               type="button"
               onClick={() => setOpen(proof)}
+              aria-label={`Open the ${proof.job} conversation`}
               className="group w-[196px] shrink-0 snap-start text-left sm:w-[214px]"
             >
               <div className="relative overflow-hidden rounded-[20px] border border-[#DDE5D7] bg-white p-1 shadow-[0_10px_24px_rgba(29,51,40,0.10)] transition-all duration-300 group-hover:-translate-y-1.5 group-hover:shadow-[0_18px_34px_rgba(29,51,40,0.18)]">
@@ -156,7 +240,7 @@ export default function ProofStrip() {
                   alt={`${proof.job} conversation screenshot`}
                   className="h-[336px] w-full rounded-[16px] object-cover"
                   style={{ objectPosition: `center ${proof.pos}` }}
-                  loading="lazy"
+                  loading={i < 4 ? 'eager' : 'lazy'}
                   width={460}
                   height={818}
                 />
@@ -169,9 +253,32 @@ export default function ProofStrip() {
             </button>
           ))}
         </div>
-        <p className="mt-1 flex items-center gap-1.5 text-[11px] font-medium text-[#8A968C] md:hidden">
-          <ArrowLeft size={11} /> Swipe <ArrowRight size={11} />
-        </p>
+
+        <div className="mt-2 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-1.5">
+            {proofs.map((proof, i) => (
+              <button
+                key={proof.src}
+                type="button"
+                onClick={() => goTo(i)}
+                aria-label={`Go to the ${proof.job} screenshot`}
+                aria-current={i === index}
+                className="h-1.5 rounded-full transition-all duration-300"
+                style={{
+                  width: i === index ? '22px' : '7px',
+                  backgroundColor: i === index ? '#43845F' : '#C9D5C0',
+                }}
+              />
+            ))}
+          </div>
+          <span className="flex items-center gap-1 text-[11px] font-medium text-[#8A968C] md:hidden">
+            <ArrowLeft size={11} /> swipe <ArrowRight size={11} />
+          </span>
+          <span className="hidden text-[11px] font-medium text-[#8A968C] sm:block">
+            {index + 1} / {proofs.length}
+            {!playing && ' · autoplay paused'}
+          </span>
+        </div>
       </div>
 
       {open && (
